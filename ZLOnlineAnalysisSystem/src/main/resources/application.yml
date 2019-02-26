@@ -1,16 +1,16 @@
 spring:
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/awesome?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: password
-    driver-class-name: com.mysql.jdbc.Driver
   profiles:
     active: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 mybatis:
   mapper-locations: classpath:/mapping/*Mapper.xml
   type-aliases-package: com.sk.mybatis.entity
-
 
 skhttppool:
   maxTotal: 200
@@ -19,6 +19,11 @@ skhttppool:
   connectionRequestTimeout: 5000
   socketTimeout: 65000
   validateAfterInactivity: 2000
+
+skdb:
+  uri: http://192.168.10.99:80
+  userName: admin
+  password: 123456
 
 swagger:
   enable: true

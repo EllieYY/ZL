@@ -1,6 +1,5 @@
 package com.sk.zl.config;
 
-import com.sk.zl.config.HttpPoolProperties;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -15,10 +14,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
+
 /**
- * @Description : TODO
+ * @Description : rest template基本配置
  * @Author : Ellie
  * @Date : 2019/2/15
  */
@@ -81,7 +83,9 @@ public class RestTemplateConfig {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
                 new HttpComponentsClientHttpRequestFactory(httpClient);
 
-        return new RestTemplate(clientHttpRequestFactory);
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        return restTemplate;
     }
 
     /**

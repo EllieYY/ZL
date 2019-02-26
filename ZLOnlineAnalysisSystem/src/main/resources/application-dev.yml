@@ -1,2 +1,9 @@
 server:
   port: 9257
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: Scada2016!
+      url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
+

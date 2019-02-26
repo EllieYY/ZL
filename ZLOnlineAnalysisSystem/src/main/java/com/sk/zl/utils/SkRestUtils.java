@@ -1,5 +1,6 @@
 package com.sk.zl.utils;
 
+import com.sk.zl.config.SkdbProperties;
 import com.sk.zl.model.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +14,20 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class SkRestUtils {
-
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private SkdbProperties skdbProperties;
+
+    private String m_token = "";
 
 
-
-
-
-
-
+    /**
+     * @Author: Ellie
+     * @Description: get请求，查询字符串是在URL中发送的
+     * @Params: [url]
+     * @Return: java.lang.String
+     */
     public HttpResult get(String url) {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         return new HttpResult(responseEntity.getStatusCodeValue(),
@@ -30,18 +35,21 @@ public class SkRestUtils {
     }
 
 
-
-
-
 //    /**
 //     * @Author: Ellie
-//     * @Description: get请求，查询字符串是在URL中发送的
-//     * @Params: [url]
+//     * @Description: post请求，数据格式为JSON
+//     * @Params: [uri, jsonStr]
 //     * @Return: java.lang.String
 //     */
-//    public String get(String url) {
-//        ResponseEntity<String>
+//    public HttpResult postJson(String uri, String jsonStr) {
+//        HttpHeaders headers=new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(jsonStr, headers);
+//        ResponseEntity<String> entity = restTemplate.postForEntity(uri, request, String.class);
 //
+//        return new HttpResult(
+//                entity.getStatusCodeValue(),
+//                entity.getBody());
 //    }
 
 //    /**
@@ -53,7 +61,7 @@ public class SkRestUtils {
 //    public String post(String url) {
 //
 //    }
-//
+
 //    /**
 //     * @Author: Ellie
 //     * @Description: post请求，发送文件
@@ -61,9 +69,16 @@ public class SkRestUtils {
 //     * @Return: java.lang.String
 //     */
 //    public String post(String uri, Map<String, String> maps, List<File> fileList) {
-//
+//        HttpHeaders headers=new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setContentType(MediaType.APPLICATION_FROM_URLENCODED);
+//        MultiValueMap<String,String> map=new LinkedMultiValueMap<String,String>();
+//        map.add("title",title);
+//        map.add("userid",toUserId);
+//        HttpEntity<MultiValueMap<String,String>> reqest=new HttpEntity<MultiValueMap<String,String>>(map,headers);
+//        ResponseEntity<String> response=restTemplate.postForEntity(url,request,String.class);
 //    }
-//
+
 //    /**
 //     * @Author: Ellie
 //     * @Description: post请求，参数格式为key1=value1&key2=value2
@@ -83,17 +98,9 @@ public class SkRestUtils {
 //    public String post(String uri, Map<String, String> maps) {
 //
 //    }
-//
-//    /**
-//     * @Author: Ellie
-//     * @Description: post请求，数据格式为JSON
-//     * @Params: [uri, jsonStr]
-//     * @Return: java.lang.String
-//     */
-//    public String postJson(String uri, String jsonStr) {
-//
-//    }
-//
+
+
+
 //    /**
 //     * @Author: Ellie
 //     * @Description: post请求，数据格式为xml

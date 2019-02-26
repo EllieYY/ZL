@@ -1,2 +1,9 @@
 server:
   port: 9251
+
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: password
+      url: jdbc:mysql://localhost:3306/awesome?useUnicode=true&characterEncoding=utf8
