@@ -1,7 +1,10 @@
-package com.sk.zl.model.req;
+package com.sk.zl.utils;
+
+import com.sk.zl.model.result.RespCode;
+import com.sk.zl.model.result.RespEntity;
 
 /**
- * @Description : 将结果转换为封装后的类
+ * @Description : 封装成result bean工具
  * @Author : Ellie
  * @Date : 2019/2/25
  */

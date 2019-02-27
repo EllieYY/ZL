@@ -1,6 +1,4 @@
-package com.sk.zl.model.req;
-
-import lombok.Data;
+package com.sk.zl.model.result;
 
 
 public enum RespCode {

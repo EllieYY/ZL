@@ -8,10 +8,6 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-mybatis:
-  mapper-locations: classpath:/mapping/*Mapper.xml
-  type-aliases-package: com.sk.mybatis.entity
-
 skhttppool:
   maxTotal: 200
   defaultMaxPerRoute: 100

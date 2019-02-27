@@ -1,4 +1,4 @@
-package com.sk.zl.model.req;
+package com.sk.zl.model.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,7 +1,6 @@
-package com.sk.zl.model.setting;
+package com.sk.zl.model.station;
 
 import com.sk.zl.entity.LoginLogEntity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Timestamp;

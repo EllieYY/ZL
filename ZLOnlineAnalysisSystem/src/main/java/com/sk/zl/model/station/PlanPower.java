@@ -1,4 +1,4 @@
-package com.sk.zl.model.setting;
+package com.sk.zl.model.station;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

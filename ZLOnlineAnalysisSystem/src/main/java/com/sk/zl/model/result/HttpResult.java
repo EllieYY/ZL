@@ -1,4 +1,4 @@
-package com.sk.zl.model;
+package com.sk.zl.model.result;
 
 /**
  * @Description : TODO
