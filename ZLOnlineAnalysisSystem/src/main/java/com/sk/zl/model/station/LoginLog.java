@@ -1,9 +1,13 @@
 package com.sk.zl.model.station;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.LoginLogEntity;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.util.Date;
+
 
 /**
  * @Description : 登录日志
@@ -11,10 +15,18 @@ import java.sql.Timestamp;
  * @Date : 2019/2/25
  */
 @Data
+@NoArgsConstructor
 public class LoginLog {
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("group")
     private String group;
+    @JsonProperty("user")
     private String user;
-    private Timestamp loginTime;
+    @JsonProperty("loginTime")
+    private Date loginTime;
+    @JsonProperty("endTime")
+    private Date logoutTime;
 
     public static LoginLog fromEntity(LoginLogEntity entity) {
         LoginLog model = new LoginLog();
@@ -31,5 +43,16 @@ public class LoginLog {
         entity.setLoginTime(loginTime);
 
         return entity;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginLog{" +
+                "type='" + type + '\'' +
+                ", group='" + group + '\'' +
+                ", user='" + user + '\'' +
+                ", loginTime=" + loginTime +
+                ", logoutTime=" + logoutTime +
+                '}';
     }
 }

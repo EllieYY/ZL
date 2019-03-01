@@ -11,16 +11,21 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class PlantEffectiveHours {
+public class PlantEffectiveHours  implements Comparable<PlantEffectiveHours> {
     @JsonProperty("name")
     private String name;
 
     @JsonProperty("value")
-    private double hours;
+    private Double hours;
 
     public PlantEffectiveHours(String name, double hours) {
         this.name = name;
         this.hours = hours;
+    }
+
+    @Override
+    public int compareTo(PlantEffectiveHours o) {
+        return this.getHours().compareTo(o.getHours());
     }
 
     public static PlantEffectiveHours fromModel(Plant model) {

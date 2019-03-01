@@ -1,10 +1,17 @@
 package com.sk.zl.service.impl;
 
+import com.sk.zl.config.StationConfig;
+import com.sk.zl.dao.meter.GenPowerDao;
 import com.sk.zl.dao.meter.MeterDao;
+import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
 import com.sk.zl.dao.setting.LoginLogDao;
+import com.sk.zl.dao.skdb.PointInfoDao;
+import com.sk.zl.entity.GenPowerEntity;
+import com.sk.zl.entity.LoginLogEntity;
 import com.sk.zl.entity.MeterEntity;
+import com.sk.zl.entity.MeterGroupEntity;
 import com.sk.zl.entity.MeterRateEntity;
 import com.sk.zl.entity.PlanPowerEntity;
 import com.sk.zl.model.meter.Meter;
@@ -12,21 +19,27 @@ import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantEffectiveHours;
 import com.sk.zl.model.plant.PlantGenCapacityComparison;
 import com.sk.zl.model.plant.PlantGenerateCapacity;
-import com.sk.zl.model.result.RespEntity;
+import com.sk.zl.model.request.ReTimeSlots;
+import com.sk.zl.model.result.ResultBean;
+import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
 import com.sk.zl.model.station.StationAlarmNum;
 import com.sk.zl.utils.DateUtil;
-import com.sk.zl.utils.RespUtil;
+import com.sk.zl.utils.ResultBeanUtil;
 import com.sk.zl.model.station.LoginLog;
 import com.sk.zl.model.station.PlanPower;
 import com.sk.zl.service.StationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,36 +57,62 @@ public class StationServiceImpl implements StationService {
     MeterRateDao meterRateDao;
     @Resource
     PlanPowerDao planPowerDao;
+    @Resource
+    PointInfoDao pointInfoDao;
+    @Resource
+    GenPowerDao genPowerDao;
+    @Resource
+    MeterGroupDao meterGroupDao;
+    @Resource
+    StationConfig stationConfig;
 
     @Override
-    public RespEntity<Integer> addLog(LoginLog log) {
+    public int addLog(LoginLog log)  {
         loginLogDao.save(log.toEntity());
-        return RespUtil.makeOkResp(0);
+        return 0;
     }
 
     @Override
-    public RespEntity<List<Meter>> getMeterInfo() {
+    public List<LoginLog> getLog(LoginLog log) {
+
+        System.out.println(log);
+        List<LoginLogEntity> entities = loginLogDao.findByGroupAndUserAndLoginTimeIsBetween(
+                log.getGroup(),
+                log.getUser(),
+                log.getLoginTime(),
+                log.getLogoutTime());
+
+        System.out.println("111111--------");
+        List<LoginLog> models = entities.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(LoginLog.fromEntity(item));
+        }, ArrayList::addAll);
+        return models;
+    }
+
+    @Override
+    public List<Meter> getMeterInfo()  {
         List<MeterEntity> entities = meterDao.findAll();
         List<Meter> models = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(Meter.fromEntity(item));
         }, ArrayList::addAll);
-        return RespUtil.makeOkResp(models);
+        return models;
     }
 
     @Override
-    public RespEntity<List<MeterRate>> getMeterRate(int meterId) {
+    public List<MeterRate> getMeterRate(int meterId)  {
         List<MeterRateEntity> entities = meterRateDao.findByMeterId(meterId);
         List<MeterRate> models = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(MeterRate.fromEntity(item));
         }, ArrayList::addAll);
-        return RespUtil.makeOkResp(models);
+
+        return models;
     }
 
     @Override
-    public RespEntity<List<MeterRate>> addMeterRate(int meterId, List<MeterRate> models) {
+    public List<MeterRate> addMeterRate(int meterId, List<MeterRate> models)  {
         MeterEntity meter = meterDao.getOne(meterId);
         if (null == meter) {
-            return RespUtil.makeCustomErrResp("电表id不存在");
+            throw new RuntimeException("电表不存在");
         }
 
         List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
@@ -81,75 +120,94 @@ public class StationServiceImpl implements StationService {
         }, ArrayList::addAll);
 
         meterRateDao.saveAll(entities);
-        return RespUtil.makeOkResp();
+        return models;
     }
 
     @Override
-    public RespEntity<List<MeterRate>> updateMeterRate(MeterRate meterRate) {
-        meterRateDao.updateRateById(
-                meterRate.getId(),
-                meterRate.getRate(),
-                meterRate.getStartTime(),
-                meterRate.getEndTime());
+    public List<MeterRate> updateMeterRate(List<MeterRate> meterRaters) {
+        for (MeterRate meterRate: meterRaters) {
+            meterRateDao.updateRateById(
+                    meterRate.getId(),
+                    meterRate.getRate(),
+                    new Timestamp(meterRate.getStartTime().getTime()),
+                    new Timestamp(meterRate.getEndTime().getTime()));
+        }
 
-        return RespUtil.makeOkResp();
+        return null;
     }
 
     @Override
-    public RespEntity<List<MeterRate>> deleteMeterRate(int rateId) {
-        meterRateDao.deleteById(rateId);
-        return RespUtil.makeOkResp();
+    public List<MeterRate> deleteMeterRate(List<MeterRate> models)  {
+        List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(item.toEntity(null));
+        }, ArrayList::addAll);
+        meterRateDao.deleteInBatch(entities);
+        return null;
     }
 
     @Override
-    public RespEntity<List<PlanPower>> getPlanPower() {
+    public List<PlanPower> getPlanPower()  {
         List<PlanPowerEntity> entities = planPowerDao.findAll();
         List<PlanPower> planPowers = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(PlanPower.fromEntity(item));
         }, ArrayList::addAll);
 
-        return RespUtil.makeOkResp(planPowers);
+        return planPowers;
     }
 
     @Override
-    public RespEntity<List<PlanPower>> addPlanPowers(List<PlanPower> models) {
+    public List<PlanPower> addPlanPowers(List<PlanPower> models)  {
+        // 进行年份去重
+        Iterator<PlanPower> it = models.iterator();
+        while(it.hasNext()){
+            PlanPower planPower = it.next();
+            int size = planPowerDao.findByYear(planPower.getYear()).size();
+            if(size > 0){
+                it.remove();
+            }
+        }
+
         List<PlanPowerEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
             list.add(item.toEntity());
         }, ArrayList::addAll);
         planPowerDao.saveAll(entities);
-        return RespUtil.makeOkResp();
+        return models;
     }
 
     @Override
-    public RespEntity<List<PlanPower>> updatePlanPowers(List<PlanPower> models) {
+    public List<PlanPower> updatePlanPowers(List<PlanPower> models)  {
         List<PlanPowerEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
             list.add(item.toEntity());
         }, ArrayList::addAll);
         planPowerDao.saveAll(entities);
-        return RespUtil.makeOkResp();
+        return models;
     }
 
     @Override
-    public RespEntity<List<PlanPower>> deletePlanPowers(List<PlanPower> models) {
+    public List<PlanPower> deletePlanPowers(List<PlanPower> models)  {
         List<PlanPowerEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
             list.add(item.toEntity());
         }, ArrayList::addAll);
         planPowerDao.deleteInBatch(entities);
-        return RespUtil.makeOkResp();
+        return models;
     }
 
     @Override
-    public RespEntity<StationAlarmNum> getAlarmNum() {
-        // TODO:通过数据库的rest接口读取表示故障条数的测点的值，实际统计程序由后台c程序实现。
-        // TODO:暂时给出测试数据
+    public StationAlarmNum getAlarmNum()  {
+        List<PointInfo> points = pointInfoDao.findStationAlarmPoints();
+
+        if (points.size() != 2) {
+            throw new RuntimeException("未找到报警点。");
+        }
+
         StationAlarmNum alarmNum = new StationAlarmNum();
-        alarmNum.setNumOfAccident(1);
-        alarmNum.setNumOfGlitches(3);
-        return RespUtil.makeOkResp(alarmNum);
+        alarmNum.setNumOfAccident(new Double(points.get(0).getValue()).intValue());
+        alarmNum.setNumOfGlitches(new Double(points.get(1).getValue()).intValue());
+        return alarmNum;
     }
 
     @Override
-    public RespEntity<HydrologicalInfo> getHydrologicalInfo() {
+    public HydrologicalInfo getHydrologicalInfo()  {
         // TODO:水情系统尚未接入，暂时使用测试数据
         HydrologicalInfo info = new HydrologicalInfo();
         info.setWaterHead(42.56);
@@ -157,12 +215,11 @@ public class StationServiceImpl implements StationService {
         info.setOutflow(7.31);
         info.setUpstreamWaterLevel(42.56);
         info.setDownstreamWaterLevel(20.56);
-        return RespUtil.makeOkResp(info);
+        return null;
     }
 
     @Override
-    public RespEntity<PowerStationSnapshot> getStationSnapshot() {
-        // TODO:需要进行电量统计，暂时使用测试数据。
+    public PowerStationSnapshot getStationSnapshot()  {
         PowerStationSnapshot stationSnapshot = new PowerStationSnapshot();
         try {
             // 安全生产天数 = 当前日期 - 2005/9/10
@@ -171,21 +228,28 @@ public class StationServiceImpl implements StationService {
             // 年安全生产天数 = 当前日期在本年中的天数
             int annualSafetyDays = DateUtil.daysOfTodayInYear();
 
-            // 全厂实时总有功：
-            // TODO：rest取点统计
-            double realTimeActivePower = 29.75;
+            // 全厂实时总有功：rest取点统计
+            double realTimeActivePower = 0;
+            List<PointInfo> realTimeActivePowerPoints = pointInfoDao.findRealTimeActivePowerPoints();
 
+            for (PointInfo point : realTimeActivePowerPoints) {
+                realTimeActivePower += point.getValue();
+            }
+
+            int genGroupId = stationConfig.getGenCapacityMeterGroup();
+            Date today = new Date();
             // 昨日发电量
-            // TODO：待计算
-            double preDayGenCapacity = 51;
+            Date yesterday = DateUtil.dateAddDays(today, -1, false);
+            double preDayGenCapacity = calculateGenPowerByGroup(genGroupId, yesterday, today);
 
             // 年累计发电量
-            // TODO：待计算
-            double annualGenCapacity = 25487;
+            Date beginYear = DateUtil.getFirstDateOfYear(today);
+            beginYear = DateUtil.dateTimeToDate(beginYear);
+            double annualGenCapacity = calculateGenPowerByGroup(genGroupId, beginYear, today);
 
             // 年累计上网电量
-            // TODO：待计算
-            double annualOnGridPower = 25467;
+            int ongridGroupId = stationConfig.getOnGridMeterGroup();
+            double annualOnGridPower = calculateGenPowerByGroup(ongridGroupId, beginYear, today);
 
             stationSnapshot.setTotalSafetyDays(totalSafetyDays);
             stationSnapshot.setAnnualSafetyDays(annualSafetyDays);
@@ -193,76 +257,94 @@ public class StationServiceImpl implements StationService {
             stationSnapshot.setPreDayGenCapacity(preDayGenCapacity);
             stationSnapshot.setAnnualGenCapacity(annualGenCapacity);
             stationSnapshot.setAnnualOnGridPower(annualOnGridPower);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.makeInnerErrResp();
+        }catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        return RespUtil.makeOkResp(stationSnapshot);
+        return stationSnapshot;
+    }
+
+    private double calculateGenPowerByGroup(int groupId, Date startTime, Date endTime) {
+        MeterGroupEntity group = meterGroupDao.findById(groupId);
+        List<Integer> metersId = new ArrayList<>();
+        for (MeterEntity meter: group.getMeterSet()) {
+            metersId.add(meter.getId());
+        }
+        List<GenPowerEntity> results = genPowerDao.findByMeterIdInAndTimeBetween(metersId, startTime, endTime);
+
+        double total = 0;
+        for (GenPowerEntity entity: results) {
+            total += entity.getValue();
+        }
+        return total;
     }
 
 
     @Override
-    public RespEntity<AnnualCapacityInfo> getAnnualCapacityInfo() {
-        // TODO：需要进行电量统计，目前提供测试数据
+    public AnnualCapacityInfo getAnnualCapacityInfo()  {
+        Date today = new Date();
+        //#1 获取今年的计划发电量
+        int year = DateUtil.getYear(today);
+        double planCapacity = planPowerDao.findByYear(year).get(0).getPlanPower();
+
+        //#2 年累计发电量
+        int genGroupId = stationConfig.getGenCapacityMeterGroup();
+        Date beginYear = DateUtil.getFirstDateOfYear(today);
+        try {
+            beginYear = DateUtil.dateTimeToDate(beginYear);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        double annualGenCapacity = calculateGenPowerByGroup(genGroupId, beginYear, today);
+
+        //#3 每月发电量
+        List<Double> monthlyCapacity = getMonthCapacity(genGroupId);
+
         AnnualCapacityInfo annualCapacityInfo = new AnnualCapacityInfo();
-        annualCapacityInfo.setAnnualGenCapacity(6000);
-        annualCapacityInfo.setAnnualPlanCapacity(7000);
-        annualCapacityInfo.setCompletion(6000/7000);
-        List<Double> monthluCapacity = Arrays.asList(501.00, 499.00,
-                502.00, 498.00, 503.00, 497.00, 504.00, 496.00, 505.00, 495.00, 506.00, 494.00);
+        annualCapacityInfo.setAnnualGenCapacity(annualGenCapacity);
+        annualCapacityInfo.setAnnualPlanCapacity(planCapacity);
+        double completion = annualGenCapacity/planCapacity;
+        annualCapacityInfo.setCompletion(completion);
+        annualCapacityInfo.setMonthlyPower(monthlyCapacity);
 
-        return RespUtil.makeOkResp(annualCapacityInfo);
+        return annualCapacityInfo;
     }
 
     @Override
-    public RespEntity<List<Double>> getOngridCapacityInfo() {
-        // TODO：需要进行电量统计，目前提供测试数据
-        List<Double> monthluCapacity = Arrays.asList(501.00, 499.00,
-                502.00, 498.00, 503.00, 497.00, 504.00, 496.00, 505.00, 495.00, 506.00, 494.00);
+    public List<Double> getOngridCapacityInfo()  {
 
-        return RespUtil.makeOkResp(monthluCapacity);
+        int ongridGroupId = stationConfig.getOnGridMeterGroup();
+        List<Double> monthlyCapacity = getMonthCapacity(ongridGroupId);
+
+        return monthlyCapacity;
     }
 
+    private List<Double> getMonthCapacity(int groupId)  {
+        Date today = new Date();
+        Date beginYear = DateUtil.getFirstDateOfYear(today);
+        try {
+            beginYear = DateUtil.dateTimeToDate(beginYear);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-    @Override
-    public RespEntity<List<PlantGenerateCapacity>> getGenCapacityRank() {
-        // TODO：机组发电量排名
-        List<PlantGenerateCapacity> plantList = new ArrayList<PlantGenerateCapacity>();
-        plantList.add(new PlantGenerateCapacity("机组1", 96));
-        plantList.add(new PlantGenerateCapacity("机组5", 84));
-        plantList.add(new PlantGenerateCapacity("机组3", 72));
-        plantList.add(new PlantGenerateCapacity("机组6", 54));
-        plantList.add(new PlantGenerateCapacity("机组2", 53));
-        plantList.add(new PlantGenerateCapacity("机组4", 46));
+        List<Double> monthlyCapacity = new ArrayList<>();
+        int monthSize = DateUtil.getMonthNumInYear();
+        Date startMonth = beginYear;
+        Date endMonth = beginYear;
+        for (int i = 0; i < monthSize; i++) {
+            startMonth = endMonth;
+            endMonth = DateUtil.dateAddMonths(startMonth, 1);
+            if (DateUtil.dateCompare(endMonth, today) == 1) {
+                monthlyCapacity.add(0.0);
+                continue;
+            }
+            endMonth = today;
+            double monthCapacity = calculateGenPowerByGroup(groupId, startMonth, endMonth);
+            monthlyCapacity.add(monthCapacity);
+        }
 
-        return RespUtil.makeOkResp(plantList);
-    }
-
-    @Override
-    public RespEntity<List<PlantEffectiveHours>> getEffectiveHoursRank() {
-        // TODO：机组月利用小时数排名
-        List<PlantEffectiveHours> plantList = new ArrayList<PlantEffectiveHours>();
-        plantList.add(new PlantEffectiveHours("机组1", 696));
-        plantList.add(new PlantEffectiveHours("机组5", 684));
-        plantList.add(new PlantEffectiveHours("机组3", 672));
-        plantList.add(new PlantEffectiveHours("机组6", 654));
-        plantList.add(new PlantEffectiveHours("机组2", 653));
-        plantList.add(new PlantEffectiveHours("机组4", 646));
-        return RespUtil.makeOkResp(plantList);
-    }
-
-    @Override
-    public RespEntity<List<PlantGenCapacityComparison>> getPlantComparison(long sTime1, long eTime1,
-                                                                           long sTime2, long eTime2) {
-        // TODO:待统计电量
-        List<PlantGenCapacityComparison> plantList = new ArrayList<PlantGenCapacityComparison>();
-        plantList.add(new PlantGenCapacityComparison("机组1", 62, 78));
-        plantList.add(new PlantGenCapacityComparison("机组2", 55, 45));
-        plantList.add(new PlantGenCapacityComparison("机组3", 35, 25));
-        plantList.add(new PlantGenCapacityComparison("机组4", 61, 35));
-        plantList.add(new PlantGenCapacityComparison("机组5", 66, 25));
-        plantList.add(new PlantGenCapacityComparison("机组6", 49, 45));
-        return RespUtil.makeOkResp(plantList);
+        return monthlyCapacity;
     }
 }

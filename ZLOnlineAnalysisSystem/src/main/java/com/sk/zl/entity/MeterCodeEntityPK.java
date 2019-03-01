@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
  */
 public class MeterCodeEntityPK implements Serializable {
     private int meterId;
-    private Timestamp time;
+    private Date time;
 
     @Column(name = "meterId", nullable = false)
     @Id
@@ -27,11 +28,11 @@ public class MeterCodeEntityPK implements Serializable {
 
     @Column(name = "time", nullable = false)
     @Id
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

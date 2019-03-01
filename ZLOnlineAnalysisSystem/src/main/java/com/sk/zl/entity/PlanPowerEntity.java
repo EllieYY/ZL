@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,7 @@ public class PlanPowerEntity {
     private int id;
     private int year;
     private double planPower;
-    private Timestamp updateTime;
+    private Date updateTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,11 +60,11 @@ public class PlanPowerEntity {
     @Basic
     @UpdateTimestamp
     @Column(name = "updateTime", nullable = false)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

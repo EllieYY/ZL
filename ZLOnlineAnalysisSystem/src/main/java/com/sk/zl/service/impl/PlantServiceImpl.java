@@ -1,17 +1,28 @@
 package com.sk.zl.service.impl;
 
+import com.sk.zl.dao.meter.GenPowerDao;
 import com.sk.zl.dao.setting.PlantDao;
+import com.sk.zl.dao.skdb.PointInfoDao;
+import com.sk.zl.entity.GenPowerEntity;
+import com.sk.zl.entity.MeterEntity;
+import com.sk.zl.entity.MeterGroupEntity;
 import com.sk.zl.entity.PlantEntity;
 import com.sk.zl.model.plant.Plant;
+import com.sk.zl.model.plant.PlantEffectiveHours;
+import com.sk.zl.model.plant.PlantGenCapacityComparison;
+import com.sk.zl.model.plant.PlantGenerateCapacity;
 import com.sk.zl.model.plant.PlantPointSnapshot;
 import com.sk.zl.model.plant.PlantState;
-import com.sk.zl.model.result.RespEntity;
+import com.sk.zl.model.request.ReTimeSlots;
+import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.service.PlantService;
-import com.sk.zl.utils.RespUtil;
+import com.sk.zl.utils.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,38 +32,117 @@ import java.util.List;
  */
 @Service
 public class PlantServiceImpl implements PlantService {
-
     @Resource
     PlantDao plantDao;
+    @Resource
+    PointInfoDao pointInfoDao;
+    @Resource
+    GenPowerDao genPowerDao;
 
     @Override
-    public RespEntity<List<PlantState>> getPlantsState() {
+    public List<PlantState> getPlantsState()  {
         List<PlantEntity> entities = plantDao.findAll();
         List<PlantState> plants = entities.stream().collect(ArrayList::new, (list, item) -> {
             Plant plant = Plant.fromEntity(item);
             list.add(plant.toPlantState());
         }, ArrayList::addAll);
-        return RespUtil.makeOkResp(plants);
+        return plants;
     }
 
     @Override
-    public RespEntity<List<PlantState>> updatePlantsState(int id, Byte state) {
-        int ret = plantDao.updateStateById(id, state);
-        return RespUtil.makeOkResp();
+    public List<PlantState> updatePlantsState(List<PlantState> models)  {
+        for (PlantState plant: models) {
+            plantDao.updateStateById(plant.getId(), plant.getState());
+        }
+        return null;
     }
 
     @Override
-    public RespEntity<List<PlantPointSnapshot>> getPointSnapshot() {
-        // TODO:通过数据库rest接口读取点的实时数据返回给前端
-        // TODO：暂时使用测试数据
-        List<PlantPointSnapshot> plantPointList = new ArrayList<PlantPointSnapshot>();
-        plantPointList.add(new PlantPointSnapshot(1, "机组1", 0, 62, 78, 113));
-        plantPointList.add(new PlantPointSnapshot(2, "机组2", 0, 55, 45, 95));
-        plantPointList.add(new PlantPointSnapshot(3, "机组3", 1, 35, 25, 95));
-        plantPointList.add(new PlantPointSnapshot(4, "机组4", 0, 61, 35, 88));
-        plantPointList.add(new PlantPointSnapshot(5, "机组5", 0, 66, 78, 35));
-        plantPointList.add(new PlantPointSnapshot(6, "机组6", 0, 62, 88, 95));
+    public List<PlantPointSnapshot> getPointSnapshot()  {
+        //#1 读取机组信息
+        List<PlantEntity> entities = plantDao.findAll();
+        List<PlantPointSnapshot> plantPointSnapshots = entities.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(PlantPointSnapshot.fromEntity(item));
+        }, ArrayList::addAll);
 
-        return RespUtil.makeOkResp(plantPointList);
+        //#2 通过数据库rest接口读取点的实时数据返回给前端
+        for (PlantPointSnapshot plant: plantPointSnapshots) {
+            List<PointInfo> points = pointInfoDao.findPlantSnapshotPointsById(plant.getId());
+            if (points.size() != 3) {
+                continue;
+            }
+            plant.setActivePower(points.get(0).getValue());
+            plant.setReactivePower(points.get(1).getValue());
+            plant.setGuideVaneOpening(points.get(2).getValue());
+        }
+
+        return plantPointSnapshots;
     }
+
+
+    @Override
+    public List<PlantGenerateCapacity> getGenCapacityRank()  {
+        //#1 获取机组信息 - 机组对应的电表
+        List<PlantEntity> plants = plantDao.findAll();
+        List<PlantGenerateCapacity> plantList = new ArrayList<PlantGenerateCapacity>();
+
+        //#2 统计当月电量
+        Date today = new Date();
+        Date monthBegin = DateUtil.getFirstDateOfMonth(today);
+        for (PlantEntity plant : plants) {
+            int meterId = plant.getId();
+            double value = calculateGenPowerByMeter(meterId, monthBegin, today);
+            plantList.add(new PlantGenerateCapacity(plant.getName(), value));
+        }
+
+        return plantList;
+    }
+
+    @Override
+    public List<PlantEffectiveHours> getEffectiveHoursRank()  {
+        //#1 获取机组信息 - 机组对应的电表
+        List<PlantEntity> plants = plantDao.findAll();
+        List<PlantEffectiveHours> plantList = new ArrayList<PlantEffectiveHours>();
+
+        //#2 统计月利用小时数
+        Date today = new Date();
+        Date monthBegin = DateUtil.getFirstDateOfMonth(today);
+        for (PlantEntity plant : plants) {
+            int meterId = plant.getId();
+            double value = calculateGenPowerByMeter(meterId, monthBegin, today) / plant.getCapacity();
+            plantList.add(new PlantEffectiveHours(plant.getName(), value));
+        }
+        return plantList;
+    }
+
+
+    private double calculateGenPowerByMeter(int meterId, Date startTime, Date endTime) {
+        List<GenPowerEntity> results = genPowerDao.findByMeterIdAndTimeBetween(meterId, startTime, endTime);
+        double total = 0;
+        for (GenPowerEntity entity: results) {
+            total += entity.getValue();
+        }
+        return total;
+    }
+
+
+    @Override
+    public List<PlantGenCapacityComparison> getPlantComparison(ReTimeSlots timeSlots)  {
+        System.out.println(timeSlots);
+
+        //#1 获取机组信息 - 机组对应的电表
+        List<PlantEntity> plants = plantDao.findAll();
+
+        List<PlantGenCapacityComparison> plantList = new ArrayList<PlantGenCapacityComparison>();
+
+        //#2 统计月利用小时数
+        for (PlantEntity plant : plants) {
+            int meterId = plant.getId();
+            double value1 = calculateGenPowerByMeter(meterId, timeSlots.getSTime1(), timeSlots.getETime1());
+            double value2 = calculateGenPowerByMeter(meterId, timeSlots.getSTime2(), timeSlots.getETime2());
+            plantList.add(new PlantGenCapacityComparison(plant.getName(), value1, value2));
+        }
+        return plantList;
+    }
+
 }

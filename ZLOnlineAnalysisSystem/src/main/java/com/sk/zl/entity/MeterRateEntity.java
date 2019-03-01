@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -25,11 +26,11 @@ import java.util.Objects;
 public class MeterRateEntity {
     private int id;
     private String name;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private Date startTime;
+    private Date endTime;
     private double rate;
     private String comment;
-    private Timestamp updateTime;
+    private Date updateTime;
     private byte deleted;
 
     private MeterEntity meter;
@@ -66,21 +67,21 @@ public class MeterRateEntity {
 
     @Basic
     @Column(name = "startTime", nullable = false)
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "endTime", nullable = false)
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -107,11 +108,11 @@ public class MeterRateEntity {
     @Basic
     @UpdateTimestamp
     @Column(name = "updateTime", nullable = false)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -11,12 +11,17 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class PlantGenerateCapacity {
+public class PlantGenerateCapacity implements Comparable<PlantGenerateCapacity> {
     @JsonProperty("name")
     private String name;
 
     @JsonProperty("value")
-    private double genCapacity;
+    private Double genCapacity;
+
+    @Override
+    public int compareTo(PlantGenerateCapacity o) {
+        return this.getGenCapacity().compareTo(o.getGenCapacity());
+    }
 
     public PlantGenerateCapacity(String name, double genCapacity) {
         this.name = name;

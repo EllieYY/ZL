@@ -1,8 +1,12 @@
 package com.sk.zl.service;
 
+import com.sk.zl.model.plant.PlantEffectiveHours;
+import com.sk.zl.model.plant.PlantGenCapacityComparison;
+import com.sk.zl.model.plant.PlantGenerateCapacity;
 import com.sk.zl.model.plant.PlantPointSnapshot;
 import com.sk.zl.model.plant.PlantState;
-import com.sk.zl.model.result.RespEntity;
+import com.sk.zl.model.request.ReTimeSlots;
+import com.sk.zl.model.result.ResultBean;
 
 import java.util.List;
 
@@ -13,11 +17,16 @@ import java.util.List;
  */
 public interface PlantService {
     /** 机组检修状态 */
-    RespEntity<List<PlantState>> getPlantsState();
-    RespEntity<List<PlantState>> updatePlantsState(int id, Byte state);
+    List<PlantState> getPlantsState() ;
+    List<PlantState> updatePlantsState(List<PlantState> models) ;
 
     /** 机组测点数据查看 */
-    RespEntity<List<PlantPointSnapshot>> getPointSnapshot();
+    List<PlantPointSnapshot> getPointSnapshot();
 
+    /** 机组发电量/月利用小时数排名 */
+    List<PlantGenerateCapacity> getGenCapacityRank() ;
+    List<PlantEffectiveHours> getEffectiveHoursRank() ;
 
+    /** 机组发电量信息对比 */
+    List<PlantGenCapacityComparison> getPlantComparison(ReTimeSlots timeSlots) ;
 }

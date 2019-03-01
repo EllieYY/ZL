@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class MeterEntity {
     private int id;
     private String name;
-    private Timestamp updateTime;
+    private Date updateTime;
     private MeterGroupEntity group;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,11 +57,11 @@ public class MeterEntity {
 
     @Basic
     @Column(name = "updateTime", nullable = false)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

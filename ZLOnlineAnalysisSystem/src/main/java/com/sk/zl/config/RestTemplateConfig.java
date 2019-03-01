@@ -1,5 +1,7 @@
 package com.sk.zl.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -13,11 +15,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @Description : rest template基本配置
@@ -29,6 +39,9 @@ public class RestTemplateConfig {
 
     @Autowired
     private HttpPoolProperties httpPoolProperties;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * @Author: Ellie
@@ -84,7 +97,9 @@ public class RestTemplateConfig {
                 new HttpComponentsClientHttpRequestFactory(httpClient);
 
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
-        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+//        restTemplate.getMessageConverters().add(new SkMappingJackson2HttpMessageConverter());
         return restTemplate;
     }
 
@@ -113,9 +128,6 @@ public class RestTemplateConfig {
             @Qualifier("configBuilder") RequestConfig.Builder builder) {
         return builder.build();
     }
-
-
-
 
 //    // ================================================
 //    @Bean

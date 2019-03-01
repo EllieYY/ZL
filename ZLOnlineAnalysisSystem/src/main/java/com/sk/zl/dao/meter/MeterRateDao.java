@@ -17,4 +17,6 @@ public interface MeterRateDao extends JpaRepository<MeterRateEntity, Integer> {
     @Transactional
     @Query(value = "update MeterRateEntity model set model.rate=:rate, model.startTime=:startTime, model.endTime=:endTime where model.id=:id")
     int updateRateById(@Param("id") int id, @Param("rate") double rate, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
+
+
 }

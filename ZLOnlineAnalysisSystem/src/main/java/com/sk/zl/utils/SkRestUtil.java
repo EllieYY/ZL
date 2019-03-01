@@ -3,20 +3,26 @@ package com.sk.zl.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.zl.config.SkdbProperties;
-import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantPointSnapshot;
 import com.sk.zl.model.result.HttpResult;
-import com.sk.zl.model.skRest.Points;
-import jdk.nashorn.internal.parser.Token;
+import com.sk.zl.model.skRest.PointInfo;
+import com.sk.zl.model.skRest.PointsCpid;
+import com.sk.zl.model.skRest.PointsCpidWrap;
+import com.sk.zl.model.skRest.PointsInfoWrap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.Deflater;
 
@@ -25,7 +31,7 @@ import java.util.zip.Deflater;
  * @Author : Ellie
  * @Date : 2019/2/15
  */
-@Service
+@Component
 public class SkRestUtil {
     @Autowired
     private RestTemplate restTemplate;
@@ -34,57 +40,73 @@ public class SkRestUtil {
 
     private String token = "";
 
+    private final int RETRY_TIME = 2;
+    private boolean identification = false;
 
-    /** 读取机组测点的信息 */
-    public PlantPointSnapshot getPlantPoint() {
-        String dir = "/cgi-bin/nowval.rsp?method=mGet";
-
-        //#1 组post的body部分
-
-
-        //#2 对body进行压缩
-
-
-        //#3 带上token和压缩参数
-
-
-        //#4 对返回参数进行判断，看是否需要重更新进行用户认证
-        // ----- 需要加上重试逻辑。
-
-
-        //#5 对返回值进行解析
-
-        return null;
+    public PointInfo getNowValue(String cpid) {
+        List<PointInfo> points = getNowValue(Arrays.asList(cpid));
+        if (points.size() < 1) {
+            return null;
+        }
+        return points.get(0);
     }
 
     /** 获取当前值 */
-    private String getNowValue(Points points) {
-        String dir = "/cgi-bin/nowval.rsp?method=mGet";
+    public List<PointInfo> getNowValue(List<String> cpids) {
+        PointsCpid points = new PointsCpid();
+        points.setCpids(cpids);
 
+        PointsCpidWrap pointsCpidWrap = new PointsCpidWrap();
+        pointsCpidWrap.setPoints(points);
+
+        String url = skdbProperties.getUri() + "/cgi-bin/nowval.fcg?method=jaction";
+
+        return getPointValue(url, pointsCpidWrap);
+    }
+
+    private List<PointInfo> getPointValue(String url, PointsCpidWrap cpidWrap) {
         //#1 组post的body部分
         ObjectMapper mapper = new ObjectMapper();
         String ids = "";
         try {
-            ids = mapper.writeValueAsString(points);
+            ids = mapper.writeValueAsString(cpidWrap).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        System.out.println(ids);
         //#2 对body进行压缩
-        byte[] originContent = ("id=" + ids).getBytes();
-        byte[] requestContent = compress(originContent);
+        byte[] content = ("any=" + ids).getBytes();
+        byte[] requestContent = compress(content);
+        url += ("&compress=" + content.length);
 
-        //#3 组织url：带上token和压缩参数
-        if (token.isEmpty()) {
-            checkAuthority(skdbProperties.getUserName(), skdbProperties.getPassWord());
+        //#3 发送post请求
+        for (int i = 0; i < RETRY_TIME; i++) {
+            // 用户认证
+            if (!identification) {
+                identification = checkAuthority(skdbProperties.getUserName(), skdbProperties.getPassWord());
+                continue;
+            }
+            url += ("&token=" + token);
+
+            // post请求 -
+            HttpResult result = post(url, requestContent);
+            if (result.getCode() > 300) {
+                continue;
+            }
+
+            try {
+                PointsInfoWrap pts = mapper.readValue(result.getBody(), PointsInfoWrap.class);
+                int ret = pts.getIret();
+                if (ret != 0) {
+                    break;
+                }
+                return pts.getPointInfoList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-        //#4 发送post请求
-
-
-
-
-        return null;
+        return new ArrayList<>();
     }
 
 
@@ -100,9 +122,20 @@ public class SkRestUtil {
                 responseEntity.getBody());
     }
 
+    public HttpResult post(String url, byte[] data) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8, MediaType.APPLICATION_JSON, MediaType.APPLICATION_STREAM_JSON, MediaType.TEXT_PLAIN));
+        HttpEntity<byte[]> entity = new HttpEntity<byte[]>(data, headers);
+//        PointsInfoWrap response = restTemplate.postForObject(url, entity, PointsInfoWrap.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+        return new HttpResult(response.getStatusCodeValue(), response.getBody());
+    }
+
 
     /** 用户认证 */
-    public boolean checkAuthority(String user, String password) {
+    private boolean checkAuthority(String user, String password) {
         boolean hasAuthority = false;
 
         String dir = "/cgi-bin/login.fcg?method=jaction&user=" + user

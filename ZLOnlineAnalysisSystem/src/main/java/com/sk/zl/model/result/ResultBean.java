@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class RespEntity<T> {
+public class ResultBean<T> {
     @JsonProperty("iret")
     private int code;
 
@@ -21,19 +21,19 @@ public class RespEntity<T> {
     @JsonProperty("data")
     private T data;
 
-    public RespEntity(RespCode respCode) {
+    public ResultBean(RespCode respCode) {
         this.code = respCode.getCode();
         this.msg = respCode.getMsg();
     }
 
-    public RespEntity(RespCode respCode, T data) {
+    public ResultBean(RespCode respCode, T data) {
         this.code = respCode.getCode();
         this.msg = respCode.getMsg();
         this.data = data;
     }
 
-    public  RespEntity(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    public ResultBean(Throwable e) {
+        this.code = RespCode.FAIL.getCode();
+        this.msg = e.toString();
     }
 }

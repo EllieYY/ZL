@@ -1,7 +1,7 @@
 package com.sk.zl.model.result;
 
 /**
- * @Description : TODO
+ * @Description : rest template 返回结果封装
  * @Author : Ellie
  * @Date : 2019/2/19
  */

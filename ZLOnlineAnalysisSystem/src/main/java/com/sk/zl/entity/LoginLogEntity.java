@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -24,8 +25,8 @@ public class LoginLogEntity {
     private int id;
     private String group;
     private String user;
-    private Timestamp loginTime;
-    private Timestamp updateTime;
+    private Date loginTime;
+    private Date updateTime;
     private Byte deleted;
 
     @Id
@@ -59,24 +60,25 @@ public class LoginLogEntity {
         this.user = user;
     }
 
+
     @Basic
     @Column(name = "loginTime", nullable = false)
-    public Timestamp getLoginTime() {
+    public Date getLoginTime() {
         return loginTime;
     }
 
-    public void setLoginTime(Timestamp loginTime) {
+    public void setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
     }
 
     @Basic
     @UpdateTimestamp
     @Column(name = "updateTime", nullable = false)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

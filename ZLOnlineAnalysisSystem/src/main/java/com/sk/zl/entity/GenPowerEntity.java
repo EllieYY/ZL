@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -18,17 +19,17 @@ import java.util.Objects;
 @Table(name = "tbl_genpower", catalog = "")
 @IdClass(GenPowerEntityPK.class)
 public class GenPowerEntity {
-    private Timestamp time;
+    private Date time;
     private Double value;
     private int meterId;
 
     @Id
     @Column(name = "time", nullable = false)
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -66,5 +67,14 @@ public class GenPowerEntity {
     public int hashCode() {
 
         return Objects.hash(time, value, meterId);
+    }
+
+    @Override
+    public String toString() {
+        return "GenPowerEntity{" +
+                "time=" + time +
+                ", value=" + value +
+                ", meterId=" + meterId +
+                '}';
     }
 }

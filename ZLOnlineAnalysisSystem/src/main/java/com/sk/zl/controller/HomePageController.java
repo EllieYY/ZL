@@ -1,16 +1,16 @@
 package com.sk.zl.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.zl.model.plant.PlantEffectiveHours;
 import com.sk.zl.model.plant.PlantGenCapacityComparison;
 import com.sk.zl.model.plant.PlantGenerateCapacity;
 import com.sk.zl.model.plant.PlantPointSnapshot;
-import com.sk.zl.model.result.RespEntity;
+import com.sk.zl.model.request.ReTimeSlots;
+import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.model.station.StationAlarmNum;
 import com.sk.zl.service.PlantService;
 import com.sk.zl.service.StationService;
-import com.sk.zl.utils.RespUtil;
+import com.sk.zl.utils.ResultBeanUtil;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
@@ -38,128 +38,114 @@ public class HomePageController {
     PlantService plantService;
 
     @ApiOperation(value = "发电厂信息快照")
-    @RequestMapping(value = "/product",  method = RequestMethod.POST)
-    public RespEntity<PowerStationSnapshot> getStationSnapshot(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product")
+    public ResultBean<PowerStationSnapshot> getStationSnapshot() {
         try {
-            return stationService.getStationSnapshot();
+            return ResultBeanUtil.makeOkResp(stationService.getStationSnapshot());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "机组测点数据")
-    @RequestMapping(value = "/product/device",  method = RequestMethod.POST)
-    public RespEntity<List<PlantPointSnapshot>> getPlantPointSnapshot(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/device")
+    public ResultBean<List<PlantPointSnapshot>> getPlantPointSnapshot() {
         try {
-            return plantService.getPointSnapshot();
+            return ResultBeanUtil.makeOkResp(plantService.getPointSnapshot());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "水情信息")
-    @RequestMapping(value = "/product/water",  method = RequestMethod.POST)
-    public RespEntity<HydrologicalInfo> getHydrologicalInfo(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/water")
+    public ResultBean<HydrologicalInfo> getHydrologicalInfo() {
         try {
-            return stationService.getHydrologicalInfo();
+            return ResultBeanUtil.makeOkResp(stationService.getHydrologicalInfo());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "发电量完成情况")
-    @RequestMapping(value = "/product/power/generatePower",  method = RequestMethod.POST)
-    public RespEntity<AnnualCapacityInfo> getAnnualCapacityInfo(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/power/generatePower")
+    public ResultBean<AnnualCapacityInfo> getAnnualCapacityInfo() {
         try {
-            return stationService.getAnnualCapacityInfo();
+            return ResultBeanUtil.makeOkResp(stationService.getAnnualCapacityInfo());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "上网电量")
-    @RequestMapping(value = "/product/power/ongrid",  method = RequestMethod.POST)
-    public RespEntity<List<Double>> getAnnualOngridPowerInfo(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/power/ongrid")
+    public ResultBean<List<Double>> getAnnualOngridPowerInfo() {
         try {
-            return stationService.getOngridCapacityInfo();
+            return ResultBeanUtil.makeOkResp(stationService.getOngridCapacityInfo());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "机组发电量排名")
-    @RequestMapping(value = "/product/rank/power",  method = RequestMethod.POST)
-    public RespEntity<List<PlantGenerateCapacity>> getPlantGenerateCapacity(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/rank/power")
+    public ResultBean<List<PlantGenerateCapacity>> getPlantGenerateCapacity() {
         try {
-            return stationService.getGenCapacityRank();
+            return ResultBeanUtil.makeOkResp(plantService.getGenCapacityRank());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "机组月利用小时数排名")
-    @RequestMapping(value = "/product/rank/hour",  method = RequestMethod.POST)
-    public RespEntity<List<PlantEffectiveHours>> getPlantEffectiveHours(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/rank/hour")
+    public ResultBean<List<PlantEffectiveHours>> getPlantEffectiveHours() {
         try {
-            return stationService.getEffectiveHoursRank();
+            return ResultBeanUtil.makeOkResp(plantService.getEffectiveHoursRank());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
     @ApiOperation(value = "机组发电量信息比对")
     @RequestMapping(value = "/product/compare",  method = RequestMethod.POST)
-    public RespEntity<List<PlantGenCapacityComparison>> getPlantComparison(@RequestBody String jsonStr) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode rootNode = mapper.readTree(jsonStr);
-            long sTime1 = rootNode.path("fTimeFrom").asLong();
-            long eTime1 = rootNode.path("fTimeTo").asLong();
-            long sTime2 = rootNode.path("sTimeFrom").asLong();
-            long eTime2 = rootNode.path("sTimeTo").asLong();
-
-            return stationService.getPlantComparison(sTime1, eTime1, sTime2, eTime2);
-        } catch (Exception e) {
-            e.printStackTrace();
-            RespUtil.makeInnerErrResp();
-        }
-
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+    public ResultBean<List<PlantGenCapacityComparison>> getPlantComparison(@RequestBody ReTimeSlots timeSlots) {
+            return ResultBeanUtil.makeOkResp(plantService.getPlantComparison(timeSlots));
     }
 
     @ApiOperation(value = "全厂故障信息条数")
-    @RequestMapping(value = "/product/alarm",  method = RequestMethod.POST)
-    public RespEntity<StationAlarmNum> getStationAlarmInfo(@RequestBody String jsonStr) {
+    @RequestMapping(value = "/product/alarm")
+    public ResultBean<StationAlarmNum> getStationAlarmInfo() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return stationService.getAlarmNum();
+            return ResultBeanUtil.makeOkResp(stationService.getAlarmNum());
         } catch (Exception e) {
             e.printStackTrace();
-            RespUtil.makeInnerErrResp();
+            ResultBeanUtil.makeInnerErrResp();
         }
 
-        return RespUtil.makeCustomErrResp("后台未知错误。");
+        return ResultBeanUtil.makeCustomErrResp("后台未知错误。");
     }
 
 

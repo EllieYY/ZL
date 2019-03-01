@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,7 @@ public class PlantEntity {
     private Double capacity;
     private Byte maintaining;
     @UpdateTimestamp
-    private Timestamp updateTime;
+    private Date updateTime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -67,11 +68,11 @@ public class PlantEntity {
 
     @Basic
     @Column(name = "updateTime", nullable = false)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

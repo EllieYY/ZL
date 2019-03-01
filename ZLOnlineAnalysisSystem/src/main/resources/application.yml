@@ -17,9 +17,48 @@ skhttppool:
   validateAfterInactivity: 2000
 
 skdb:
-  uri: http://192.168.10.99:80
+  uri: http://192.168.10.48:80
   userName: admin
   password: 123456
+  stationAlarmPoints:
+    accident: JZZL_ALL_AccdtCounts
+    glitches: JZZL_ALL_FaultCounts
+  realTimeActivePowerPoints:
+    - ZL.01.AI0004
+    - ZL.02.AI0004
+    - ZL.03.AI0004
+    - ZL.04.AI0004
+    - ZL.05.AI0004
+    - ZL.06.AI0004
+  plantsSnapshotPoints:
+    - id: 1
+      activePower: ZL.01.AI0004
+      reactivePower: ZL.01.AI0005
+      guideVaneOpening: ZL.01.AI0002
+    - id: 2
+      activePower: ZL.02.AI0004
+      reactivePower: ZL.02.AI0005
+      guideVaneOpening: ZL.02.AI0002
+    - id: 3
+      activePower: ZL.03.AI0004
+      reactivePower: ZL.03.AI0005
+      guideVaneOpening: ZL.03.AI0002
+    - id: 4
+      activePower: ZL.04.AI0004
+      reactivePower: ZL.04.AI0005
+      guideVaneOpening: ZL.04.AI0002
+    - id: 5
+      activePower: ZL.05.AI0007
+      reactivePower: ZL.05.AI0008
+      guideVaneOpening: ZL.05.AI0032
+    - id: 6
+      activePower: ZL.06.AI0007
+      reactivePower: ZL.06.AI0008
+      guideVaneOpening: ZL.06.AI0032
+
+station:
+  genCapacityMeterGroup: 2
+  onGridMeterGroup: 1
 
 swagger:
   enable: true

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Objects;
 @IdClass(MeterCodeEntityPK.class)
 public class MeterCodeEntity {
     private int meterId;
-    private Timestamp time;
+    private Date time;
     private Double code;
 
     @Id
@@ -34,11 +35,11 @@ public class MeterCodeEntity {
 
     @Id
     @Column(name = "time", nullable = false)
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

@@ -21,16 +21,16 @@ import java.util.Set;
 public class MeterGroupEntity {
     private int id;
     private String name;
-//    private Set<MeterEntity> meterSet = new HashSet<MeterEntity>();
-//
-//    @OneToMany
-//    public Set<MeterEntity> getMeterSet() {
-//        return meterSet;
-//    }
-//
-//    public void setMeterSet(Set<MeterEntity> meterSet) {
-//        this.meterSet = meterSet;
-//    }
+    private Set<MeterEntity> meterSet = new HashSet<MeterEntity>();
+
+    @OneToMany(mappedBy = "group")
+    public Set<MeterEntity> getMeterSet() {
+        return meterSet;
+    }
+
+    public void setMeterSet(Set<MeterEntity> meterSet) {
+        this.meterSet = meterSet;
+    }
 
     @Id
     @Column(name = "id", nullable = false)
