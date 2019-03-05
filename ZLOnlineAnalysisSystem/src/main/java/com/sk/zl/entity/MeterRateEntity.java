@@ -146,4 +146,20 @@ public class MeterRateEntity {
 
         return Objects.hash(id, name, startTime, endTime, rate, comment, updateTime, deleted);
     }
+
+
+    @Override
+    public String toString() {
+        return "MeterRateEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", rate=" + rate +
+                ", comment='" + comment + '\'' +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                ", meter=" + meter +
+                '}';
+    }
 }

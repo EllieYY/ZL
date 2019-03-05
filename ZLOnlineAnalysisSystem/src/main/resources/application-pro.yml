@@ -1,8 +1,52 @@
 server:
-  port: 9250
+  port: 9257    # 后台程序端口号
+
 spring:
-  datasource:
+  datasource:   # MySQL数据库连接信息
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: Scada2016!
       url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
+
+skdb:
+  uri: http://192.168.10.48:80    # 实时数据库连接信息
+  userName: admin
+  password: 123456
+  accidentPoint: JZZL_ALL_AccdtCounts  # 事故统计结果测点
+  glitchesPoint: JZZL_ALL_FaultCounts  # 故障统计结果测点
+  realTimeActivePowerPoints:      # 机组实时负荷测点
+    - ZL.01.AI0004
+    - ZL.02.AI0004
+    - ZL.03.AI0004
+    - ZL.04.AI0004
+    - ZL.05.AI0004
+    - ZL.06.AI0004
+  plantsSnapshotPoints:           # 机组状态测点：有功、无功、导叶开度
+    - id: 1                           # 机组id
+      activePower: ZL.01.AI0004       # 有功
+      reactivePower: ZL.01.AI0005     # 无功
+      guideVaneOpening: ZL.01.AI0002  # 导叶开度
+    - id: 2
+      activePower: ZL.02.AI0004
+      reactivePower: ZL.02.AI0005
+      guideVaneOpening: ZL.02.AI0002
+    - id: 3
+      activePower: ZL.03.AI0004
+      reactivePower: ZL.03.AI0005
+      guideVaneOpening: ZL.03.AI0002
+    - id: 4
+      activePower: ZL.04.AI0004
+      reactivePower: ZL.04.AI0005
+      guideVaneOpening: ZL.04.AI0002
+    - id: 5
+      activePower: ZL.05.AI0007
+      reactivePower: ZL.05.AI0008
+      guideVaneOpening: ZL.05.AI0032
+    - id: 6
+      activePower: ZL.06.AI0007
+      reactivePower: ZL.06.AI0008
+      guideVaneOpening: ZL.06.AI0032
+
+station:
+  genCapacityMeterGroup: 2        # 用来计算发电量的电表组
+  onGridMeterGroup: 1             # 用来计算上网电量的电表组

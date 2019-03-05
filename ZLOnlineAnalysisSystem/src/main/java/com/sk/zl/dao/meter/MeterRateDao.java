@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public interface MeterRateDao extends JpaRepository<MeterRateEntity, Integer> {
@@ -16,7 +17,7 @@ public interface MeterRateDao extends JpaRepository<MeterRateEntity, Integer> {
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "update MeterRateEntity model set model.rate=:rate, model.startTime=:startTime, model.endTime=:endTime where model.id=:id")
-    int updateRateById(@Param("id") int id, @Param("rate") double rate, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
+    int updateRateById(@Param("id") int id, @Param("rate") double rate, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
 
 }

@@ -1,11 +1,14 @@
 package com.sk.zl.service.impl;
 
+import com.sk.zl.aop.excption.DataDoException;
+import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.config.StationConfig;
 import com.sk.zl.dao.meter.GenPowerDao;
 import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
+import com.sk.zl.dao.meter.impl.GenPowerDaoExtension;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.GenPowerEntity;
@@ -62,6 +65,8 @@ public class StationServiceImpl implements StationService {
     @Resource
     GenPowerDao genPowerDao;
     @Resource
+    GenPowerDaoExtension genPowerDaoExtension;
+    @Resource
     MeterGroupDao meterGroupDao;
     @Resource
     StationConfig stationConfig;
@@ -74,15 +79,25 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<LoginLog> getLog(LoginLog log) {
+        String group = log.getGroup();
+        String user = log.getUser();
+        Date startTime = log.getLoginTime();
+        Date endTime = log.getLogoutTime();
 
-        System.out.println(log);
-        List<LoginLogEntity> entities = loginLogDao.findByGroupAndUserAndLoginTimeIsBetween(
-                log.getGroup(),
-                log.getUser(),
-                log.getLoginTime(),
-                log.getLogoutTime());
+        boolean isByGroup = !log.getGroup().equals("0");
+        boolean isByUser = !log.getUser().equals("0");
 
-        System.out.println("111111--------");
+        List<LoginLogEntity> entities;
+        if (isByGroup && isByUser) {
+            entities = loginLogDao.findByGroupAndUserAndLoginTimeIsBetween(group, user, startTime, endTime);
+        } else if (isByGroup && !isByUser) {
+            entities = loginLogDao.findByGroupAndLoginTimeIsBetween(group, startTime, endTime);
+        } else if (!isByGroup && isByUser) {
+            entities = loginLogDao.findByUserAndLoginTimeIsBetween(user, startTime, endTime);
+        } else {
+            entities = loginLogDao.findByLoginTimeIsBetween(startTime, endTime);
+        }
+
         List<LoginLog> models = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(LoginLog.fromEntity(item));
         }, ArrayList::addAll);
@@ -112,7 +127,7 @@ public class StationServiceImpl implements StationService {
     public List<MeterRate> addMeterRate(int meterId, List<MeterRate> models)  {
         MeterEntity meter = meterDao.getOne(meterId);
         if (null == meter) {
-            throw new RuntimeException("电表不存在");
+            throw new DataDoException("电表不存在: meterid = " + meterId);
         }
 
         List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
@@ -129,18 +144,19 @@ public class StationServiceImpl implements StationService {
             meterRateDao.updateRateById(
                     meterRate.getId(),
                     meterRate.getRate(),
-                    new Timestamp(meterRate.getStartTime().getTime()),
-                    new Timestamp(meterRate.getEndTime().getTime()));
+                    meterRate.getStartTime(),
+                    meterRate.getEndTime());
         }
 
-        return null;
+        return meterRaters;
     }
 
     @Override
     public List<MeterRate> deleteMeterRate(List<MeterRate> models)  {
         List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.toEntity(null));
+            list.add(item.toEntity());
         }, ArrayList::addAll);
+
         meterRateDao.deleteInBatch(entities);
         return null;
     }
@@ -176,10 +192,9 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PlanPower> updatePlanPowers(List<PlanPower> models)  {
-        List<PlanPowerEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.toEntity());
-        }, ArrayList::addAll);
-        planPowerDao.saveAll(entities);
+        for (PlanPower planPower:models) {
+            planPowerDao.updatePlanPowerById(planPower.getId(), planPower.getPlanPower());
+        }
         return models;
     }
 
@@ -215,7 +230,7 @@ public class StationServiceImpl implements StationService {
         info.setOutflow(7.31);
         info.setUpstreamWaterLevel(42.56);
         info.setDownstreamWaterLevel(20.56);
-        return null;
+        return info;
     }
 
     @Override
@@ -258,7 +273,7 @@ public class StationServiceImpl implements StationService {
             stationSnapshot.setAnnualGenCapacity(annualGenCapacity);
             stationSnapshot.setAnnualOnGridPower(annualOnGridPower);
         }catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(e.toString());
         }
 
         return stationSnapshot;
@@ -270,7 +285,12 @@ public class StationServiceImpl implements StationService {
         for (MeterEntity meter: group.getMeterSet()) {
             metersId.add(meter.getId());
         }
-        List<GenPowerEntity> results = genPowerDao.findByMeterIdInAndTimeBetween(metersId, startTime, endTime);
+//        List<GenPowerEntity> results = genPowerDao.findByMeterIdInAndTimeGreaterThanEqualAndTimeLessThan(metersId, startTime, endTime);
+        List<GenPowerEntity> results = genPowerDaoExtension.findByMeterIdAndTime(metersId, startTime, endTime);
+
+        System.out.println("表ID：" + metersId);
+        System.out.println("start:" + startTime + ", end: " + endTime);
+        System.out.println("电量信息：" + results);
 
         double total = 0;
         for (GenPowerEntity entity: results) {
@@ -331,16 +351,19 @@ public class StationServiceImpl implements StationService {
 
         List<Double> monthlyCapacity = new ArrayList<>();
         int monthSize = DateUtil.getMonthNumInYear();
+
         Date startMonth = beginYear;
         Date endMonth = beginYear;
         for (int i = 0; i < monthSize; i++) {
             startMonth = endMonth;
             endMonth = DateUtil.dateAddMonths(startMonth, 1);
             if (DateUtil.dateCompare(endMonth, today) == 1) {
+                endMonth = today;
+            } else if (DateUtil.dateCompare(startMonth, today) == 1) {
                 monthlyCapacity.add(0.0);
                 continue;
             }
-            endMonth = today;
+
             double monthCapacity = calculateGenPowerByGroup(groupId, startMonth, endMonth);
             monthlyCapacity.add(monthCapacity);
         }

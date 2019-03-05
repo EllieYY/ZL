@@ -23,4 +23,13 @@ public class ReMeterRate {
 
     @JsonProperty("rate")
     private List<MeterRate> rates;
+
+    @Override
+    public String toString() {
+        return "ReMeterRate{" +
+                "type='" + type + '\'' +
+                ", meterId=" + meterId +
+                ", rates=" + rates +
+                '}';
+    }
 }

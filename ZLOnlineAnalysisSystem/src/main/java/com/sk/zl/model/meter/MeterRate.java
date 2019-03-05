@@ -31,8 +31,8 @@ public class MeterRate {
     public static MeterRate fromEntity(MeterRateEntity entity) {
         MeterRate model = new MeterRate();
         model.setId(entity.getId());
-        model.setStartTime(new Date(entity.getStartTime().getTime()));
-        model.setEndTime(new Date(entity.getEndTime().getTime()));
+        model.setStartTime(entity.getStartTime());
+        model.setEndTime(entity.getEndTime());
         model.setRate(entity.getRate());
 
         return model;
@@ -41,9 +41,29 @@ public class MeterRate {
     public MeterRateEntity toEntity(MeterEntity meter) {
         MeterRateEntity entity = new MeterRateEntity();
         entity.setRate(rate);
-        entity.setStartTime(new Timestamp(startTime.getTime()));
-        entity.setEndTime(new Timestamp(endTime.getTime()));
+        entity.setStartTime(startTime);
+        entity.setEndTime(endTime);
         entity.setMeter(meter);
         return entity;
+    }
+
+    public MeterRateEntity toEntity() {
+        MeterRateEntity entity = new MeterRateEntity();
+        entity.setId(id);
+        entity.setRate(rate);
+        entity.setStartTime(startTime);
+        entity.setEndTime(endTime);
+        return entity;
+    }
+
+
+    @Override
+    public String toString() {
+        return "MeterRate{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", rate=" + rate +
+                '}';
     }
 }

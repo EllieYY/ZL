@@ -1,6 +1,5 @@
 package com.sk.zl.model.station;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.LoginLogEntity;
 import lombok.Data;

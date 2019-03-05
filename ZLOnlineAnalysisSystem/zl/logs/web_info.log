@@ -1,0 +1,260 @@
+2019-03-05 09:18:28.324 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 12980 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 09:18:28.329 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 09:18:30.016 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 09:18:30.133 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 108ms. Found 8 repository interfaces.
+2019-03-05 09:18:30.549 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$c78ed4b6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 09:18:30.869 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 09:18:30.880 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 09:18:30.887 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 09:18:30.887 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 09:18:30.893 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 09:18:31.069 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 09:18:31.069 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2631 ms
+2019-03-05 09:18:31.224 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 09:18:31.448 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 09:18:31.487 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 09:18:31.531 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 09:18:31.532 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 09:18:31.639 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 09:18:31.782 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 09:18:32.369 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 09:18:32.757 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 09:18:33.906 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 09:18:33.975 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 09:18:34.300 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 09:18:34.313 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 09:18:34.333 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 09:18:34.533 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 09:18:34.558 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 09:18:34.560 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 7.236 seconds (JVM running for 8.561)
+2019-03-05 09:18:36.873 [http-nio-9257-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-05 09:18:36.873 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2019-03-05 09:18:36.879 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2019-03-05 10:38:13.816 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 5712 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 10:38:13.819 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 10:38:14.669 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 10:38:14.753 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 78ms. Found 8 repository interfaces.
+2019-03-05 10:38:15.013 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$1a67f934] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 10:38:15.485 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 10:38:15.509 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:38:15.518 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 10:38:15.519 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 10:38:15.526 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 10:38:15.730 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 10:38:15.730 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1803 ms
+2019-03-05 10:38:15.936 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 10:38:16.153 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 10:38:16.213 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 10:38:16.312 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 10:38:16.313 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 10:38:16.501 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 10:38:16.667 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 10:38:17.458 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:38:17.944 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 10:38:19.467 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 10:38:19.688 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 10:38:19.911 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 10:38:19.947 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 10:38:19.976 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 10:38:20.255 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:38:20.358 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 10:38:20.360 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 7.143 seconds (JVM running for 8.509)
+2019-03-05 10:38:45.031 [http-nio-9257-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-05 10:38:45.031 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2019-03-05 10:38:45.060 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 29 ms
+2019-03-05 10:39:44.755 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 4716 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 10:39:44.757 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 10:39:45.518 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 10:39:45.604 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 79ms. Found 8 repository interfaces.
+2019-03-05 10:39:45.906 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2765b9ec] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 10:39:46.172 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 10:39:46.184 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:39:46.191 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 10:39:46.192 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 10:39:46.197 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 10:39:46.326 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 10:39:46.327 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1541 ms
+2019-03-05 10:39:46.447 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 10:39:46.681 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 10:39:46.725 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 10:39:46.766 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 10:39:46.767 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 10:39:46.872 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 10:39:46.993 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 10:39:47.520 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:39:47.826 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 10:39:48.762 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 10:39:48.826 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 10:39:49.093 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 10:39:49.109 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 10:39:49.130 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 10:39:49.331 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:39:49.353 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 10:39:49.354 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 5.396 seconds (JVM running for 6.535)
+2019-03-05 10:39:53.895 [http-nio-9257-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-05 10:39:53.895 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2019-03-05 10:39:53.904 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2019-03-05 10:45:38.210 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 10448 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 10:45:38.217 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 10:45:38.945 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 10:45:39.027 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 76ms. Found 8 repository interfaces.
+2019-03-05 10:45:39.266 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6bea429a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 10:45:39.537 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 10:45:39.548 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:45:39.555 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 10:45:39.556 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 10:45:39.561 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 10:45:39.694 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 10:45:39.694 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1435 ms
+2019-03-05 10:45:39.825 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 10:45:40.038 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 10:45:40.078 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 10:45:40.121 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 10:45:40.122 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 10:45:40.228 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 10:45:40.345 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 10:45:40.882 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:45:41.226 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 10:45:41.895 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:45:41.896 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2019-03-05 10:45:41.899 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2019-03-05 10:45:41.900 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-03-05 10:45:41.908 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2019-03-05 10:46:22.582 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 8160 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 10:46:22.585 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 10:46:23.368 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 10:46:23.455 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 81ms. Found 8 repository interfaces.
+2019-03-05 10:46:23.703 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fb660095] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 10:46:23.964 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 10:46:23.974 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:46:23.981 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 10:46:23.981 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 10:46:23.986 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 10:46:24.111 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 10:46:24.111 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1492 ms
+2019-03-05 10:46:24.237 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 10:46:24.468 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 10:46:24.507 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 10:46:24.551 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 10:46:24.552 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 10:46:24.651 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 10:46:24.770 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 10:46:25.334 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:46:25.661 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 10:46:26.614 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 10:46:26.809 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 10:46:26.950 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 10:46:26.962 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 10:46:26.982 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 10:46:27.183 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:46:27.204 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 10:46:27.206 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 5.265 seconds (JVM running for 6.469)
+2019-03-05 10:46:32.871 [http-nio-9257-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-05 10:46:32.872 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2019-03-05 10:46:32.879 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+2019-03-05 10:57:23.250 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 3436 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 10:57:23.252 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 10:57:23.962 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 10:57:24.040 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 73ms. Found 8 repository interfaces.
+2019-03-05 10:57:24.277 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$86318451] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 10:57:24.545 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 10:57:24.555 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:57:24.562 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 10:57:24.562 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 10:57:24.567 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 10:57:24.690 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 10:57:24.690 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1410 ms
+2019-03-05 10:57:24.823 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 10:57:25.029 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 10:57:25.069 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 10:57:25.110 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 10:57:25.111 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 10:57:25.209 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 10:57:25.340 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 10:57:25.913 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 10:57:26.240 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 10:57:27.239 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 10:57:27.431 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 10:57:27.582 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 10:57:27.597 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 10:57:27.619 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 10:57:27.817 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 10:57:27.837 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 10:57:27.839 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 5.295 seconds (JVM running for 6.396)
+2019-03-05 11:44:12.170 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 14176 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 11:44:12.172 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 11:44:12.883 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 11:44:12.968 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 79ms. Found 8 repository interfaces.
+2019-03-05 11:44:13.215 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fc64c819] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 11:44:13.493 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 11:44:13.503 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 11:44:13.511 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 11:44:13.511 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 11:44:13.516 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 11:44:13.644 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 11:44:13.644 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1436 ms
+2019-03-05 11:44:13.766 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 11:44:13.983 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 11:44:14.023 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 11:44:14.068 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 11:44:14.069 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 11:44:14.168 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 11:44:14.283 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 11:44:14.814 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 11:44:14.879 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 11:44:14.881 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2019-03-05 11:44:14.884 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2019-03-05 11:44:14.886 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-03-05 11:44:14.894 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2019-03-05 11:45:43.760 [main] INFO  com.sk.zl.ZlApplication - Starting ZlApplication on DESKTOP-BITI73K with PID 1816 (E:\ZL\ZLOnlineAnalysisSystem\target\classes started by admin in E:\ZL\ZLOnlineAnalysisSystem)
+2019-03-05 11:45:43.763 [main] INFO  com.sk.zl.ZlApplication - The following profiles are active: pro
+2019-03-05 11:45:44.502 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-03-05 11:45:44.579 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72ms. Found 8 repository interfaces.
+2019-03-05 11:45:44.822 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$634bb91f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-05 11:45:45.085 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9257 (http)
+2019-03-05 11:45:45.096 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9257"]
+2019-03-05 11:45:45.103 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-03-05 11:45:45.103 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-05 11:45:45.108 [main] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Tirank\Janeos Client;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files (x86)\scala\bin;C:\Program Files (x86)\scala\jre\bin;C:\Thrift;C:\apache-ant-1.10.1\bin;C:\Users\admin\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\sbt\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x86\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\apache-maven-3.5.4-bin\bin;C:\Qt\Qt5.10.1\5.10.1\mingw53_32\bin;C:\mysql-5.7.24-winx64\bin;;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\apache-ant-1.10.1\bin;C:\sbt\bin;C:\Program Files\Bandizip\;C:\Program Files\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;;.]
+2019-03-05 11:45:45.234 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-03-05 11:45:45.235 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1402 ms
+2019-03-05 11:45:45.360 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2019-03-05 11:45:45.569 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2019-03-05 11:45:45.610 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-03-05 11:45:45.654 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+2019-03-05 11:45:45.655 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2019-03-05 11:45:45.766 [main] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-03-05 11:45:45.880 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2019-03-05 11:45:46.457 [main] INFO  o.s.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-03-05 11:45:46.809 [main] INFO  o.h.hql.internal.QueryTranslatorFactoryInitiator - HHH000397: Using ASTQueryTranslatorFactory
+2019-03-05 11:45:47.777 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-03-05 11:45:47.964 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-05 11:45:48.108 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-03-05 11:45:48.122 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-03-05 11:45:48.141 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-03-05 11:45:48.343 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9257"]
+2019-03-05 11:45:48.366 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9257 (http) with context path ''
+2019-03-05 11:45:48.369 [main] INFO  com.sk.zl.ZlApplication - Started ZlApplication in 5.138 seconds (JVM running for 6.233)
+2019-03-05 11:45:57.279 [http-nio-9257-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-05 11:45:57.279 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2019-03-05 11:45:57.286 [http-nio-9257-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 7 ms

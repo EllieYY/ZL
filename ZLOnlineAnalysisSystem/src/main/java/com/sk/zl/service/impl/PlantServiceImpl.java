@@ -1,6 +1,8 @@
 package com.sk.zl.service.impl;
 
+import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.dao.meter.GenPowerDao;
+import com.sk.zl.dao.meter.impl.GenPowerDaoExtension;
 import com.sk.zl.dao.setting.PlantDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.GenPowerEntity;
@@ -37,7 +39,7 @@ public class PlantServiceImpl implements PlantService {
     @Resource
     PointInfoDao pointInfoDao;
     @Resource
-    GenPowerDao genPowerDao;
+    GenPowerDaoExtension genPowerDaoExtension;
 
     @Override
     public List<PlantState> getPlantsState()  {
@@ -89,8 +91,14 @@ public class PlantServiceImpl implements PlantService {
         //#2 统计当月电量
         Date today = new Date();
         Date monthBegin = DateUtil.getFirstDateOfMonth(today);
+        try {
+            monthBegin = DateUtil.dateTimeToDate(monthBegin);
+        } catch (Exception e) {
+            throw new ServiceException(e.toString());
+        }
+
         for (PlantEntity plant : plants) {
-            int meterId = plant.getId();
+            int meterId = plant.getMeter().getId();
             double value = calculateGenPowerByMeter(meterId, monthBegin, today);
             plantList.add(new PlantGenerateCapacity(plant.getName(), value));
         }
@@ -104,11 +112,16 @@ public class PlantServiceImpl implements PlantService {
         List<PlantEntity> plants = plantDao.findAll();
         List<PlantEffectiveHours> plantList = new ArrayList<PlantEffectiveHours>();
 
-        //#2 统计月利用小时数
+        //#2 统计
         Date today = new Date();
         Date monthBegin = DateUtil.getFirstDateOfMonth(today);
+        try {
+            monthBegin = DateUtil.dateTimeToDate(monthBegin);
+        } catch (Exception e) {
+            throw new ServiceException(e.toString());
+        }
         for (PlantEntity plant : plants) {
-            int meterId = plant.getId();
+            int meterId = plant.getMeter().getId();
             double value = calculateGenPowerByMeter(meterId, monthBegin, today) / plant.getCapacity();
             plantList.add(new PlantEffectiveHours(plant.getName(), value));
         }
@@ -117,7 +130,8 @@ public class PlantServiceImpl implements PlantService {
 
 
     private double calculateGenPowerByMeter(int meterId, Date startTime, Date endTime) {
-        List<GenPowerEntity> results = genPowerDao.findByMeterIdAndTimeBetween(meterId, startTime, endTime);
+        List<GenPowerEntity> results = genPowerDaoExtension.findByMeterIdAndTime(meterId, startTime, endTime);
+
         double total = 0;
         for (GenPowerEntity entity: results) {
             total += entity.getValue();
@@ -128,8 +142,6 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public List<PlantGenCapacityComparison> getPlantComparison(ReTimeSlots timeSlots)  {
-        System.out.println(timeSlots);
-
         //#1 获取机组信息 - 机组对应的电表
         List<PlantEntity> plants = plantDao.findAll();
 
@@ -137,7 +149,7 @@ public class PlantServiceImpl implements PlantService {
 
         //#2 统计月利用小时数
         for (PlantEntity plant : plants) {
-            int meterId = plant.getId();
+            int meterId = plant.getMeter().getId();
             double value1 = calculateGenPowerByMeter(meterId, timeSlots.getSTime1(), timeSlots.getETime1());
             double value2 = calculateGenPowerByMeter(meterId, timeSlots.getSTime2(), timeSlots.getETime2());
             plantList.add(new PlantGenCapacityComparison(plant.getName(), value1, value2));

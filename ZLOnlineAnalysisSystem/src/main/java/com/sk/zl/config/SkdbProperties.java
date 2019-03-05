@@ -6,7 +6,9 @@ import com.sk.zl.model.skRest.PointsCpid;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.List;
 
@@ -25,9 +27,6 @@ public class SkdbProperties {
     List<String> realTimeActivePowerPoints;
     List<PlantSnapshotCpid> plantsSnapshotPoints;
 
-    @Value("${skdb.stationAlarmPoints.accident}")
-    String accidentPoints;
-
-    @Value("${skdb.stationAlarmPoints.glitches}")
-    String glitchesPoints;
+    String accidentPoint;
+    String glitchesPoint;
 }

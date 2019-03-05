@@ -51,8 +51,8 @@ public class PointInfoDaoImpl implements PointInfoDao {
     @Override
     public List<PointInfo> findStationAlarmPoints() {
         // 控制顺序
-        List<String> cpids = Arrays.asList(skdbProperties.getAccidentPoints(),
-                skdbProperties.getGlitchesPoints());
+        List<String> cpids = Arrays.asList(skdbProperties.getAccidentPoint(),
+                skdbProperties.getGlitchesPoint());
         System.out.println(cpids);
         return skRestUtil.getNowValue(cpids);
     }

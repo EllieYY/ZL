@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -25,6 +27,7 @@ public class PlantEntity {
     private Byte maintaining;
     @UpdateTimestamp
     private Date updateTime;
+    private MeterEntity meter;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -34,6 +37,16 @@ public class PlantEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @OneToOne
+    @JoinColumn(name="meterId")
+    public MeterEntity getMeter() {
+        return meter;
+    }
+
+    public void setMeter(MeterEntity meter) {
+        this.meter = meter;
     }
 
     @Basic
