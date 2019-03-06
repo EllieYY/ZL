@@ -1,46 +1,43 @@
 package com.sk.zl.service.impl;
 
-import com.sk.zl.aop.excption.DataDoException;
+import com.sk.zl.aop.excption.DataDaoException;
 import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.config.StationConfig;
-import com.sk.zl.dao.meter.GenPowerDao;
 import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
-import com.sk.zl.dao.meter.impl.GenPowerDaoExtension;
+import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
+import com.sk.zl.dao.meter.impl.MeterCodeDaoEx;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.GenPowerEntity;
 import com.sk.zl.entity.LoginLogEntity;
+import com.sk.zl.entity.MeterCodeEntity;
 import com.sk.zl.entity.MeterEntity;
 import com.sk.zl.entity.MeterGroupEntity;
 import com.sk.zl.entity.MeterRateEntity;
 import com.sk.zl.entity.PlanPowerEntity;
 import com.sk.zl.model.meter.Meter;
+import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
-import com.sk.zl.model.plant.PlantEffectiveHours;
-import com.sk.zl.model.plant.PlantGenCapacityComparison;
-import com.sk.zl.model.plant.PlantGenerateCapacity;
-import com.sk.zl.model.request.ReTimeSlots;
-import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
 import com.sk.zl.model.station.StationAlarmNum;
+import com.sk.zl.service.AsyncTaskService;
 import com.sk.zl.utils.DateUtil;
-import com.sk.zl.utils.ResultBeanUtil;
 import com.sk.zl.model.station.LoginLog;
 import com.sk.zl.model.station.PlanPower;
 import com.sk.zl.service.StationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -63,13 +60,17 @@ public class StationServiceImpl implements StationService {
     @Resource
     PointInfoDao pointInfoDao;
     @Resource
-    GenPowerDao genPowerDao;
-    @Resource
-    GenPowerDaoExtension genPowerDaoExtension;
+    GenPowerDaoEx genPowerDaoEx;
     @Resource
     MeterGroupDao meterGroupDao;
     @Resource
+    MeterCodeDaoEx meterCodeDaoEx;
+    @Resource
     StationConfig stationConfig;
+    @Autowired
+    AsyncTaskService taskService;
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public int addLog(LoginLog log)  {
@@ -127,28 +128,15 @@ public class StationServiceImpl implements StationService {
     public List<MeterRate> addMeterRate(int meterId, List<MeterRate> models)  {
         MeterEntity meter = meterDao.getOne(meterId);
         if (null == meter) {
-            throw new DataDoException("电表不存在: meterid = " + meterId);
+            throw new DataDaoException("电表不存在: meterid = " + meterId);
         }
 
-        List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.toEntity(meter));
-        }, ArrayList::addAll);
-
-        meterRateDao.saveAll(entities);
-        return models;
+        return checkRateConflictsAndUpdate(meterId, models);
     }
 
     @Override
-    public List<MeterRate> updateMeterRate(List<MeterRate> meterRaters) {
-        for (MeterRate meterRate: meterRaters) {
-            meterRateDao.updateRateById(
-                    meterRate.getId(),
-                    meterRate.getRate(),
-                    meterRate.getStartTime(),
-                    meterRate.getEndTime());
-        }
-
-        return meterRaters;
+    public List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRaters) {
+        return checkRateConflictsAndUpdate(meterId, meterRaters);
     }
 
     @Override
@@ -160,6 +148,92 @@ public class StationServiceImpl implements StationService {
         meterRateDao.deleteInBatch(entities);
         return null;
     }
+
+    /** 返回的是存在冲突的倍率信息 */
+    private List<MeterRate> checkRateConflictsAndUpdate(int meterId, List<MeterRate> originalRates) {
+        log.debug("original rates: " + originalRates);
+
+        List<MeterRate> conflictsRates = new ArrayList<MeterRate>();
+        //#1 更新的倍率之间冲突
+        originalRates = innerRateConflicts(originalRates, conflictsRates);
+        log.debug("inner conflicts: " + conflictsRates);
+        log.debug("valid rates: " + originalRates);
+        if (originalRates.size() == 0) {
+            return conflictsRates;
+        }
+
+        //#2 更新的倍率与原有倍率冲突
+        List<MeterRateEntity> entities = meterRateDao.findByMeterId(meterId);
+        if (entities.size() != 0) {
+            originalRates = outerRateConflicts(entities, originalRates, conflictsRates);
+            log.debug("outer conflicts: " + conflictsRates);
+            log.debug("valid rates: " + originalRates);
+            if (originalRates.size() == 0) {
+                return conflictsRates;
+            }
+        }
+
+        log.debug("meter#" + meterId + " has no rates.");
+
+        //#3 添加到数据库，并更新发电量
+        for (MeterRate newRate: originalRates) {
+            taskService.metreRateUpdate(meterId, newRate);
+        }
+
+        return conflictsRates;
+    }
+
+    /** 找出互相之间有时间范围冲突的更新倍率 */
+    private List<MeterRate> innerRateConflicts(List<MeterRate> originalRates, List<MeterRate> conflictsRate) {
+        int size = originalRates.size();
+        for (int i = 0; i < size - 1; i++)  {
+            MeterRate base = originalRates.get(i);
+            if (!base.checkDateValid()) {
+                continue;
+            }
+
+            for (int j = i + 1; j < size; j++) {
+                MeterRate refer = originalRates.get(j);
+                if (!refer.checkDateValid()) {
+                    continue;
+                }
+                base.checkDateConflict(refer);
+            }
+        }
+
+        Iterator<MeterRate> iterator = originalRates.iterator();
+        while (iterator.hasNext()) {
+            MeterRate rate = iterator.next();
+            if (rate.getDeleted() != 0) {
+                conflictsRate.add(rate);
+                iterator.remove();
+            }
+        }
+        return originalRates;
+    }
+
+    /** 与数据库中已存在的倍率之间冲突的更新倍率 */
+    private List<MeterRate> outerRateConflicts(List<MeterRateEntity> existRates,
+                                               List<MeterRate> newRates,
+                                               List<MeterRate> conflictRates) {
+        List<MeterRate> validRates = new ArrayList<MeterRate>();
+        for (MeterRate newRate : newRates) {
+            for (MeterRateEntity existRate : existRates) {
+                //# 判断时间区冲突
+                if (newRate.checkDateConflict(MeterRate.fromEntity(existRate))) {
+                    conflictRates.add(newRate);
+                    continue;
+                }
+
+                validRates.add(newRate);
+            }
+        }
+
+        newRates = validRates;
+
+        return newRates;
+    }
+
 
     @Override
     public List<PlanPower> getPlanPower()  {
@@ -279,27 +353,6 @@ public class StationServiceImpl implements StationService {
         return stationSnapshot;
     }
 
-    private double calculateGenPowerByGroup(int groupId, Date startTime, Date endTime) {
-        MeterGroupEntity group = meterGroupDao.findById(groupId);
-        List<Integer> metersId = new ArrayList<>();
-        for (MeterEntity meter: group.getMeterSet()) {
-            metersId.add(meter.getId());
-        }
-//        List<GenPowerEntity> results = genPowerDao.findByMeterIdInAndTimeGreaterThanEqualAndTimeLessThan(metersId, startTime, endTime);
-        List<GenPowerEntity> results = genPowerDaoExtension.findByMeterIdAndTime(metersId, startTime, endTime);
-
-        System.out.println("表ID：" + metersId);
-        System.out.println("start:" + startTime + ", end: " + endTime);
-        System.out.println("电量信息：" + results);
-
-        double total = 0;
-        for (GenPowerEntity entity: results) {
-            total += entity.getValue();
-        }
-        return total;
-    }
-
-
     @Override
     public AnnualCapacityInfo getAnnualCapacityInfo()  {
         Date today = new Date();
@@ -340,6 +393,22 @@ public class StationServiceImpl implements StationService {
         return monthlyCapacity;
     }
 
+    private double calculateGenPowerByGroup(int groupId, Date startTime, Date endTime) {
+        MeterGroupEntity group = meterGroupDao.findById(groupId);
+        List<Integer> metersId = new ArrayList<>();
+        for (MeterEntity meter: group.getMeterSet()) {
+            metersId.add(meter.getId());
+        }
+
+        List<GenPowerEntity> results = genPowerDaoEx.findByMeterIdAndTime(metersId, startTime, endTime);
+
+        double total = 0;
+        for (GenPowerEntity entity: results) {
+            total += entity.getValue();
+        }
+        return total;
+    }
+
     private List<Double> getMonthCapacity(int groupId)  {
         Date today = new Date();
         Date beginYear = DateUtil.getFirstDateOfYear(today);
@@ -369,5 +438,18 @@ public class StationServiceImpl implements StationService {
         }
 
         return monthlyCapacity;
+    }
+
+    @Override
+    public List<GenPowerEntity> entryMeterCode(List<MeterCode> models) {
+        //#1 存到数据库
+        List<MeterCodeEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(item.toEntity());
+        }, ArrayList::addAll);
+        meterCodeDaoEx.saveAll(entities);
+
+
+        //#2 计算电量——任务线程
+        return taskService.meterCodeUpdate(models);
     }
 }

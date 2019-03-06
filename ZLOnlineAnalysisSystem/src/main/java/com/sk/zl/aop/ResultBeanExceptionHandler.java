@@ -1,6 +1,6 @@
 package com.sk.zl.aop;
 
-import com.sk.zl.aop.excption.DataDoException;
+import com.sk.zl.aop.excption.DataDaoException;
 import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.utils.ResultBeanUtil;
 import org.hibernate.service.spi.ServiceException;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -30,7 +28,7 @@ import java.util.List;
  */
 @RestControllerAdvice
 public class ResultBeanExceptionHandler {
-    private  final Logger log = LoggerFactory.getLogger(ResultBeanExceptionHandler.class);
+    private final Logger log = LoggerFactory.getLogger(ResultBeanExceptionHandler.class);
 
     /**
      * 参数绑定错误时跳转到该处理器处理
@@ -104,8 +102,8 @@ public class ResultBeanExceptionHandler {
      * 操作数据或库出现异常
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(DataDoException.class)
-    public ResultBean<?> handleException(DataDoException e) {
+    @ExceptionHandler(DataDaoException.class)
+    public ResultBean<?> handleException(DataDaoException e) {
         log.error("操作数据库出现异常:", e);
         return ResultBeanUtil.makeCustomErrResp("操作数据库出现异常：字段重复、有外键关联等");
     }

@@ -68,4 +68,13 @@ public class MeterCodeEntity {
 
         return Objects.hash(meterId, time, code);
     }
+
+    @Override
+    public String toString() {
+        return "MeterCodeEntity{" +
+                "meterId=" + meterId +
+                ", time=" + time +
+                ", code=" + code +
+                '}';
+    }
 }

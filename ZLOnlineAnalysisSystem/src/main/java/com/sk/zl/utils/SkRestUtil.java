@@ -2,6 +2,7 @@ package com.sk.zl.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.config.SkdbProperties;
 import com.sk.zl.model.plant.PlantPointSnapshot;
 import com.sk.zl.model.result.HttpResult;
@@ -9,6 +10,8 @@ import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.skRest.PointsCpid;
 import com.sk.zl.model.skRest.PointsCpidWrap;
 import com.sk.zl.model.skRest.PointsInfoWrap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +36,7 @@ import java.util.zip.Deflater;
  */
 @Component
 public class SkRestUtil {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -85,14 +89,19 @@ public class SkRestUtil {
             // 用户认证
             if (!identification) {
                 identification = checkAuthority(skdbProperties.getUserName(), skdbProperties.getPassWord());
+                log.info("token:" + token);
                 continue;
             }
             url += ("&token=" + token);
 
             // post请求 -
             HttpResult result = post(url, requestContent);
-            if (result.getCode() > 300) {
+
+            if (result.getCode() == 401) {
+                identification = false;
                 continue;
+            } else if (result.getCode() > 300) {
+                throw new ServiceException("rest template error code:" + result.getCode());
             }
 
             try {
@@ -127,7 +136,7 @@ public class SkRestUtil {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8, MediaType.APPLICATION_JSON, MediaType.APPLICATION_STREAM_JSON, MediaType.TEXT_PLAIN));
         HttpEntity<byte[]> entity = new HttpEntity<byte[]>(data, headers);
-//        PointsInfoWrap response = restTemplate.postForObject(url, entity, PointsInfoWrap.class);
+
         ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
 
         return new HttpResult(response.getStatusCodeValue(), response.getBody());

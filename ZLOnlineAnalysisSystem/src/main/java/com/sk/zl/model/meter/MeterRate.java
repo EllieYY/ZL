@@ -1,6 +1,7 @@
 package com.sk.zl.model.meter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.MeterEntity;
 import com.sk.zl.entity.MeterRateEntity;
@@ -28,6 +29,9 @@ public class MeterRate {
     @JsonProperty("value")
     private double rate;
 
+    @JsonIgnore
+    private int deleted;
+
     public static MeterRate fromEntity(MeterRateEntity entity) {
         MeterRate model = new MeterRate();
         model.setId(entity.getId());
@@ -45,6 +49,36 @@ public class MeterRate {
         entity.setEndTime(endTime);
         entity.setMeter(meter);
         return entity;
+    }
+
+    public boolean checkDateValid() {
+        if (startTime.getTime() >= endTime.getTime()) {
+            deleted = 2;
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean checkDateConflict(MeterRate other) {
+        // id相同的时候，属于更新，无需检查时间范围冲突
+        if (this.id != 0 && this.id == other.getId()) {
+            return false;
+        }
+
+        long s1 = this.getStartTime().getTime();
+        long e1 = this.getEndTime().getTime();
+        long s2 = other.getStartTime().getTime();
+        long e2 = other.getEndTime().getTime();
+        long maxStart = (s1 > s2 ? s1 : s2);
+        long minEnd = (e1 < e2 ? e1 : e2);
+
+        if (maxStart < minEnd) {
+            this.setDeleted(1);
+            other.setDeleted(1);
+            return true;
+        }
+        return false;
     }
 
     public MeterRateEntity toEntity() {

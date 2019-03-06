@@ -5,7 +5,9 @@ public enum RespCode {
     SUCCESS(0, "请求成功"),
     FAIL(-1, "请求失败"),
     PARAM_ERR(-1, "参数异常"),
-    INNER_ERR(-1, "服务器内部错误");
+    INNER_ERR(-1, "服务器内部错误"),
+    METER_RATE_ERR(-2, "电表倍率有效期冲突");
+
 
     private int code;
     private String msg;

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @Description : 连接池配置信息
+ * @Description : httpclient连接池配置信息
  * @Author : Ellie
  * @Date : 2019/2/15
  */

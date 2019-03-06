@@ -2,7 +2,7 @@ spring:
   profiles:
     active: @profiles.active@
   jpa:
-    show-sql: true
+#    show-sql: true
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
@@ -16,13 +16,16 @@ skhttppool:
   socketTimeout: 65000
   validateAfterInactivity: 2000
 
+taskpool:
+  threadPoolCount: 10
+
 swagger:
   enable: true
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
 
 

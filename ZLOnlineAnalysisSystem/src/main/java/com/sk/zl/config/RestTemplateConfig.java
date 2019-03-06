@@ -2,6 +2,7 @@ package com.sk.zl.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.sk.zl.aop.RestTemplateThrowErrorHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -98,6 +99,7 @@ public class RestTemplateConfig {
 
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        restTemplate.setErrorHandler(new RestTemplateThrowErrorHandler());
 
 //        restTemplate.getMessageConverters().add(new SkMappingJackson2HttpMessageConverter());
         return restTemplate;

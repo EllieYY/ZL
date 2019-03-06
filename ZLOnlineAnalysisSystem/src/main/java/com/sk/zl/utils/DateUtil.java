@@ -1,5 +1,7 @@
 package com.sk.zl.utils;
 
+import com.sk.zl.aop.excption.ServiceException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,16 +17,20 @@ public class DateUtil {
     public static final Calendar CALENDAR = Calendar.getInstance();
 
     /** 字符串转换成Date */
-    public static Date dateParse(String dateTimeString, String pattern) throws ParseException{
+    public static Date dateParse(String dateTimeString, String pattern) {
         if(pattern.isEmpty()){
             pattern = DateUtil.DATE_PATTERN;
         }
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        return sdf.parse(dateTimeString);
+        try {
+            return sdf.parse(dateTimeString);
+        } catch (Exception e) {
+            throw new ServiceException(e.toString());
+        }
     }
 
     /** Date转字符串 */
-    public static String dateFormat(Date date, String pattern) throws ParseException{
+    public static String dateFormat(Date date, String pattern) {
         if(pattern.isEmpty()){
             pattern = DateUtil.DATE_PATTERN;
         }
@@ -46,14 +52,19 @@ public class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static Date dateAddDays(Date date, int days, boolean includeTime) throws ParseException{
+    public static Date dateAddDays(Date date, int days, boolean includeTime) {
         if(date == null){
             date = new Date();
         }
-        if(!includeTime){
-            SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.DATE_PATTERN);
-            date = sdf.parse(sdf.format(date));
+        try {
+            if (!includeTime) {
+                SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.DATE_PATTERN);
+                date = sdf.parse(sdf.format(date));
+            }
+        } catch (Exception e) {
+            throw new ServiceException(e.toString());
         }
+
         CALENDAR.setTime(date);
         CALENDAR.add(Calendar.DATE, days);
         return CALENDAR.getTime();
@@ -95,7 +106,7 @@ public class DateUtil {
      * @return Date
      * @throws ParseException
      */
-    public static Date dateTimeToDate(Date dateTime) throws ParseException{
+    public static Date dateTimeToDate(Date dateTime) {
         CALENDAR.setTime(dateTime);
         CALENDAR.set(Calendar.HOUR_OF_DAY, 0);
         CALENDAR.set(Calendar.MINUTE, 0);
@@ -120,7 +131,7 @@ public class DateUtil {
     /**
      * 月份个数
      *
-     * @param int
+     * @param
      * @return
      */
     public static int getMonthNumInYear() {
@@ -255,7 +266,7 @@ public class DateUtil {
 
 
     /** 统计两个日期之间的天数，不包含今天 */
-    public static int daysBetweenDate(Date startDate, String endDate) throws ParseException {
+    public static int daysBetweenDate(Date startDate, String endDate) {
         Date dateEnd = dateParse(dateFormat(startDate, DATE_PATTERN), DATE_PATTERN);
         Date dateStart = dateParse(endDate, DATE_PATTERN);
 
@@ -268,5 +279,9 @@ public class DateUtil {
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.setTime(date);
         return startCalendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public static boolean isDateBetweenDates(Date target, Date start, Date end) {
+        return (start.getTime() < target.getTime() && end.getTime() > target.getTime());
     }
 }

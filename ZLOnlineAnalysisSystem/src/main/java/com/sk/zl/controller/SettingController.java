@@ -1,12 +1,16 @@
 package com.sk.zl.controller;
 
+import com.sk.zl.entity.GenPowerEntity;
 import com.sk.zl.model.meter.Meter;
+import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantState;
 import com.sk.zl.model.request.ReBasic;
+import com.sk.zl.model.request.ReMeterCode;
 import com.sk.zl.model.request.ReMeterRate;
 import com.sk.zl.model.request.RePlanPower;
 import com.sk.zl.model.request.RePlantMaintaing;
+import com.sk.zl.model.result.RespCode;
 import com.sk.zl.model.station.LoginLog;
 import com.sk.zl.model.station.PlanPower;
 import com.sk.zl.model.result.ResultBean;
@@ -89,17 +93,15 @@ public class SettingController {
             int meterId = reMeterRate.getMeterId();
             return ResultBeanUtil.makeOkResp(stationService.getMeterRate(meterId));
 
-        } else if (type.equals("add")) {
-            /** 添加电表倍率 */
+        } else if (type.equals("add") || type.equals("update")) {
+            /** 添加、更新电表倍率 */
             int meterId = reMeterRate.getMeterId();
             List<MeterRate> meterRates = reMeterRate.getRates();
-            return ResultBeanUtil.makeOkResp(stationService.addMeterRate(meterId, meterRates));
-
-        } else if (type.equals("update")) {
-            /** 更新电表倍率 */
-            List<MeterRate> meterRates = reMeterRate.getRates();
-            return ResultBeanUtil.makeOkResp(stationService.updateMeterRate(meterRates));
-
+            List<MeterRate> conflictRates = stationService.addMeterRate(meterId, meterRates);
+            if (conflictRates.size() != 0) {
+                return ResultBeanUtil.makeResp(RespCode.METER_RATE_ERR, conflictRates);
+            }
+            return ResultBeanUtil.makeOkResp();
         } else if (type.equals("delete")) {
             /** 删除电表倍率 */
             List<MeterRate> meterRates = reMeterRate.getRates();
@@ -134,6 +136,17 @@ public class SettingController {
             List<PlanPower> planPowers = rePlanPower.getPlanPowerList();
             return ResultBeanUtil.makeOkResp(stationService.deletePlanPowers(planPowers));
 
+        } else {
+            return ResultBeanUtil.makeParamErrResp();
+        }
+    }
+
+    @ApiOperation(value = "录入电表码")
+    @RequestMapping(value = "/meterCode",  method = RequestMethod.POST)
+    public ResultBean<List<GenPowerEntity>> setMeterCode(@RequestBody ReMeterCode meterCodes) {
+        String type = meterCodes.getType();
+        if (type.equals("add")) {
+            return ResultBeanUtil.makeOkResp(stationService.entryMeterCode(meterCodes.getMeterCodes()));
         } else {
             return ResultBeanUtil.makeParamErrResp();
         }

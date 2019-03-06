@@ -115,6 +115,7 @@
 	</profiles>
 
 	<build>
+		<finalName>ZLApplication</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -129,6 +130,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+
 			</plugin>
 			<!--<plugin>-->
 				<!--<groupId>org.mybatis.generator</groupId>-->

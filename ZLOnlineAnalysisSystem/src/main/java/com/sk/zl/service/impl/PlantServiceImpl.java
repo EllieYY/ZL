@@ -1,13 +1,10 @@
 package com.sk.zl.service.impl;
 
 import com.sk.zl.aop.excption.ServiceException;
-import com.sk.zl.dao.meter.GenPowerDao;
-import com.sk.zl.dao.meter.impl.GenPowerDaoExtension;
+import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
 import com.sk.zl.dao.setting.PlantDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.GenPowerEntity;
-import com.sk.zl.entity.MeterEntity;
-import com.sk.zl.entity.MeterGroupEntity;
 import com.sk.zl.entity.PlantEntity;
 import com.sk.zl.model.plant.Plant;
 import com.sk.zl.model.plant.PlantEffectiveHours;
@@ -19,7 +16,6 @@ import com.sk.zl.model.request.ReTimeSlots;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.service.PlantService;
 import com.sk.zl.utils.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,7 +35,7 @@ public class PlantServiceImpl implements PlantService {
     @Resource
     PointInfoDao pointInfoDao;
     @Resource
-    GenPowerDaoExtension genPowerDaoExtension;
+    GenPowerDaoEx genPowerDaoEx;
 
     @Override
     public List<PlantState> getPlantsState()  {
@@ -91,11 +87,9 @@ public class PlantServiceImpl implements PlantService {
         //#2 统计当月电量
         Date today = new Date();
         Date monthBegin = DateUtil.getFirstDateOfMonth(today);
-        try {
-            monthBegin = DateUtil.dateTimeToDate(monthBegin);
-        } catch (Exception e) {
-            throw new ServiceException(e.toString());
-        }
+
+        monthBegin = DateUtil.dateTimeToDate(monthBegin);
+
 
         for (PlantEntity plant : plants) {
             int meterId = plant.getMeter().getId();
@@ -130,7 +124,10 @@ public class PlantServiceImpl implements PlantService {
 
 
     private double calculateGenPowerByMeter(int meterId, Date startTime, Date endTime) {
-        List<GenPowerEntity> results = genPowerDaoExtension.findByMeterIdAndTime(meterId, startTime, endTime);
+        List<GenPowerEntity> results = genPowerDaoEx.findByMeterIdAndTime(meterId, startTime, endTime);
+
+        System.out.println("meterId" + meterId + "     #time: " + startTime + " ~ " + endTime);
+        System.out.println(results);
 
         double total = 0;
         for (GenPowerEntity entity: results) {

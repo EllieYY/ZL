@@ -5,8 +5,8 @@ package com.sk.zl.aop.excption;
  * @Author : Ellie
  * @Date : 2019/3/4
  */
-public class DataDoException extends RuntimeException {
-    public DataDoException(String msg) {
+public class DataDaoException extends RuntimeException {
+    public DataDaoException(String msg) {
         super(msg);
     }
 }

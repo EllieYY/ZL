@@ -47,6 +47,11 @@ public class ResultBeanUtil {
         return resultBean;
     }
 
+    public static <T> ResultBean<T> makeResp(RespCode code, T data) {
+        ResultBean<T> resultBean = new ResultBean<T>(code, data);
+        return resultBean;
+    }
+
     public static <T> ResultBean<T> makeResp(Throwable e) {
         return new ResultBean<T>(e);
     }

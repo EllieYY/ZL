@@ -1,6 +1,8 @@
 package com.sk.zl.service;
 
+import com.sk.zl.entity.GenPowerEntity;
 import com.sk.zl.model.meter.Meter;
+import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantEffectiveHours;
 import com.sk.zl.model.plant.PlantGenCapacityComparison;
@@ -36,7 +38,7 @@ public interface StationService {
     List<Meter> getMeterInfo() ;
     List<MeterRate> getMeterRate(int meterId) ;
     List<MeterRate> addMeterRate(int meterId, List<MeterRate> rates) ;
-    List<MeterRate> updateMeterRate(List<MeterRate> meterRates) ;
+    List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRates) ;
     List<MeterRate> deleteMeterRate(List<MeterRate> meterRates) ;
 
     /** 全厂报警条数 */
@@ -51,4 +53,7 @@ public interface StationService {
     /** 发电量完成情况 */
     AnnualCapacityInfo getAnnualCapacityInfo() ;
     List<Double> getOngridCapacityInfo() ;
+
+    /** 电表码值录入 */
+    List<GenPowerEntity> entryMeterCode(List<MeterCode> meterCodes);
 }

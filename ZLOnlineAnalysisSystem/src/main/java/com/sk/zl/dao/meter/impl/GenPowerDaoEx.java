@@ -20,7 +20,7 @@ import java.util.List;
  * @Date : 2019/3/5
  */
 @Repository
-public class GenPowerDaoExtension {
+public class GenPowerDaoEx {
     @Autowired
     private GenPowerDao genPowerDao;
 
@@ -54,6 +54,15 @@ public class GenPowerDaoExtension {
             }
         });
         return genPowerEntities;
+    }
+
+    public GenPowerEntity saveOne(double value, Date time, int meterId) {
+        GenPowerEntity entity = new GenPowerEntity();
+        entity.setMeterId(meterId);
+        entity.setTime(time);
+        entity.setValue(value);
+
+        return genPowerDao.save(entity);
     }
 
 }
