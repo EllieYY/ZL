@@ -21,6 +21,11 @@ import com.sk.zl.entity.PlanPowerEntity;
 import com.sk.zl.model.meter.Meter;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
+import com.sk.zl.model.plant.PlantFaultPointsStat;
+import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
+import com.sk.zl.model.plant.PlantTrend;
+import com.sk.zl.model.request.RePlantTrend;
+import com.sk.zl.model.request.ReRunningTimeAnalysis;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
@@ -282,7 +287,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public StationAlarmNum getAlarmNum()  {
+    public StationAlarmNum getStationAlarmNum()  {
         List<PointInfo> points = pointInfoDao.findStationAlarmPoints();
 
         if (points.size() != 2) {
@@ -451,5 +456,21 @@ public class StationServiceImpl implements StationService {
 
         //#2 计算电量——任务线程
         return taskService.meterCodeUpdate(models);
+    }
+
+    @Override
+    public List<PlantFaultPointsStat> getPlantFaultsStat() {
+        return pointInfoDao.findPlantFaultPoints();
+    }
+
+
+    @Override
+    public List<PlantTrend> getPlantTrend(RePlantTrend condition) {
+        return pointInfoDao.findPlantTrendByCondition(condition);
+    }
+
+    @Override
+    public List<PlantRunningTimeAnalysis> getRunningTimeAnalysis(ReRunningTimeAnalysis condition) {
+        return pointInfoDao.findRunningTimeInfoByCondition(condition);
     }
 }

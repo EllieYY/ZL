@@ -4,11 +4,11 @@ import com.sk.zl.entity.GenPowerEntity;
 import com.sk.zl.model.meter.Meter;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
-import com.sk.zl.model.plant.PlantEffectiveHours;
-import com.sk.zl.model.plant.PlantGenCapacityComparison;
-import com.sk.zl.model.plant.PlantGenerateCapacity;
-import com.sk.zl.model.request.ReTimeSlots;
-import com.sk.zl.model.result.ResultBean;
+import com.sk.zl.model.plant.PlantFaultPointsStat;
+import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
+import com.sk.zl.model.plant.PlantTrend;
+import com.sk.zl.model.request.RePlantTrend;
+import com.sk.zl.model.request.ReRunningTimeAnalysis;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
@@ -42,7 +42,16 @@ public interface StationService {
     List<MeterRate> deleteMeterRate(List<MeterRate> meterRates) ;
 
     /** 全厂报警条数 */
-    StationAlarmNum getAlarmNum() ;
+    StationAlarmNum getStationAlarmNum();
+
+    /** 测点分析 */
+    List<PlantFaultPointsStat> getPlantFaultsStat();
+
+    /** 趋势分析 */
+    List<PlantTrend> getPlantTrend(RePlantTrend condition);
+
+    /** 开停机分析 */
+    List<PlantRunningTimeAnalysis> getRunningTimeAnalysis(ReRunningTimeAnalysis condition);
 
     /** 水情系统 */
     HydrologicalInfo getHydrologicalInfo() ;

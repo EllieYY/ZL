@@ -1,6 +1,5 @@
 package com.sk.zl.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.zl.model.plant.PlantEffectiveHours;
 import com.sk.zl.model.plant.PlantGenCapacityComparison;
 import com.sk.zl.model.plant.PlantGenerateCapacity;
@@ -88,7 +87,7 @@ public class HomePageController {
     @ApiOperation(value = "全厂故障信息条数")
     @RequestMapping(value = "/product/alarm")
     public ResultBean<StationAlarmNum> getStationAlarmInfo() {
-        return ResultBeanUtil.makeOkResp(stationService.getAlarmNum());
+        return ResultBeanUtil.makeOkResp(stationService.getStationAlarmNum());
     }
 
 }

@@ -4,7 +4,9 @@ import com.sk.zl.aop.excption.ServiceException;
 import lombok.Data;
 
 import javax.sql.rowset.serial.SerialException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description : 时间区间
@@ -18,7 +20,9 @@ public class DateSection implements Comparable<DateSection> {
 
     public DateSection(Date start, Date end) {
         if (start.after(end)) {
-            throw new ServiceException("生成了无效的时间段。");
+            Date temp = end;
+            end = start;
+            start = temp;
         }
 
         this.start = start;
@@ -29,6 +33,8 @@ public class DateSection implements Comparable<DateSection> {
     public int compareTo(DateSection o) {
         if (start.equals(o.getStart()) && end.equals(o.getEnd())) {
             return 0;
+        } else if (end.after(o.getEnd()) && start.before(o.getStart())) {
+            return 2;
         } else if (end.after(o.getEnd())) {
             return 1;
         } else {
@@ -48,24 +54,36 @@ public class DateSection implements Comparable<DateSection> {
     }
 
     /** 返回null表示差集不存在,所有属于A但不属于B的集合 */
-    public static DateSection differenceSet(DateSection aSection, DateSection bSection) {
+    public static List<DateSection> differenceSet(DateSection aSection, DateSection bSection) {
+        List<DateSection> diffSet = new ArrayList<DateSection>();
         if (aSection == null || bSection == null) {
-            return null;
+            return diffSet;
         }
 
         // 求交集
         DateSection union = aSection.union(bSection);
         if (null == union) {
-            return aSection;
+            diffSet.add(union);
+            return diffSet;
         }
 
-        int ret = aSection.compareTo(union);
-        if (ret == 0) {
-            return null;
-        } else if (ret == 1) {
-            return new DateSection(union.getEnd(), aSection.getEnd());
-        } else {
-            return new DateSection(aSection.getStart(), union.getStart());
-        }
+        diffSet.add(new DateSection(union.getEnd(), aSection.getEnd()));
+        diffSet.add(new DateSection(aSection.getStart(), union.getStart()));
+        return diffSet;
+
+//        int ret = aSection.compareTo(union);
+//        if (ret == 0) {
+//            return diffSet;
+//        } else if (ret == 1) {
+//            diffSet.add(new DateSection(union.getEnd(), aSection.getEnd()));
+//            return diffSet;
+//        } else if (ret == -1) {
+//            diffSet.add(new DateSection(aSection.getStart(), union.getStart()));
+//            return diffSet;
+//        } else {
+//            diffSet.add(new DateSection(union.getEnd(), aSection.getEnd()));
+//            diffSet.add(new DateSection(aSection.getStart(), union.getStart()));
+//            return diffSet;
+//        }
     }
 }

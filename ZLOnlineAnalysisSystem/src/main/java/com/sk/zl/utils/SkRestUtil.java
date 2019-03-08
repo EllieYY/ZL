@@ -78,7 +78,6 @@ public class SkRestUtil {
             e.printStackTrace();
         }
 
-        System.out.println(ids);
         //#2 对body进行压缩
         byte[] content = ("any=" + ids).getBytes();
         byte[] requestContent = compress(content);
@@ -89,7 +88,7 @@ public class SkRestUtil {
             // 用户认证
             if (!identification) {
                 identification = checkAuthority(skdbProperties.getUserName(), skdbProperties.getPassWord());
-                log.info("token:" + token);
+                log.debug("get token: " + token);
                 continue;
             }
             url += ("&token=" + token);

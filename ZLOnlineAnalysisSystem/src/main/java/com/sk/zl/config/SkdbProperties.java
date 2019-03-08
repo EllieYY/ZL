@@ -1,5 +1,6 @@
 package com.sk.zl.config;
 
+import com.sk.zl.model.skRest.PlantFaultStatCpid;
 import com.sk.zl.model.skRest.PlantSnapshotCpid;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,4 +25,6 @@ public class SkdbProperties {
 
     String accidentPoint;
     String glitchesPoint;
+
+    List<PlantFaultStatCpid> plantFaultStatCpids;
 }

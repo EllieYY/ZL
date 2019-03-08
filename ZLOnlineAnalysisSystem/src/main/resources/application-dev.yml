@@ -47,6 +47,26 @@ skdb:
       reactivePower: ZL.06.AI0008
       guideVaneOpening: ZL.06.AI0032
 
+  plantFaultStatCpids:            # 机组故障点统计结果测点
+    - id: 1                                   # 机组id
+      faultStatPtCpid: JZZL_P01_FaultCounts   # 故障测点个数统计结果
+      systemStatPtCpid: JZZL_P01_PointCounts  # 系统测点个数统计结果
+    - id: 2
+      faultStatPtCpid: JZZL_P02_FaultCounts
+      systemStatPtCpid: JZZL_P02_PointCounts
+    - id: 3
+      faultStatPtCpid: JZZL_P03_FaultCounts
+      systemStatPtCpid: JZZL_P03_PointCounts
+    - id: 4
+      faultStatPtCpid: JZZL_P04_FaultCounts
+      systemStatPtCpid: JZZL_P04_PointCounts
+    - id: 5
+      faultStatPtCpid: JZZL_P05_FaultCounts
+      systemStatPtCpid: JZZL_P05_PointCounts
+    - id: 6
+      faultStatPtCpid: JZZL_P06_FaultCounts
+      systemStatPtCpid: JZZL_P06_PointCounts
+
 station:
   genCapacityMeterGroup: 2        # 用来计算发电量的电表组
   onGridMeterGroup: 1             # 用来计算上网电量的电表组
