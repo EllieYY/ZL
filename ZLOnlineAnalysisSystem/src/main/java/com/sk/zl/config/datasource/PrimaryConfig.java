@@ -64,8 +64,8 @@ public class PrimaryConfig {
     }
 
     @Primary
-    @Bean(name = "transactionManagerUser")
-    public PlatformTransactionManager transactionManagerUser(EntityManagerFactoryBuilder builder) {
+    @Bean(name = "transactionManagerZL")
+    public PlatformTransactionManager transactionManagerZL(EntityManagerFactoryBuilder builder) {
         return new JpaTransactionManager(entityManagerFactoryZL(builder).getObject());
     }
 
