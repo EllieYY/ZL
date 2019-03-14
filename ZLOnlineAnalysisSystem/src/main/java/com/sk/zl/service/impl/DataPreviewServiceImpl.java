@@ -1,6 +1,6 @@
 package com.sk.zl.service.impl;
 
-import com.sk.zl.dao.preview.PreviewDataDaoEx;
+import com.sk.zl.dao.preview.impl.PreviewDataDaoEx;
 import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.request.ReDataPreview;
 import com.sk.zl.service.DataPreviewService;

@@ -1,10 +1,8 @@
-package com.sk.zl.dao.preview;
+package com.sk.zl.dao.preview.impl;
 
-import com.sk.zl.dao.meter.MeterRateDao;
-import com.sk.zl.entity.zheling.MeterRateEntity;
+
+import com.sk.zl.entity.skalarm.HisalarmEntity;
 import com.sk.zl.model.plant.PlantDataPreview;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -24,25 +22,37 @@ import java.util.List;
  */
 @Repository
 public class PreviewDataDaoEx {
-    // TODO:最终数据表暂时未定，先使用电表倍率来进行测试
-    @Autowired
-    MeterRateDao meterRateDao;
+//    @Autowired
+//    HisalarmDao hisalarmDao;
 
     public List<PlantDataPreview> getPlantData(int plantId, int dataType, String keyword,
                                                Date startTime, Date endTime,
                                                Pageable pageable) {
-        Specification<MeterRateEntity> specification = new Specification<MeterRateEntity>() {
+        Specification<HisalarmEntity> specification = new Specification<HisalarmEntity>() {
             @Override
-            public Predicate toPredicate(Root<MeterRateEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                // TODO:添加查询条件
+            public Predicate toPredicate(Root<HisalarmEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<Predicate>();
+                predicates.add(criteriaBuilder.between(root.get("stime"), startTime, endTime));
 
+                if (plantId != 0) {
+                    predicates.add(criteriaBuilder.equal(root.get("devid"), plantId));
+                }
+
+                if (dataType != 0) {
+                    predicates.add(criteriaBuilder.equal(root.get("kindid"), dataType));
+                }
+
+                predicates.add(criteriaBuilder.like(root.get("point").get("name").as(String.class), "%" + keyword + "%"));
+
+                Predicate[] pred = new Predicate[predicates.size()];
+                criteriaQuery.where(criteriaBuilder.and(predicates.toArray(pred)));
                 return criteriaQuery.getRestriction();
             }
         };
 
         // TODO：对查询结果进行转换
-        Page<MeterRateEntity> list = meterRateDao.findAll(specification, pageable);
-        System.out.println(list.getContent());
+//        Page<HisalarmEntity> list = hisalarmDao.findAll(specification, pageable);
+//        System.out.println(list.getContent());
 
         // test result
         List<PlantDataPreview> result = new ArrayList<PlantDataPreview>();

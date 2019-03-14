@@ -74,10 +74,13 @@ public class PointInfoDaoImpl implements PointInfoDao {
         List<String> cpids = Arrays.asList(skdbProperties.getAccidentPoint(),
                 skdbProperties.getGlitchesPoint());
 
+        System.out.println(cpids);
+
         log.debug("station alarm cpids: " + cpids);
 
         List<PointInfo> points = skRestUtil.getNowValue(cpids);
 
+        System.out.println(points);
         log.debug("station alarm cpid:" + cpids + "\n" + "values: " + points);
 
         return points;
