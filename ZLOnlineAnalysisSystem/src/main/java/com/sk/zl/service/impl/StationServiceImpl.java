@@ -2,7 +2,9 @@ package com.sk.zl.service.impl;
 
 import com.sk.zl.aop.excption.DataDaoException;
 import com.sk.zl.aop.excption.ServiceException;
-import com.sk.zl.config.StationConfig;
+import com.sk.zl.config.skdb.AnalogPoints;
+import com.sk.zl.config.skdb.PlantsAnalog;
+import com.sk.zl.config.skdb.StationConfig;
 import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
@@ -11,19 +13,20 @@ import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
 import com.sk.zl.dao.meter.impl.MeterCodeDaoEx;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
-import com.sk.zl.entity.GenPowerEntity;
-import com.sk.zl.entity.LoginLogEntity;
-import com.sk.zl.entity.MeterCodeEntity;
-import com.sk.zl.entity.MeterEntity;
-import com.sk.zl.entity.MeterGroupEntity;
-import com.sk.zl.entity.MeterRateEntity;
-import com.sk.zl.entity.PlanPowerEntity;
-import com.sk.zl.model.meter.Meter;
+import com.sk.zl.entity.zheling.GenPowerEntity;
+import com.sk.zl.entity.zheling.LoginLogEntity;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
+import com.sk.zl.entity.zheling.MeterEntity;
+import com.sk.zl.entity.zheling.MeterGroupEntity;
+import com.sk.zl.entity.zheling.MeterRateEntity;
+import com.sk.zl.entity.zheling.PlanPowerEntity;
+import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
+import com.sk.zl.model.request.RePlantAnalogs;
 import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReRunningTimeAnalysis;
 import com.sk.zl.model.skRest.PointInfo;
@@ -72,6 +75,8 @@ public class StationServiceImpl implements StationService {
     MeterCodeDaoEx meterCodeDaoEx;
     @Resource
     StationConfig stationConfig;
+    @Resource
+    PlantsAnalog plantsAnalog;
     @Autowired
     AsyncTaskService taskService;
 
@@ -111,10 +116,10 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<Meter> getMeterInfo()  {
+    public List<MeterInfo> getMeterInfo()  {
         List<MeterEntity> entities = meterDao.findAll();
-        List<Meter> models = entities.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(Meter.fromEntity(item));
+        List<MeterInfo> models = entities.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(MeterInfo.fromEntity(item));
         }, ArrayList::addAll);
         return models;
     }
@@ -463,6 +468,49 @@ public class StationServiceImpl implements StationService {
         return pointInfoDao.findPlantFaultPoints();
     }
 
+    @Override
+    public List<String> getAnalogPointsById(RePlantAnalogs rePlantAnalogs) {
+        /** 计算分页范围 */
+        int pageNo = rePlantAnalogs.getPageNo();
+        pageNo = pageNo < 1 ? 1 : pageNo;
+        int pageRows = rePlantAnalogs.getPageRows();
+        pageRows = pageRows < 1 ? 5 : pageRows;
+
+        int startPage = (pageNo - 1) * pageRows;
+        int endPage = pageNo * pageRows;
+
+        /** 按分页范围添加内容
+         * 将所有内容添加到list中，然后再求子集这种方式比较消耗空间，
+         * 在添加集合到结果集的时候进行判断，只添加处在分页范围内的结果 */
+        List<String> result = new ArrayList<String>();
+        int id = rePlantAnalogs.getId();
+        int startSize = 0;
+        int endSize = 0;
+        for (AnalogPoints plant: plantsAnalog.getPlants()) {
+            if (startSize > endPage) {
+                break;
+            }
+
+            if (plant.getId() == id || id == 0) {
+                List<String> cpids = plant.getPoints();
+                endSize = startSize + cpids.size();
+
+                /** 求当前集合与分页集合范围的交集 */
+                int startIdx = startPage > startSize ? startPage : startSize;
+                int endIdx = endPage < endSize ? endPage : endSize;
+
+                if (startIdx >= endIdx) {
+                    startIdx = 0;
+                    endIdx = 0;
+                }
+
+                result.addAll(cpids.subList(startIdx, endIdx));
+                startSize = endSize;
+            }
+        }
+
+        return result;
+    }
 
     @Override
     public List<PlantTrend> getPlantTrend(RePlantTrend condition) {

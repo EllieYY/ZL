@@ -1,6 +1,6 @@
 package com.sk.zl.dao.meter;
 
-import com.sk.zl.entity.MeterGroupEntity;
+import com.sk.zl.entity.zheling.MeterGroupEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeterGroupDao extends JpaRepository<MeterGroupEntity, Integer> {

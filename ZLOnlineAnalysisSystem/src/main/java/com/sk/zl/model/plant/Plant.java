@@ -1,7 +1,7 @@
 package com.sk.zl.model.plant;
 
 
-import com.sk.zl.entity.PlantEntity;
+import com.sk.zl.entity.zheling.PlantEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -15,10 +15,10 @@ public class ReRunningTimeAnalysis {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("timeStart")
+    @JsonProperty("startTime")
     private Date startTime;
 
-    @JsonProperty("timeEnd")
+    @JsonProperty("endTime")
     private Date endTime;
 
     @JsonProperty("pageNo")

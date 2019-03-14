@@ -26,11 +26,11 @@ public class ReDataPreview {
     private String keyword;
 
     /** 开始时间 */
-    @JsonProperty("timeStart")
+    @JsonProperty("startTime")
     private Date startTime;
 
     /** 结束时间 */
-    @JsonProperty("timeEnd")
+    @JsonProperty("endTime")
     private Date endTime;
 
     /** 当前页数 */

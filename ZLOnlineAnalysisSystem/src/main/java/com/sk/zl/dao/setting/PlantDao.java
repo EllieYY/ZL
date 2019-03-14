@@ -1,6 +1,6 @@
 package com.sk.zl.dao.setting;
 
-import com.sk.zl.entity.PlantEntity;
+import com.sk.zl.entity.zheling.PlantEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

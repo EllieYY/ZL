@@ -1,6 +1,6 @@
 package com.sk.zl.dao.skdb.impl;
 
-import com.sk.zl.config.SkdbProperties;
+import com.sk.zl.config.skdb.SkdbProperties;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
@@ -11,7 +11,6 @@ import com.sk.zl.model.skRest.PlantFaultStatCpid;
 import com.sk.zl.model.skRest.PlantSnapshotCpid;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.utils.SkRestUtil;
-import com.sun.javafx.scene.control.skin.ColorPickerSkin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +74,8 @@ public class PointInfoDaoImpl implements PointInfoDao {
         List<String> cpids = Arrays.asList(skdbProperties.getAccidentPoint(),
                 skdbProperties.getGlitchesPoint());
 
+        log.debug("station alarm cpids: " + cpids);
+
         List<PointInfo> points = skRestUtil.getNowValue(cpids);
 
         log.debug("station alarm cpid:" + cpids + "\n" + "values: " + points);
@@ -116,9 +117,11 @@ public class PointInfoDaoImpl implements PointInfoDao {
     @Override
     public List<PlantTrend> findPlantTrendByCondition(RePlantTrend condition) {
         // TODO:待扩充cgi接口
+        List<PlantTrend> result = new ArrayList<PlantTrend>();
+        result.add(new PlantTrend());
+        result.add(new PlantTrend());
 
-
-        return null;
+        return result;
     }
 
 
@@ -126,6 +129,10 @@ public class PointInfoDaoImpl implements PointInfoDao {
     public List<PlantRunningTimeAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition) {
         // TODO:待扩充cgi接口
 
-        return null;
+        List<PlantRunningTimeAnalysis> result = new ArrayList<PlantRunningTimeAnalysis>();
+        result.add(new PlantRunningTimeAnalysis());
+        result.add(new PlantRunningTimeAnalysis());
+
+        return result;
     }
 }

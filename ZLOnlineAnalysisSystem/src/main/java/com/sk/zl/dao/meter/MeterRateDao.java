@@ -1,7 +1,6 @@
 package com.sk.zl.dao.meter;
 
-import com.sk.zl.entity.MeterRateEntity;
-import org.springframework.data.jpa.domain.Specification;
+import com.sk.zl.entity.zheling.MeterRateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

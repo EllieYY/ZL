@@ -2,7 +2,7 @@ package com.sk.zl.model.station;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sk.zl.entity.PlanPowerEntity;
+import com.sk.zl.entity.zheling.PlanPowerEntity;
 import lombok.Data;
 
 

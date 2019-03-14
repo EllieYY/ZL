@@ -1,8 +1,7 @@
 package com.sk.zl.dao.meter.impl;
 
 import com.sk.zl.dao.meter.MeterCodeDao;
-import com.sk.zl.entity.GenPowerEntity;
-import com.sk.zl.entity.MeterCodeEntity;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 

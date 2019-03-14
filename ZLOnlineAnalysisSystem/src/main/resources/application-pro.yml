@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:   # MySQL数据库连接信息
-      driver-class-name: com.mysql.jdbc.Driver
-      username: root
-      password: Scada2016!
-      url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: Scada2016!
+    url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
 
 skdb:
   uri: http://192.168.10.48:80    # 实时数据库连接信息

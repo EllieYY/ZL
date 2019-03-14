@@ -1,7 +1,7 @@
 package com.sk.zl.model.meter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sk.zl.entity.MeterCodeEntity;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
 import lombok.Data;
 
 import java.util.Date;

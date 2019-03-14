@@ -1,8 +1,7 @@
 package com.sk.zl.dao.meter.impl;
 
-import com.sk.zl.aop.excption.DataDaoException;
 import com.sk.zl.dao.meter.MeterRateDao;
-import com.sk.zl.entity.MeterRateEntity;
+import com.sk.zl.entity.zheling.MeterRateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,6 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Description : Dao扩展

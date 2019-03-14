@@ -1,8 +1,7 @@
 package com.sk.zl.controller;
 
-import com.sk.zl.entity.GenPowerEntity;
-import com.sk.zl.model.meter.Meter;
-import com.sk.zl.model.meter.MeterCode;
+import com.sk.zl.entity.zheling.GenPowerEntity;
+import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantState;
 import com.sk.zl.model.request.ReBasic;
@@ -75,7 +74,7 @@ public class SettingController {
 
     @ApiOperation(value = "电表属性信息获取")
     @RequestMapping(value = "/rate/info",  method = RequestMethod.POST)
-    public ResultBean<List<Meter>> getMeterInfo(@RequestBody ReBasic reBasic) {
+    public ResultBean<List<MeterInfo>> getMeterInfo(@RequestBody ReBasic reBasic) {
         String type = reBasic.getType();
         if (type.equals("get")) {
             return ResultBeanUtil.makeOkResp(stationService.getMeterInfo());

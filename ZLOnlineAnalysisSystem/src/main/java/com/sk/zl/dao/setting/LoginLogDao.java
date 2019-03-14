@@ -1,6 +1,6 @@
 package com.sk.zl.dao.setting;
 
-import com.sk.zl.entity.LoginLogEntity;
+import com.sk.zl.entity.zheling.LoginLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;

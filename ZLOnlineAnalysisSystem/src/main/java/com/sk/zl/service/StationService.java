@@ -1,12 +1,13 @@
 package com.sk.zl.service;
 
-import com.sk.zl.entity.GenPowerEntity;
-import com.sk.zl.model.meter.Meter;
+import com.sk.zl.entity.zheling.GenPowerEntity;
+import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
+import com.sk.zl.model.request.RePlantAnalogs;
 import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReRunningTimeAnalysis;
 import com.sk.zl.model.station.AnnualCapacityInfo;
@@ -35,7 +36,7 @@ public interface StationService {
     List<LoginLog> getLog(LoginLog log);
 
     /** 电表信息和电表倍率设置 */
-    List<Meter> getMeterInfo() ;
+    List<MeterInfo> getMeterInfo() ;
     List<MeterRate> getMeterRate(int meterId) ;
     List<MeterRate> addMeterRate(int meterId, List<MeterRate> rates) ;
     List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRates) ;
@@ -46,6 +47,7 @@ public interface StationService {
 
     /** 测点分析 */
     List<PlantFaultPointsStat> getPlantFaultsStat();
+    List<String> getAnalogPointsById(RePlantAnalogs rePlantAnalogs);
 
     /** 趋势分析 */
     List<PlantTrend> getPlantTrend(RePlantTrend condition);

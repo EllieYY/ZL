@@ -1,7 +1,7 @@
 package com.sk.zl.dao.meter;
 
-import com.sk.zl.entity.MeterCodeEntity;
-import com.sk.zl.entity.MeterCodeEntityPK;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
+import com.sk.zl.entity.zheling.MeterCodeEntityPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

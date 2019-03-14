@@ -1,13 +1,11 @@
 package com.sk.zl.model.meter;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sk.zl.entity.MeterEntity;
-import com.sk.zl.entity.MeterRateEntity;
+import com.sk.zl.entity.zheling.MeterEntity;
+import com.sk.zl.entity.zheling.MeterRateEntity;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

@@ -1,8 +1,7 @@
 package com.sk.zl.dao.meter.impl;
 
 import com.sk.zl.dao.meter.GenPowerDao;
-import com.sk.zl.entity.GenPowerEntity;
-import org.hibernate.internal.CriteriaImpl;
+import com.sk.zl.entity.zheling.GenPowerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;

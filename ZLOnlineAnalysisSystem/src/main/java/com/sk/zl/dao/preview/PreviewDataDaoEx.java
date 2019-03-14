@@ -1,11 +1,10 @@
 package com.sk.zl.dao.preview;
 
 import com.sk.zl.dao.meter.MeterRateDao;
-import com.sk.zl.entity.MeterRateEntity;
+import com.sk.zl.entity.zheling.MeterRateEntity;
 import com.sk.zl.model.plant.PlantDataPreview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -45,7 +44,12 @@ public class PreviewDataDaoEx {
         Page<MeterRateEntity> list = meterRateDao.findAll(specification, pageable);
         System.out.println(list.getContent());
 
-        return null;
+        // test result
+        List<PlantDataPreview> result = new ArrayList<PlantDataPreview>();
+        result.add(new PlantDataPreview());
+        result.add(new PlantDataPreview());
+
+        return result;
     }
 
 
@@ -54,7 +58,12 @@ public class PreviewDataDaoEx {
                                                  Pageable pageable) {
         // TODO: 条件筛选
 
-        return null;
+        // test result
+        List<PlantDataPreview> result = new ArrayList<PlantDataPreview>();
+        result.add(new PlantDataPreview());
+        result.add(new PlantDataPreview());
+
+        return result;
     }
 
 
