@@ -1,9 +1,10 @@
 package com.sk.zl.entity.skalarm;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,8 +18,10 @@ public class HisalarmEntityPK implements Serializable {
     private Date stime;
     private String cpid;
 
-    @Column(name = "id", nullable = false)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -27,8 +30,8 @@ public class HisalarmEntityPK implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "stime", nullable = false)
     @Id
+    @Column(name = "stime", nullable = false)
     public Date getStime() {
         return stime;
     }
@@ -37,8 +40,8 @@ public class HisalarmEntityPK implements Serializable {
         this.stime = stime;
     }
 
-    @Column(name = "cpid", nullable = false, length = 64)
     @Id
+    @Column(name = "cpid", nullable = false, length = 64)
     public String getCpid() {
         return cpid;
     }
@@ -46,6 +49,7 @@ public class HisalarmEntityPK implements Serializable {
     public void setCpid(String cpid) {
         this.cpid = cpid;
     }
+
 
     @Override
     public boolean equals(Object o) {

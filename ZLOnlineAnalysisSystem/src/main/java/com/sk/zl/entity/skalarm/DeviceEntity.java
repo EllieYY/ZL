@@ -8,15 +8,16 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 /**
- * @Description : 设备信息
+ * @Description : TODO
  * @Author : Ellie
- * @Date : 2019/3/14
+ * @Date : 2019/3/15
  */
 @Entity
 @Table(name = "device", catalog = "")
 public class DeviceEntity {
     private int id;
     private String name;
+    private Integer pid;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -38,17 +39,29 @@ public class DeviceEntity {
         this.name = name;
     }
 
+    @Basic
+    @Column(name = "pid", nullable = true)
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeviceEntity that = (DeviceEntity) o;
         return id == that.id &&
-                Objects.equals(name, that.name);
+                Objects.equals(name, that.name) &&
+                Objects.equals(pid, that.pid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+
+        return Objects.hash(id, name, pid);
     }
 }

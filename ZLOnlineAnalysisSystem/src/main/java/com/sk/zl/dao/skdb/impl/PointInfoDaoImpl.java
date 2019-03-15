@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,8 +122,13 @@ public class PointInfoDaoImpl implements PointInfoDao {
     public List<PlantTrend> findPlantTrendByCondition(RePlantTrend condition) {
         // TODO:待扩充cgi接口
         List<PlantTrend> result = new ArrayList<PlantTrend>();
-        result.add(new PlantTrend());
-        result.add(new PlantTrend());
+        result.add(new PlantTrend("name1", 2, 3, 1));
+        result.add(new PlantTrend("name2", 2, 3, 1));
+        result.add(new PlantTrend("name3", 2, 3, 1));
+        result.add(new PlantTrend("name4", 2, 3, 1));
+        result.add(new PlantTrend("name5", 2, 3, 1));
+        result.add(new PlantTrend("name6", 2, 3, 1));
+        result.add(new PlantTrend("name7", 2, 3, 1));
 
         return result;
     }
@@ -133,8 +139,12 @@ public class PointInfoDaoImpl implements PointInfoDao {
         // TODO:待扩充cgi接口
 
         List<PlantRunningTimeAnalysis> result = new ArrayList<PlantRunningTimeAnalysis>();
-        result.add(new PlantRunningTimeAnalysis());
-        result.add(new PlantRunningTimeAnalysis());
+        result.add(new PlantRunningTimeAnalysis("name1", 2, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningTimeAnalysis("name2", 1, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningTimeAnalysis("name3", 1, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningTimeAnalysis("name4", 3, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningTimeAnalysis("name5", 3, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningTimeAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
 
         return result;
     }

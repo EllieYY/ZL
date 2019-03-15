@@ -2,14 +2,23 @@ server:
   port: 9257    # 后台程序端口号
 
 spring:
-  datasource:   # MySQL数据库连接信息
-    driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    password: Scada2016!
-    url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
+  datasource:
+    zheling:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: Scada2016!
+#      jdbc-url: jdbc:mysql://192.168.10.48:3306/zheling?useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
+    skalarm:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: Scada2016!
+#      jdbc-url: jdbc:mysql://192.168.10.48:3306/skalarm?useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://192.168.10.99:3306/skalarm?useUnicode=true
+
 
 skdb:
-  uri: http://192.168.10.48:80    # 实时数据库连接信息
+  uri: http://192.168.10.48:80    # 数据库连接信息
   userName: admin
   password: 123456
   accidentPoint: JZZL_ALL_AccdtCounts  # 事故统计结果测点
@@ -46,6 +55,26 @@ skdb:
       activePower: ZL.06.AI0007
       reactivePower: ZL.06.AI0008
       guideVaneOpening: ZL.06.AI0032
+
+  plantFaultStatCpids:            # 机组故障点统计结果测点
+    - id: 1                                   # 机组id
+      faultStatPtCpid: JZZL_P01_FaultCounts   # 故障测点个数统计结果
+      systemStatPtCpid: JZZL_P01_PointCounts  # 系统测点个数统计结果
+    - id: 2
+      faultStatPtCpid: JZZL_P02_FaultCounts
+      systemStatPtCpid: JZZL_P02_PointCounts
+    - id: 3
+      faultStatPtCpid: JZZL_P03_FaultCounts
+      systemStatPtCpid: JZZL_P03_PointCounts
+    - id: 4
+      faultStatPtCpid: JZZL_P04_FaultCounts
+      systemStatPtCpid: JZZL_P04_PointCounts
+    - id: 5
+      faultStatPtCpid: JZZL_P05_FaultCounts
+      systemStatPtCpid: JZZL_P05_PointCounts
+    - id: 6
+      faultStatPtCpid: JZZL_P06_FaultCounts
+      systemStatPtCpid: JZZL_P06_PointCounts
 
 station:
   genCapacityMeterGroup: 2        # 用来计算发电量的电表组

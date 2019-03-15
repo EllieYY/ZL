@@ -5,16 +5,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @Description : 测点基本信息
+ * @Description : TODO
  * @Author : Ellie
- * @Date : 2019/3/14
+ * @Date : 2019/3/15
  */
 @Entity
 @Table(name = "point", catalog = "")
-public class PointInfoEntity {
+public class PointEntity implements Serializable {
     private String cpid;
     private String name;
     private int devid;
@@ -97,7 +98,7 @@ public class PointInfoEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PointInfoEntity that = (PointInfoEntity) o;
+        PointEntity that = (PointEntity) o;
         return devid == that.devid &&
                 level == that.level &&
                 alarmno == that.alarmno &&
@@ -111,5 +112,18 @@ public class PointInfoEntity {
     public int hashCode() {
 
         return Objects.hash(cpid, name, devid, level, alarmno, type, kindId);
+    }
+
+    @Override
+    public String toString() {
+        return "PointEntity{" +
+                "cpid='" + cpid + '\'' +
+                ", name='" + name + '\'' +
+                ", devid=" + devid +
+                ", level=" + level +
+                ", alarmno=" + alarmno +
+                ", type=" + type +
+                ", kindId=" + kindId +
+                '}';
     }
 }

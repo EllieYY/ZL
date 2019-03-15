@@ -11,9 +11,6 @@ import java.util.List;
  * @Date : 2019/3/7
  */
 public interface DataPreviewService {
-    /** 按条件获取机组数据 */
-    public List<PlantDataPreview> getPlantData(ReDataPreview condition);
-
     /** 按条件获取报警数据 */
     public List<PlantDataPreview> getWarningData(ReDataPreview condition);
 }

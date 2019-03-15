@@ -1,8 +1,12 @@
-package com.sk.zl.dao.preview.impl;
+package com.sk.zl.dao.preview;
 
 
 import com.sk.zl.entity.skalarm.HisalarmEntity;
+import com.sk.zl.entity.skalarm.KindEntity;
+import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantDataPreview;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -22,8 +26,8 @@ import java.util.List;
  */
 @Repository
 public class PreviewDataDaoEx {
-//    @Autowired
-//    HisalarmDao hisalarmDao;
+    @Autowired
+    HisalarmDao hisalarmDao;
 
     public List<PlantDataPreview> getPlantData(int plantId, int dataType, String keyword,
                                                Date startTime, Date endTime,
@@ -50,31 +54,14 @@ public class PreviewDataDaoEx {
             }
         };
 
-        // TODO：对查询结果进行转换
-//        Page<HisalarmEntity> list = hisalarmDao.findAll(specification, pageable);
-//        System.out.println(list.getContent());
+        // 对查询结果进行转换
+        Page<HisalarmEntity> page = hisalarmDao.findAll(specification, pageable);
+        List<HisalarmEntity> entities = page.getContent();
 
-        // test result
-        List<PlantDataPreview> result = new ArrayList<PlantDataPreview>();
-        result.add(new PlantDataPreview());
-        result.add(new PlantDataPreview());
+        List<PlantDataPreview> models = entities.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(PlantDataPreview.fromEntity(item));
+        }, ArrayList::addAll);
 
-        return result;
+        return models;
     }
-
-
-    public List<PlantDataPreview> getWarningData(int plantId, int dataType, String keyword,
-                                                 Date startTime, Date endTime,
-                                                 Pageable pageable) {
-        // TODO: 条件筛选
-
-        // test result
-        List<PlantDataPreview> result = new ArrayList<PlantDataPreview>();
-        result.add(new PlantDataPreview());
-        result.add(new PlantDataPreview());
-
-        return result;
-    }
-
-
 }

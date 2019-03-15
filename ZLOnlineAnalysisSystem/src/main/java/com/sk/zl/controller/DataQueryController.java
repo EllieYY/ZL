@@ -35,7 +35,7 @@ public class DataQueryController {
     @ApiOperation("一览表查询")
     @RequestMapping(value = "/points/view")
     public ResultBean<List<PlantDataPreview>> plantDataPreview(@RequestBody ReDataPreview reDataPreview) {
-        return ResultBeanUtil.makeOkResp(dataPreviewService.getPlantData(reDataPreview));
+        return ResultBeanUtil.makeOkResp(dataPreviewService.getWarningData(reDataPreview));
     }
 
     @ApiOperation("报警查询")

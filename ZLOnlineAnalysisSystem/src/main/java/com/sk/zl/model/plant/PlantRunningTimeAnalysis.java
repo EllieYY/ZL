@@ -35,4 +35,13 @@ public class PlantRunningTimeAnalysis {
     /** 开停机次数 */
     @JsonProperty("count")
     private int count;
+
+    public PlantRunningTimeAnalysis(String name, int state, long runningTime, Date onTime, Date offTime, int count) {
+        this.name = name;
+        this.state = state;
+        this.runningTime = runningTime;
+        this.onTime = onTime;
+        this.offTime = offTime;
+        this.count = count;
+    }
 }

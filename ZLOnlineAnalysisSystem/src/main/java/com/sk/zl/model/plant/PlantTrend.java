@@ -22,4 +22,13 @@ public class PlantTrend {
     @JsonProperty("time")
     private float runTime;
 
+    public PlantTrend(String name, int faultNum, int runNum, float runTime) {
+        this.name = name;
+        this.faultNum = faultNum;
+        this.runNum = runNum;
+        this.runTime = runTime;
+    }
+
+    public PlantTrend() {
+    }
 }
