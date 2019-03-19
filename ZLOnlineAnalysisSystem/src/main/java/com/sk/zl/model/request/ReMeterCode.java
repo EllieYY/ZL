@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.model.meter.MeterCode;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,9 +14,9 @@ import java.util.List;
  */
 @Data
 public class ReMeterCode {
-    @JsonProperty("type")
-    String type;
+    @JsonProperty("time")
+    private Date time;
 
-    @JsonProperty("codes")
-    List<MeterCode> meterCodes;
+    @JsonProperty("meters")
+    private List<MeterCode> meterCodes;
 }

@@ -160,11 +160,11 @@
     <!-- 4. 最终的策略 -->
     <!-- 4.1 开发环境:打印控制台-->
     <springProfile name="test,dev">
-        <!--<logger name="com.alibaba" level="debug"/>-->
-        <logger name="org.hibernate" level="debug" additivity="false">
+        <logger name="com.sk.zl" level="debug"/>
+        <!--<logger name="org.hibernate" level="debug" additivity="false">-->
             <!--<appender-ref ref="CONSOLE"/>-->
-            <appender-ref ref="DEBUG_FILE" />
-        </logger>
+            <!--<appender-ref ref="DEBUG_FILE" />-->
+        <!--</logger>-->
     </springProfile>
 
     <root level="info">

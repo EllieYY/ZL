@@ -20,10 +20,4 @@ public class ReRunningTimeAnalysis {
 
     @JsonProperty("endTime")
     private Date endTime;
-
-    @JsonProperty("pageNo")
-    private int pageNo;
-
-    @JsonProperty("pageRows")
-    private int pageRows;
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 电表表码值
  * @Author : Ellie
  * @Date : 2019/2/26
  */
@@ -18,18 +18,18 @@ import java.util.Objects;
 @Table(name = "tbl_metercode", catalog = "")
 @IdClass(MeterCodeEntityPK.class)
 public class MeterCodeEntity {
-    private int meterId;
+    private int meterNodeId;
     private Date time;
     private Double code;
 
     @Id
-    @Column(name = "meterId", nullable = false)
-    public int getMeterId() {
-        return meterId;
+    @Column(name = "meterNodeId", nullable = false)
+    public int getMeterNodeId() {
+        return meterNodeId;
     }
 
-    public void setMeterId(int meterId) {
-        this.meterId = meterId;
+    public void setMeterNodeId(int meterNodeId) {
+        this.meterNodeId = meterNodeId;
     }
 
     @Id
@@ -57,7 +57,7 @@ public class MeterCodeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeterCodeEntity that = (MeterCodeEntity) o;
-        return meterId == that.meterId &&
+        return meterNodeId == that.meterNodeId &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(code, that.code);
     }
@@ -65,13 +65,13 @@ public class MeterCodeEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(meterId, time, code);
+        return Objects.hash(meterNodeId, time, code);
     }
 
     @Override
     public String toString() {
         return "MeterCodeEntity{" +
-                "meterId=" + meterId +
+                "meterNodeId=" + meterNodeId +
                 ", time=" + time +
                 ", code=" + code +
                 '}';

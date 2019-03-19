@@ -36,9 +36,10 @@ import java.util.List;
 @RestController
 public class SettingController {
     @Resource
-    StationService stationService;
+    private StationService stationService;
+
     @Resource
-    PlantService plantService;
+    private PlantService plantService;
 
     @ApiOperation(value = "机组检修状态设置和更新")
     @RequestMapping(value = "/checkState",  method = RequestMethod.POST)
@@ -140,14 +141,5 @@ public class SettingController {
         }
     }
 
-    @ApiOperation(value = "录入电表码")
-    @RequestMapping(value = "/meterCode",  method = RequestMethod.POST)
-    public ResultBean<List<GenPowerEntity>> setMeterCode(@RequestBody ReMeterCode meterCodes) {
-        String type = meterCodes.getType();
-        if (type.equals("add")) {
-            return ResultBeanUtil.makeOkResp(stationService.entryMeterCode(meterCodes.getMeterCodes()));
-        } else {
-            return ResultBeanUtil.makeParamErrResp();
-        }
-    }
+
 }

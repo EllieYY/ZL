@@ -1,10 +1,12 @@
 package com.sk.zl.service.impl;
 
 import com.sk.zl.aop.excption.ServiceException;
+import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
 import com.sk.zl.dao.setting.PlantDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.zheling.GenPowerEntity;
+import com.sk.zl.entity.zheling.MeterEntity;
 import com.sk.zl.entity.zheling.PlantEntity;
 import com.sk.zl.model.plant.Plant;
 import com.sk.zl.model.plant.PlantEffectiveHours;
@@ -16,6 +18,8 @@ import com.sk.zl.model.request.ReTimeSlots;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.service.PlantService;
 import com.sk.zl.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,12 +34,19 @@ import java.util.List;
  */
 @Service
 public class PlantServiceImpl implements PlantService {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Resource
-    PlantDao plantDao;
+    private PlantDao plantDao;
+
     @Resource
-    PointInfoDao pointInfoDao;
+    private PointInfoDao pointInfoDao;
+
     @Resource
-    GenPowerDaoEx genPowerDaoEx;
+    private GenPowerDaoEx genPowerDaoEx;
+
+    @Resource
+    private MeterDao meterDao;
 
     @Override
     public List<PlantState> getPlantsState()  {
@@ -124,10 +135,16 @@ public class PlantServiceImpl implements PlantService {
 
 
     private double calculateGenPowerByMeter(int meterId, Date startTime, Date endTime) {
-        List<GenPowerEntity> results = genPowerDaoEx.findByMeterIdAndTime(meterId, startTime, endTime);
+        // 获取meter下node的id集合
+        MeterEntity meter = meterDao.findById(meterId).get();
+        List<Integer> ids = meter.getNodeSet().stream().collect(ArrayList::new, (list, item) -> {
+            list.add(item.getId());
+        }, ArrayList::addAll);
 
-        System.out.println("meterId" + meterId + "     #time: " + startTime + " ~ " + endTime);
-        System.out.println(results);
+        List<GenPowerEntity> results = genPowerDaoEx.findByNodeIdsAndTime(ids, startTime, endTime);
+
+        log.info("meterId" + meterId + "     #time: " + startTime + " ~ " + endTime);
+        log.info(results.toString());
 
         double total = 0;
         for (GenPowerEntity entity: results) {

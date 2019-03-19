@@ -3,7 +3,7 @@ package com.sk.zl.dao.skdb.impl;
 import com.sk.zl.config.skdb.SkdbProperties;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
-import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
+import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReRunningTimeAnalysis;
@@ -135,16 +135,16 @@ public class PointInfoDaoImpl implements PointInfoDao {
 
 
     @Override
-    public List<PlantRunningTimeAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition) {
+    public List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition) {
         // TODO:待扩充cgi接口
 
-        List<PlantRunningTimeAnalysis> result = new ArrayList<PlantRunningTimeAnalysis>();
-        result.add(new PlantRunningTimeAnalysis("name1", 2, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningTimeAnalysis("name2", 1, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningTimeAnalysis("name3", 1, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningTimeAnalysis("name4", 3, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningTimeAnalysis("name5", 3, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningTimeAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
+        List<PlantRunningAnalysis> result = new ArrayList<PlantRunningAnalysis>();
+        result.add(new PlantRunningAnalysis("name1", 2, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningAnalysis("name2", 1, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningAnalysis("name3", 1, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningAnalysis("name4", 3, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningAnalysis("name5", 3, 3000, new Date(), new Date(), 1));
+        result.add(new PlantRunningAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
 
         return result;
     }

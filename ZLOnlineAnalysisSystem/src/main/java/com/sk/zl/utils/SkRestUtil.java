@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.config.skdb.SkdbProperties;
+import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.result.HttpResult;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.skRest.PointsCpid;
 import com.sk.zl.model.skRest.PointsCpidWrap;
 import com.sk.zl.model.skRest.PointsInfoWrap;
+import com.sk.zl.model.skRest.RunningAnalysisWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,13 @@ public class SkRestUtil {
         String url = skdbProperties.getUri() + "/cgi-bin/nowval.fcg?method=jaction";
 
         return getPointValue(url, pointsCpidWrap);
+    }
+
+    /** 趋势分析 */
+    public List<PlantRunningAnalysis> getRunningAnalysis(RunningAnalysisWrap param) {
+
+        // TODO：
+        return null;
     }
 
     private List<PointInfo> getPointValue(String url, PointsCpidWrap cpidWrap) {

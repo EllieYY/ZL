@@ -7,22 +7,22 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 表码值联合主键
  * @Author : Ellie
  * @Date : 2019/2/26
  */
 public class MeterCodeEntityPK implements Serializable {
-    private int meterId;
+    private int meterNodeId;
     private Date time;
 
-    @Column(name = "meterId", nullable = false)
+    @Column(name = "meterNodeId", nullable = false)
     @Id
-    public int getMeterId() {
-        return meterId;
+    public int getMeterNodeId() {
+        return meterNodeId;
     }
 
-    public void setMeterId(int meterId) {
-        this.meterId = meterId;
+    public void setMeterNodeId(int meterNodeId) {
+        this.meterNodeId = meterNodeId;
     }
 
     @Column(name = "time", nullable = false)
@@ -40,13 +40,13 @@ public class MeterCodeEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeterCodeEntityPK that = (MeterCodeEntityPK) o;
-        return meterId == that.meterId &&
+        return meterNodeId == that.meterNodeId &&
                 Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(meterId, time);
+        return Objects.hash(meterNodeId, time);
     }
 }

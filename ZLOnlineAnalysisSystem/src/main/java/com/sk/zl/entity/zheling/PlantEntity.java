@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 机组基础信息
  * @Author : Ellie
  * @Date : 2019/2/22
  */
@@ -24,7 +24,6 @@ public class PlantEntity {
     private String name;
     private Double capacity;
     private Byte maintaining;
-    @UpdateTimestamp
     private Date updateTime;
     private MeterEntity meter;
 
@@ -79,6 +78,7 @@ public class PlantEntity {
     }
 
     @Basic
+    @UpdateTimestamp
     @Column(name = "updateTime", nullable = false)
     public Date getUpdateTime() {
         return updateTime;

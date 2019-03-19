@@ -1,7 +1,7 @@
 package com.sk.zl.dao.skdb;
 
 import com.sk.zl.model.plant.PlantFaultPointsStat;
-import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
+import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReRunningTimeAnalysis;
@@ -22,5 +22,5 @@ public interface PointInfoDao {
     List<PointInfo> findStationAlarmPoints();
     List<PlantFaultPointsStat> findPlantFaultPoints();
     List<PlantTrend> findPlantTrendByCondition(RePlantTrend condition);
-    List<PlantRunningTimeAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition);
+    List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition);
 }

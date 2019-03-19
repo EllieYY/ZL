@@ -1,6 +1,6 @@
 analog:
   plants:            # 机组模拟量故障点统计原始点
-    - id: 1                         # 机组id
+    - id: 2001                         # 机组id
       points:
         - ZL.01.AI0001
         - ZL.01.AI0002
@@ -77,7 +77,7 @@ analog:
         - ZL.01.AI0299
         - ZL.01.AI0300
         - ZL.01.AI0301
-    - id: 2
+    - id: 2002
       points:
         - ZL.02.AI0001
         - ZL.02.AI0004
@@ -162,7 +162,7 @@ analog:
         - ZL.02.AI0269
         - ZL.02.AI0270
         - ZL.02.AI0275
-    - id: 3
+    - id: 2003
       points:
         - ZL.03.AI0001
         - ZL.03.AI0004
@@ -247,7 +247,7 @@ analog:
         - ZL.03.AI0278
         - ZL.03.AI0279
         - ZL.03.AI0280
-    - id: 4
+    - id: 2004
       points:
         - ZL.04.AI0001
         - ZL.04.AI0009
@@ -340,7 +340,7 @@ analog:
         - ZL.04.AI0273
         - ZL.04.AI0274
         - ZL.04.AI0275
-    - id: 5
+    - id: 2005
       points:
         - ZL.05.AI0007
         - ZL.05.AI0008
@@ -489,7 +489,7 @@ analog:
         - ZL.05.AI0440
         - ZL.05.AI0441
         - ZL.05.AI0442
-    - id: 6
+    - id: 2006
       points:
         - ZL.06.AI0007
         - ZL.06.AI0008

@@ -21,9 +21,9 @@ public class AsyncTaskConfig implements AsyncConfigurer {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
-        threadPool.setCorePoolSize(5);
-        threadPool.setMaxPoolSize(20);
-        threadPool.setQueueCapacity(10);
+        threadPool.setCorePoolSize(20);
+        threadPool.setMaxPoolSize(100);
+        threadPool.setQueueCapacity(50);
         threadPool.setWaitForTasksToCompleteOnShutdown(true);
         threadPool.setAwaitTerminationSeconds(60);
         threadPool.setThreadNamePrefix("SkAsync-");

@@ -23,15 +23,15 @@ public class GenPowerDaoEx {
     @Autowired
     private GenPowerDao genPowerDao;
 
-    public List<GenPowerEntity> findByMeterIdAndTime(List<Integer> meterIds, Date startTime, Date endTime) {
+    public List<GenPowerEntity> findByNodeIdsAndTime(List<Integer> nodeIds, Date startTime, Date endTime) {
         List<GenPowerEntity> genPowerEntities = genPowerDao.findAll(new Specification<GenPowerEntity>() {
             @Override
             public Predicate toPredicate(Root<GenPowerEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate p1 = criteriaBuilder.greaterThanOrEqualTo(root.get("time"), startTime);
                 Predicate p2 = criteriaBuilder.lessThan(root.get("time"), endTime);
 
-                CriteriaBuilder.In<Integer> inIds = criteriaBuilder.in(root.get("meterId"));
-                for (Integer id : meterIds) {
+                CriteriaBuilder.In<Integer> inIds = criteriaBuilder.in(root.get("meterNodeId"));
+                for (Integer id : nodeIds) {
                     inIds.value(id);
                 }
 
@@ -41,23 +41,30 @@ public class GenPowerDaoEx {
         return genPowerEntities;
     }
 
-    public List<GenPowerEntity> findByMeterIdAndTime(int meterId, Date startTime, Date endTime) {
-        List<GenPowerEntity> genPowerEntities = genPowerDao.findAll(new Specification<GenPowerEntity>() {
-            @Override
-            public Predicate toPredicate(Root<GenPowerEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                Predicate p1 = criteriaBuilder.greaterThanOrEqualTo(root.get("time"), startTime);
-                Predicate p2 = criteriaBuilder.lessThan(root.get("time"), endTime);
-                Predicate p3 = criteriaBuilder.equal(root.get("meterId"), meterId);
+//    public List<GenPowerEntity> findByMeterIdAndTime(int meterId, Date startTime, Date endTime) {
+//        List<GenPowerEntity> genPowerEntities = genPowerDao.findAll(new Specification<GenPowerEntity>() {
+//            @Override
+//            public Predicate toPredicate(Root<GenPowerEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+//                Predicate p1 = criteriaBuilder.greaterThanOrEqualTo(root.get("time"), startTime);
+//                Predicate p2 = criteriaBuilder.lessThan(root.get("time"), endTime);
+////                Predicate p3 = criteriaBuilder.equal(root.get("meterId"), meterId);
+//
+//                CriteriaBuilder.In<Integer> inIds = criteriaBuilder.in(root.get("meterNodeId"));
+//                Set<MeterNodeEntity> nodes = meterDao.findById(meterId).get().getNodeSet();
+//                for (MeterNodeEntity node : nodes) {
+//                    inIds.value(node.getId());
+//                }
+//
+//
+//                return criteriaBuilder.and(p1, p2, inIds);
+//            }
+//        });
+//        return genPowerEntities;
+//    }
 
-                return criteriaBuilder.and(p1, p2, p3);
-            }
-        });
-        return genPowerEntities;
-    }
-
-    public GenPowerEntity saveOne(double value, Date time, int meterId) {
+    public GenPowerEntity saveOne(double value, Date time, int meterNodeId) {
         GenPowerEntity entity = new GenPowerEntity();
-        entity.setMeterId(meterId);
+        entity.setMeterNodeId(meterNodeId);
         entity.setTime(time);
         entity.setValue(value);
 

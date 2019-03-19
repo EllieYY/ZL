@@ -13,16 +13,18 @@ import java.util.Date;
  */
 @Data
 public class MeterCode {
-    @JsonProperty("meterId")
-    private int meterId;
+    @JsonProperty("id")
+    private int meterNodeId;
+
     @JsonProperty("time")
     private Date time;
-    @JsonProperty("code")
+
+    @JsonProperty("code24")
     private double code;
 
     public MeterCodeEntity toEntity() {
         MeterCodeEntity entity = new MeterCodeEntity();
-        entity.setMeterId(meterId);
+        entity.setMeterNodeId(meterNodeId);
         entity.setCode(code);
         entity.setTime(time);
         return entity;
@@ -30,7 +32,7 @@ public class MeterCode {
 
     public static MeterCode fromEntity(MeterCodeEntity entity) {
         MeterCode model = new MeterCode();
-        model.meterId = entity.getMeterId();
+        model.meterNodeId = entity.getMeterNodeId();
         model.time = entity.getTime();
         model.code = entity.getCode();
         return model;

@@ -33,12 +33,8 @@ public class HisalarmEntity {
     private short year;
     private short month;
     private long day;
-    private int ipid;
     private String cpid;
-    private byte type;
-    private byte subtype;
     private String message;
-    private short despid;
     private int devid;
     private int alarmno;
     private int kindid;
@@ -127,35 +123,6 @@ public class HisalarmEntity {
         this.day = day;
     }
 
-    @Basic
-    @Column(name = "ipid", nullable = false)
-    public int getIpid() {
-        return ipid;
-    }
-
-    public void setIpid(int ipid) {
-        this.ipid = ipid;
-    }
-
-    @Basic
-    @Column(name = "type", nullable = false)
-    public byte getType() {
-        return type;
-    }
-
-    public void setType(byte type) {
-        this.type = type;
-    }
-
-    @Basic
-    @Column(name = "subtype", nullable = false)
-    public byte getSubtype() {
-        return subtype;
-    }
-
-    public void setSubtype(byte subtype) {
-        this.subtype = subtype;
-    }
 
     @Basic
     @Column(name = "message", nullable = false, length = 255)
@@ -167,15 +134,6 @@ public class HisalarmEntity {
         this.message = message;
     }
 
-    @Basic
-    @Column(name = "despid", nullable = false)
-    public short getDespid() {
-        return despid;
-    }
-
-    public void setDespid(short despid) {
-        this.despid = despid;
-    }
 
     @Basic
     @Column(name = "devid", nullable = false)
@@ -215,10 +173,6 @@ public class HisalarmEntity {
         return id == that.id &&
                 year == that.year &&
                 month == that.month &&
-                ipid == that.ipid &&
-                type == that.type &&
-                subtype == that.subtype &&
-                despid == that.despid &&
                 devid == that.devid &&
                 alarmno == that.alarmno &&
                 kindid == that.kindid &&
@@ -232,29 +186,7 @@ public class HisalarmEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, cpid, stime, etime, year, month, day, ipid, type, subtype, message, despid, devid, alarmno, kindid);
+        return Objects.hash(id, cpid, stime, etime, year, month, day, message, devid, alarmno, kindid);
     }
 
-
-    @Override
-    public String toString() {
-        return "HisalarmEntity{" +
-                "id=" + id +
-                ", stime=" + stime +
-                ", etime=" + etime +
-                ", year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                ", ipid=" + ipid +
-                ", cpid='" + cpid + '\'' +
-                ", type=" + type +
-                ", subtype=" + subtype +
-                ", message='" + message + '\'' +
-                ", despid=" + despid +
-                ", devid=" + devid +
-                ", alarmno=" + alarmno +
-                ", kindid=" + kindid +
-                ", point=" + point +
-                '}';
-    }
 }

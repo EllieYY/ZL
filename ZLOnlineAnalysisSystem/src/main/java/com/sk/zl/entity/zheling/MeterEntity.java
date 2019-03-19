@@ -1,18 +1,25 @@
 package com.sk.zl.entity.zheling;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * @Description : TODO
+ * @Description : 电表小分组
  * @Author : Ellie
  * @Date : 2019/2/26
  */
@@ -23,6 +30,7 @@ public class MeterEntity {
     private String name;
     private Date updateTime;
     private MeterGroupEntity group;
+    private List<MeterNodeEntity> nodeSet = new ArrayList<MeterNodeEntity>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupId")
@@ -32,6 +40,16 @@ public class MeterEntity {
 
     public void setGroup(MeterGroupEntity group) {
         this.group = group;
+    }
+
+    @OneToMany(mappedBy = "meter", fetch = FetchType.EAGER)
+    @OrderBy("id ASC")
+    public List<MeterNodeEntity> getNodeSet() {
+        return nodeSet;
+    }
+
+    public void setNodeSet(List<MeterNodeEntity> nodeSet) {
+        this.nodeSet = nodeSet;
     }
 
     @Id

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 每日电量
  * @Author : Ellie
  * @Date : 2019/2/22
  */
@@ -20,7 +20,7 @@ import java.util.Objects;
 public class GenPowerEntity {
     private Date time;
     private Double value;
-    private int meterId;
+    private int meterNodeId;
 
     @Id
     @Column(name = "time", nullable = false)
@@ -43,21 +43,22 @@ public class GenPowerEntity {
     }
 
     @Id
-    @Column(name = "meterId", nullable = false)
-    public int getMeterId() {
-        return meterId;
+    @Column(name = "meterNodeId", nullable = false)
+    public int getMeterNodeId() {
+        return meterNodeId;
     }
 
-    public void setMeterId(int meterId) {
-        this.meterId = meterId;
+    public void setMeterNodeId(int meterNodeId) {
+        this.meterNodeId = meterNodeId;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenPowerEntity that = (GenPowerEntity) o;
-        return meterId == that.meterId &&
+        return meterNodeId == that.meterNodeId &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(value, that.value);
     }
@@ -65,7 +66,7 @@ public class GenPowerEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(time, value, meterId);
+        return Objects.hash(time, value, meterNodeId);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class GenPowerEntity {
         return "GenPowerEntity{" +
                 "time=" + time +
                 ", value=" + value +
-                ", meterId=" + meterId +
+                ", meterNodeId=" + meterNodeId +
                 '}';
     }
 }

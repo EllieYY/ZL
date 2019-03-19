@@ -24,14 +24,14 @@ public class MeterCodeDaoEx {
     @Resource
     MeterCodeDao meterCodeDao;
 
-    public List<MeterCodeEntity> findByMeterAndTimeDec(int meterId, Date startTime, Date endTime) {
+    public List<MeterCodeEntity> findByMeterAndTimeDec(int meterNodeId, Date startTime, Date endTime) {
         List<MeterCodeEntity> entities = meterCodeDao.findAll(new Specification<MeterCodeEntity>() {
             @Override
             public Predicate toPredicate(Root<MeterCodeEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("time"), startTime));
                 predicates.add(criteriaBuilder.lessThan(root.get("time"), endTime));
-                predicates.add(criteriaBuilder.equal(root.get("meterId"), meterId));
+                predicates.add(criteriaBuilder.equal(root.get("meterNodeId"), meterNodeId));
 
                 Predicate[] pred = new Predicate[predicates.size()];
                 criteriaQuery.where(criteriaBuilder.and(predicates.toArray(pred)));

@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @Description : TODO
+ * @Description : 电表倍率
  * @Author : Ellie
  * @Date : 2019/2/25
  */

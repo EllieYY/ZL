@@ -2,39 +2,27 @@ package com.sk.zl.service.impl;
 
 import com.sk.zl.aop.excption.DataDaoException;
 import com.sk.zl.aop.excption.ServiceException;
-import com.sk.zl.config.skdb.AnalogPoints;
-import com.sk.zl.config.skdb.PlantsAnalog;
 import com.sk.zl.config.skdb.StationConfig;
 import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
 import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
-import com.sk.zl.dao.meter.impl.MeterCodeDaoEx;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.zheling.GenPowerEntity;
 import com.sk.zl.entity.zheling.LoginLogEntity;
-import com.sk.zl.entity.zheling.MeterCodeEntity;
 import com.sk.zl.entity.zheling.MeterEntity;
 import com.sk.zl.entity.zheling.MeterGroupEntity;
 import com.sk.zl.entity.zheling.MeterRateEntity;
 import com.sk.zl.entity.zheling.PlanPowerEntity;
 import com.sk.zl.model.meter.MeterInfo;
-import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterRate;
-import com.sk.zl.model.plant.PlantFaultPointsStat;
-import com.sk.zl.model.plant.PlantRunningTimeAnalysis;
-import com.sk.zl.model.plant.PlantTrend;
-import com.sk.zl.model.request.RePlantAnalogs;
-import com.sk.zl.model.request.RePlantTrend;
-import com.sk.zl.model.request.ReRunningTimeAnalysis;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
 import com.sk.zl.model.station.StationAlarmNum;
-import com.sk.zl.service.AsyncTaskService;
 import com.sk.zl.utils.DateUtil;
 import com.sk.zl.model.station.LoginLog;
 import com.sk.zl.model.station.PlanPower;
@@ -57,30 +45,36 @@ import java.util.List;
  */
 @Service
 public class StationServiceImpl implements StationService {
-    @Resource
-    LoginLogDao loginLogDao;
-    @Resource
-    MeterDao meterDao;
-    @Resource
-    MeterRateDao meterRateDao;
-    @Resource
-    PlanPowerDao planPowerDao;
-    @Resource
-    PointInfoDao pointInfoDao;
-    @Resource
-    GenPowerDaoEx genPowerDaoEx;
-    @Resource
-    MeterGroupDao meterGroupDao;
-    @Resource
-    MeterCodeDaoEx meterCodeDaoEx;
-    @Resource
-    StationConfig stationConfig;
-    @Resource
-    PlantsAnalog plantsAnalog;
-    @Autowired
-    AsyncTaskService taskService;
-
     private Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private LoginLogDao loginLogDao;
+
+    @Resource
+    private MeterDao meterDao;
+
+    @Resource
+    private MeterRateDao meterRateDao;
+
+    @Resource
+    private PlanPowerDao planPowerDao;
+
+    @Resource
+    private PointInfoDao pointInfoDao;
+
+    @Resource
+    private GenPowerDaoEx genPowerDaoEx;
+
+    @Resource
+    private MeterGroupDao meterGroupDao;
+
+    @Resource
+    private StationConfig stationConfig;
+
+    @Autowired
+    private AsyncTaskService taskService;
+
+
 
     @Override
     public int addLog(LoginLog log)  {
@@ -405,12 +399,17 @@ public class StationServiceImpl implements StationService {
 
     private double calculateGenPowerByGroup(int groupId, Date startTime, Date endTime) {
         MeterGroupEntity group = meterGroupDao.findById(groupId);
-        List<Integer> metersId = new ArrayList<>();
+        List<Integer> nodeIds = new ArrayList<>();
         for (MeterEntity meter: group.getMeterSet()) {
-            metersId.add(meter.getId());
+            // 获取meter下node的id集合
+            List<Integer> ids = meter.getNodeSet().stream().collect(ArrayList::new, (list, item) -> {
+                list.add(item.getId());
+            }, ArrayList::addAll);
+
+            nodeIds.addAll(ids);
         }
 
-        List<GenPowerEntity> results = genPowerDaoEx.findByMeterIdAndTime(metersId, startTime, endTime);
+        List<GenPowerEntity> results = genPowerDaoEx.findByNodeIdsAndTime(nodeIds, startTime, endTime);
 
         double total = 0;
         for (GenPowerEntity entity: results) {
@@ -448,77 +447,5 @@ public class StationServiceImpl implements StationService {
         }
 
         return monthlyCapacity;
-    }
-
-    @Override
-    public List<GenPowerEntity> entryMeterCode(List<MeterCode> models) {
-        //#1 存到数据库
-        List<MeterCodeEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.toEntity());
-        }, ArrayList::addAll);
-        meterCodeDaoEx.saveAll(entities);
-
-
-        //#2 计算电量——任务线程
-        return taskService.meterCodeUpdate(models);
-    }
-
-    @Override
-    public List<PlantFaultPointsStat> getPlantFaultsStat() {
-        return pointInfoDao.findPlantFaultPoints();
-    }
-
-    @Override
-    public List<String> getAnalogPointsById(RePlantAnalogs rePlantAnalogs) {
-        /** 计算分页范围 */
-        int pageNo = rePlantAnalogs.getPageNo();
-        pageNo = pageNo < 1 ? 1 : pageNo;
-        int pageRows = rePlantAnalogs.getPageRows();
-        pageRows = pageRows < 1 ? 5 : pageRows;
-
-        int startPage = (pageNo - 1) * pageRows;
-        int endPage = pageNo * pageRows;
-
-        /** 按分页范围添加内容
-         * 将所有内容添加到list中，然后再求子集这种方式比较消耗空间，
-         * 在添加集合到结果集的时候进行判断，只添加处在分页范围内的结果 */
-        List<String> result = new ArrayList<String>();
-        int id = rePlantAnalogs.getId();
-        int startSize = 0;
-        int endSize = 0;
-        for (AnalogPoints plant: plantsAnalog.getPlants()) {
-            if (startSize > endPage) {
-                break;
-            }
-
-            if (plant.getId() == id || id == 0) {
-                List<String> cpids = plant.getPoints();
-                endSize = startSize + cpids.size();
-
-                /** 求当前集合与分页集合范围的交集 */
-                int startIdx = startPage > startSize ? startPage : startSize;
-                int endIdx = endPage < endSize ? endPage : endSize;
-
-                if (startIdx >= endIdx) {
-                    startIdx = 0;
-                    endIdx = 0;
-                }
-
-                result.addAll(cpids.subList(startIdx, endIdx));
-                startSize = endSize;
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public List<PlantTrend> getPlantTrend(RePlantTrend condition) {
-        return pointInfoDao.findPlantTrendByCondition(condition);
-    }
-
-    @Override
-    public List<PlantRunningTimeAnalysis> getRunningTimeAnalysis(ReRunningTimeAnalysis condition) {
-        return pointInfoDao.findRunningTimeInfoByCondition(condition);
     }
 }

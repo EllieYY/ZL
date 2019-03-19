@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 每日电量联合主键
  * @Author : Ellie
  * @Date : 2019/2/22
  */
 public class GenPowerEntityPK implements Serializable {
     private Date time;
-    private int meterId;
+    private int meterNodeId;
 
     @Column(name = "time", nullable = false)
     @Id
@@ -25,28 +25,29 @@ public class GenPowerEntityPK implements Serializable {
         this.time = time;
     }
 
-    @Column(name = "meterId", nullable = false)
+    @Column(name = "meterNodeId", nullable = false)
     @Id
-    public int getMeterId() {
-        return meterId;
+    public int getMeterNodeId() {
+        return meterNodeId;
     }
 
-    public void setMeterId(int meterId) {
-        this.meterId = meterId;
+    public void setMeterNodeId(int meterNodeId) {
+        this.meterNodeId = meterNodeId;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenPowerEntityPK that = (GenPowerEntityPK) o;
-        return meterId == that.meterId &&
+        return meterNodeId == that.meterNodeId &&
                 Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(time, meterId);
+        return Objects.hash(time, meterNodeId);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Description : TODO
+ * @Description : 电表小分组倍率
  * @Author : Ellie
  * @Date : 2019/2/26
  */
