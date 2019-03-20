@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.zl.aop.excption.ServiceException;
 import com.sk.zl.config.skdb.SkdbProperties;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
+import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.result.HttpResult;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.skRest.PointsCpid;
 import com.sk.zl.model.skRest.PointsCpidWrap;
 import com.sk.zl.model.skRest.PointsInfoWrap;
-import com.sk.zl.model.skRest.RunningAnalysisWrap;
+import com.sk.zl.model.skRest.DataAnalysisParam;
+import com.sk.zl.model.skRest.RunningAnalysisResult;
+import com.sk.zl.model.skRest.TrendAnalysisResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,7 @@ public class SkRestUtil {
     private final int RETRY_TIME = 2;
     private boolean identification = false;
 
+    /** 获取当前值 */
     public PointInfo getNowValue(String cpid) {
         List<PointInfo> points = getNowValue(Arrays.asList(cpid));
         if (points.size() < 1) {
@@ -66,32 +70,97 @@ public class SkRestUtil {
 
         String url = skdbProperties.getUri() + "/cgi-bin/nowval.fcg?method=jaction";
 
-        return getPointValue(url, pointsCpidWrap);
-    }
-
-    /** 趋势分析 */
-    public List<PlantRunningAnalysis> getRunningAnalysis(RunningAnalysisWrap param) {
-
-        // TODO：
-        return null;
-    }
-
-    private List<PointInfo> getPointValue(String url, PointsCpidWrap cpidWrap) {
-        //#1 组post的body部分
         ObjectMapper mapper = new ObjectMapper();
         String ids = "";
         try {
-            ids = mapper.writeValueAsString(cpidWrap).toString();
+            ids = mapper.writeValueAsString(pointsCpidWrap).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //#2 对body进行压缩
-        byte[] content = ("any=" + ids).getBytes();
+        HttpResult result = packagePost(url, ids);
+
+        try {
+            PointsInfoWrap pts = mapper.readValue(result.getBody(), PointsInfoWrap.class);
+            int ret = pts.getIret();
+            if (ret == 0) {
+                return pts.getPointInfoList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
+    /** 开停机分析 */
+    public List<PlantRunningAnalysis> getRunningAnalysis(DataAnalysisParam param) {
+        String url = skdbProperties.getUri() + "/cgi-bin/zl_startstop.rsp?method=jaction";
+
+        //#1 组装参数
+        ObjectMapper mapper = new ObjectMapper();
+        String paramStr = "";
+        try {
+            paramStr = mapper.writeValueAsString(param).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //# post
+        HttpResult result = packagePost(url, paramStr);
+
+        //# 解析结果
+        try {
+            RunningAnalysisResult pts = mapper.readValue(result.getBody(), RunningAnalysisResult.class);
+            int ret = pts.getIret();
+            if (ret == 0) {
+                return pts.getData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
+    /** 趋势分析 */
+    public List<PlantTrend> getTrenAnalysis(DataAnalysisParam param) {
+        String url = skdbProperties.getUri() + "/cgi-bin/zl_trend.rsp?method=jaction";
+
+        //#1 组装参数
+        ObjectMapper mapper = new ObjectMapper();
+        String paramStr = "";
+        try {
+            paramStr = mapper.writeValueAsString(param).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //# post
+        HttpResult result = packagePost(url, paramStr);
+
+        //# 解析结果
+        try {
+            TrendAnalysisResult pts = mapper.readValue(result.getBody(), TrendAnalysisResult.class);
+            int ret = pts.getIret();
+            if (ret == 0) {
+                return pts.getData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
+    /** 参数打包发送 */
+    private HttpResult packagePost(String url, String param) {
+        //#1 对body进行压缩
+        byte[] content = ("any=" + param).getBytes();
         byte[] requestContent = compress(content);
         url += ("&compress=" + content.length);
 
-        //#3 发送post请求
+        //#2 发送post请求+重试逻辑
         for (int i = 0; i < RETRY_TIME; i++) {
             // 用户认证
             if (!identification) {
@@ -111,18 +180,9 @@ public class SkRestUtil {
                 throw new ServiceException("rest template error code:" + result.getCode());
             }
 
-            try {
-                PointsInfoWrap pts = mapper.readValue(result.getBody(), PointsInfoWrap.class);
-                int ret = pts.getIret();
-                if (ret != 0) {
-                    break;
-                }
-                return pts.getPointInfoList();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            return result;
         }
-        return new ArrayList<>();
+        return null;
     }
 
 

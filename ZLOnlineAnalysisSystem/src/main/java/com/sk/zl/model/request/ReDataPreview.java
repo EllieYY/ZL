@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description : 一览表查询和报警查询共用参数
@@ -12,9 +13,9 @@ import java.util.Date;
  */
 @Data
 public class ReDataPreview {
-    /** 机组id,值为0表示所有机组 */
+    /** 要查询的机组id列表 */
     @JsonProperty("id")
-    private int id;
+    private List<Integer> ids;
 
     /** 数据类型：0-全部 1-事故 2-故障 3-状变 */
     /** 数据类型：0-全部 1-上限 2-下限 */

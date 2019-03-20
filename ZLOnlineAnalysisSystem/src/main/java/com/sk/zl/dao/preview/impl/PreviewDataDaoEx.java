@@ -5,6 +5,7 @@ import com.sk.zl.dao.preview.HisalarmDao;
 import com.sk.zl.entity.skalarm.HisalarmEntity;
 import com.sk.zl.entity.skalarm.KindEntity;
 import com.sk.zl.model.meter.MeterRate;
+import com.sk.zl.model.plant.PagePlantDataPreview;
 import com.sk.zl.model.plant.PlantDataPreview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,9 +31,9 @@ public class PreviewDataDaoEx {
     @Autowired
     HisalarmDao hisalarmDao;
 
-    public List<PlantDataPreview> getPlantData(int plantId, int dataType, String keyword,
-                                               Date startTime, Date endTime,
-                                               Pageable pageable) {
+    public PagePlantDataPreview getPlantData(List<Integer> plantIds, int dataType, String keyword,
+                                             Date startTime, Date endTime,
+                                             Pageable pageable) {
 
         Specification<HisalarmEntity> specification = new Specification<HisalarmEntity>() {
             @Override
@@ -40,9 +41,11 @@ public class PreviewDataDaoEx {
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 predicates.add(criteriaBuilder.between(root.get("stime"), startTime, endTime));
 
-                if (plantId != 0) {
-                    predicates.add(criteriaBuilder.equal(root.get("devid"), plantId));
+                CriteriaBuilder.In<Integer> inIds = criteriaBuilder.in(root.get("devid"));
+                for (Integer id : plantIds) {
+                    inIds.value(id);
                 }
+                predicates.add(inIds);
 
                 if (dataType != 0) {
                     predicates.add(criteriaBuilder.equal(root.get("kindid"), dataType));
@@ -64,6 +67,9 @@ public class PreviewDataDaoEx {
             list.add(PlantDataPreview.fromEntity(item));
         }, ArrayList::addAll);
 
-        return models;
+        PagePlantDataPreview result = new PagePlantDataPreview();
+        result.setData(models);
+        result.setTotalNum(page.getTotalElements());
+        return result;
     }
 }

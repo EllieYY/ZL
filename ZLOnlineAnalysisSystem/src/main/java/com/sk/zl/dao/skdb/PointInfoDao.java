@@ -4,7 +4,7 @@ import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.RePlantTrend;
-import com.sk.zl.model.request.ReRunningTimeAnalysis;
+import com.sk.zl.model.request.ReDataAnalysis;
 import com.sk.zl.model.skRest.PointInfo;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +21,6 @@ public interface PointInfoDao {
     List<PointInfo> findPlantSnapshotPointsById(int plantId);
     List<PointInfo> findStationAlarmPoints();
     List<PlantFaultPointsStat> findPlantFaultPoints();
-    List<PlantTrend> findPlantTrendByCondition(RePlantTrend condition);
-    List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition);
+    List<PlantTrend> findPlantTrendByCondition(ReDataAnalysis condition);
+    List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReDataAnalysis condition);
 }

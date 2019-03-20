@@ -2,6 +2,7 @@ package com.sk.zl.model.plant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Description : 机组趋势分析信息
@@ -9,6 +10,7 @@ import lombok.Data;
  * @Date : 2019/3/7
  */
 @Data
+@NoArgsConstructor
 public class PlantTrend {
     @JsonProperty("name")
     private String name;
@@ -27,8 +29,5 @@ public class PlantTrend {
         this.faultNum = faultNum;
         this.runNum = runNum;
         this.runTime = runTime;
-    }
-
-    public PlantTrend() {
     }
 }

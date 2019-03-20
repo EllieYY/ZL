@@ -6,10 +6,11 @@ import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.RePlantTrend;
-import com.sk.zl.model.request.ReRunningTimeAnalysis;
+import com.sk.zl.model.request.ReDataAnalysis;
 import com.sk.zl.model.skRest.PlantFaultStatCpid;
 import com.sk.zl.model.skRest.PlantSnapshotCpid;
 import com.sk.zl.model.skRest.PointInfo;
+import com.sk.zl.model.skRest.DataAnalysisParam;
 import com.sk.zl.utils.SkRestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -119,33 +119,42 @@ public class PointInfoDaoImpl implements PointInfoDao {
 
 
     @Override
-    public List<PlantTrend> findPlantTrendByCondition(RePlantTrend condition) {
-        // TODO:待扩充cgi接口
-        List<PlantTrend> result = new ArrayList<PlantTrend>();
-        result.add(new PlantTrend("name1", 2, 3, 1));
-        result.add(new PlantTrend("name2", 2, 3, 1));
-        result.add(new PlantTrend("name3", 2, 3, 1));
-        result.add(new PlantTrend("name4", 2, 3, 1));
-        result.add(new PlantTrend("name5", 2, 3, 1));
-        result.add(new PlantTrend("name6", 2, 3, 1));
-        result.add(new PlantTrend("name7", 2, 3, 1));
+    public List<PlantTrend> findPlantTrendByCondition(ReDataAnalysis condition) {
+        DataAnalysisParam param = new DataAnalysisParam();
+        param.setParam(condition);
+        return skRestUtil.getTrenAnalysis(param);
 
-        return result;
+//        // TODO:待扩充cgi接口
+//        List<PlantTrend> result = new ArrayList<PlantTrend>();
+//        result.add(new PlantTrend("name1", 2, 3, 1));
+//        result.add(new PlantTrend("name2", 2, 3, 1));
+//        result.add(new PlantTrend("name3", 2, 3, 1));
+//        result.add(new PlantTrend("name4", 2, 3, 1));
+//        result.add(new PlantTrend("name5", 2, 3, 1));
+//        result.add(new PlantTrend("name6", 2, 3, 1));
+//        result.add(new PlantTrend("name7", 2, 3, 1));
+//
+//        return result;
     }
 
 
     @Override
-    public List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReRunningTimeAnalysis condition) {
-        // TODO:待扩充cgi接口
+    public List<PlantRunningAnalysis> findRunningTimeInfoByCondition(ReDataAnalysis condition) {
+        log.info(condition.toString());
 
-        List<PlantRunningAnalysis> result = new ArrayList<PlantRunningAnalysis>();
-        result.add(new PlantRunningAnalysis("name1", 2, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningAnalysis("name2", 1, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningAnalysis("name3", 1, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningAnalysis("name4", 3, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningAnalysis("name5", 3, 3000, new Date(), new Date(), 1));
-        result.add(new PlantRunningAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
+        DataAnalysisParam param = new DataAnalysisParam();
+        param.setParam(condition);
 
-        return result;
+        return skRestUtil.getRunningAnalysis(param);
+
+//        List<PlantRunningAnalysis> result = new ArrayList<PlantRunningAnalysis>();
+//        result.add(new PlantRunningAnalysis("name1", 2, 3000, new Date(), new Date(), 1));
+//        result.add(new PlantRunningAnalysis("name2", 1, 3000, new Date(), new Date(), 1));
+//        result.add(new PlantRunningAnalysis("name3", 1, 3000, new Date(), new Date(), 1));
+//        result.add(new PlantRunningAnalysis("name4", 3, 3000, new Date(), new Date(), 1));
+//        result.add(new PlantRunningAnalysis("name5", 3, 3000, new Date(), new Date(), 1));
+//        result.add(new PlantRunningAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
+//
+//        return result;
     }
 }

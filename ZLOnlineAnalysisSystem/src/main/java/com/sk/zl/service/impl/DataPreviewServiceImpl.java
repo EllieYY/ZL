@@ -4,14 +4,15 @@ import com.sk.zl.config.skdb.AnalogPoints;
 import com.sk.zl.config.skdb.PlantsAnalog;
 import com.sk.zl.dao.preview.impl.PreviewDataDaoEx;
 import com.sk.zl.dao.skdb.PointInfoDao;
-import com.sk.zl.model.plant.PlantDataPreview;
+import com.sk.zl.model.plant.PagePlantAnalogPoints;
+import com.sk.zl.model.plant.PagePlantDataPreview;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.ReDataPreview;
 import com.sk.zl.model.request.RePlantAnalogs;
 import com.sk.zl.model.request.RePlantTrend;
-import com.sk.zl.model.request.ReRunningTimeAnalysis;
+import com.sk.zl.model.request.ReDataAnalysis;
 import com.sk.zl.service.DataPreviewService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public class DataPreviewServiceImpl implements DataPreviewService {
     private PointInfoDao pointInfoDao;
 
     @Override
-    public List<PlantDataPreview> getWarningData(ReDataPreview condition) {
+    public PagePlantDataPreview getWarningData(ReDataPreview condition) {
         int pageNo = condition.getPageNo();
         int pageRows = condition.getPageRows();
         pageNo = pageNo < 0 ? 0 : pageNo - 1;
@@ -48,7 +49,7 @@ public class DataPreviewServiceImpl implements DataPreviewService {
         System.out.println(condition);
 
         return previewDataDaoEx.getPlantData(
-                condition.getId(),
+                condition.getIds(),
                 condition.getDataType(),
                 condition.getKeyword(),
                 condition.getStartTime(),
@@ -62,7 +63,7 @@ public class DataPreviewServiceImpl implements DataPreviewService {
     }
 
     @Override
-    public List<String> getAnalogPointsById(RePlantAnalogs rePlantAnalogs) {
+    public PagePlantAnalogPoints getAnalogPointsById(RePlantAnalogs rePlantAnalogs) {
         /** 计算分页范围 */
         int pageNo = rePlantAnalogs.getPageNo();
         pageNo = pageNo < 1 ? 1 : pageNo;
@@ -102,16 +103,20 @@ public class DataPreviewServiceImpl implements DataPreviewService {
             }
         }
 
-        return result;
+        PagePlantAnalogPoints page = new PagePlantAnalogPoints();
+        page.setCpids(result);
+        page.setTotalNum(plantsAnalog.getPlants().size());
+
+        return page;
     }
 
     @Override
-    public List<PlantTrend> getPlantTrend(RePlantTrend condition) {
+    public List<PlantTrend> getPlantTrend(ReDataAnalysis condition) {
         return pointInfoDao.findPlantTrendByCondition(condition);
     }
 
     @Override
-    public List<PlantRunningAnalysis> getRunningTimeAnalysis(ReRunningTimeAnalysis condition) {
+    public List<PlantRunningAnalysis> getRunningTimeAnalysis(ReDataAnalysis condition) {
         return pointInfoDao.findRunningTimeInfoByCondition(condition);
     }
 }

@@ -1,7 +1,9 @@
 package com.sk.zl.controller;
 
+import com.sk.zl.model.plant.PagePlantDataPreview;
 import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.request.ReDataPreview;
+import com.sk.zl.model.result.RespCode;
 import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.service.DataPreviewService;
 import com.sk.zl.utils.ResultBeanUtil;
@@ -27,13 +29,19 @@ public class DataQueryController {
 
     @ApiOperation("一览表查询")
     @RequestMapping(value = "/points/view")
-    public ResultBean<List<PlantDataPreview>> plantDataPreview(@RequestBody ReDataPreview reDataPreview) {
+    public ResultBean<PagePlantDataPreview> plantDataPreview(@RequestBody ReDataPreview reDataPreview) {
+        if (reDataPreview.getIds().size() == 0) {
+            return ResultBeanUtil.makeResp(RespCode.PARAM_ERR.getCode(), "设备id为空。");
+        }
         return ResultBeanUtil.makeOkResp(dataPreviewService.getWarningData(reDataPreview));
     }
 
     @ApiOperation("报警查询")
     @RequestMapping(value = "/points/alarm")
-    public ResultBean<List<PlantDataPreview>> warningDataPreview(@RequestBody ReDataPreview reDataPreview) {
+    public ResultBean<PagePlantDataPreview> warningDataPreview(@RequestBody ReDataPreview reDataPreview) {
+        if (reDataPreview.getIds().size() == 0) {
+            return ResultBeanUtil.makeResp(RespCode.PARAM_ERR.getCode(), "设备id为空。");
+        }
         return ResultBeanUtil.makeOkResp(dataPreviewService.getWarningData(reDataPreview));
     }
 }

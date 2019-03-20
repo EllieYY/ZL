@@ -2,6 +2,7 @@ package com.sk.zl.model.plant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @Date : 2019/3/8
  */
 @Data
+@NoArgsConstructor
 public class PlantRunningAnalysis {
     /** 机组名称 */
     @JsonProperty("name")
