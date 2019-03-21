@@ -1,6 +1,7 @@
 package com.sk.zl.model.plant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sk.zl.model.skRest.PointDetail;
 import lombok.Data;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public class PagePlantAnalogPoints {
     private long totalNum;
 
     @JsonProperty("data")
-    private List<String> cpids;
+    private List<PointDetail> data;
 }

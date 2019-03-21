@@ -125,9 +125,15 @@ public class PlantServiceImpl implements PlantService {
         } catch (Exception e) {
             throw new ServiceException(e.toString());
         }
+
+        Date preMonth = DateUtil.dateAddMonths(monthBegin,-1);
         for (PlantEntity plant : plants) {
             int meterId = plant.getMeter().getId();
-            double value = calculateGenPowerByMeter(meterId, monthBegin, today) / plant.getCapacity();
+            double power = calculateGenPowerByMeter(meterId, preMonth, monthBegin);
+            double capacity = plant.getCapacity();
+
+            double value = power / capacity;
+
             plantList.add(new PlantEffectiveHours(plant.getName(), value));
         }
         return plantList;

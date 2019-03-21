@@ -7,6 +7,8 @@ import com.sk.zl.config.skdb.SkdbProperties;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.result.HttpResult;
+import com.sk.zl.model.skRest.PointDetail;
+import com.sk.zl.model.skRest.PointDetailWrap;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.skRest.PointsCpid;
 import com.sk.zl.model.skRest.PointsCpidWrap;
@@ -153,8 +155,46 @@ public class SkRestUtil {
         return new ArrayList<>();
     }
 
+    /** 测点分析详情 */
+    public List<PointDetail> getPointDetails(List<String> cpids) {
+        PointsCpid points = new PointsCpid();
+        points.setCpids(cpids);
+
+        PointsCpidWrap pointsCpidWrap = new PointsCpidWrap();
+        pointsCpidWrap.setPoints(points);
+
+        String url = skdbProperties.getUri() + "/cgi-bin/nowvalstat.rsp?method=jaction";
+
+        ObjectMapper mapper = new ObjectMapper();
+        String ids = "";
+        try {
+            ids = mapper.writeValueAsString(pointsCpidWrap).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpResult result = packagePost(url, ids);
+
+        log.info(result.getBody());
+
+        try {
+            PointDetailWrap pts = mapper.readValue(result.getBody(), PointDetailWrap.class);
+            int ret = pts.getIret();
+            if (ret == 0) {
+                return pts.getData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
     /** 参数打包发送 */
     private HttpResult packagePost(String url, String param) {
+
+        System.out.println(param);
+
         //#1 对body进行压缩
         byte[] content = ("any=" + param).getBytes();
         byte[] requestContent = compress(content);

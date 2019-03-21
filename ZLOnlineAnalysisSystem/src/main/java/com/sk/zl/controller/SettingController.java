@@ -93,7 +93,7 @@ public class SettingController {
             int meterId = reMeterRate.getMeterId();
             return ResultBeanUtil.makeOkResp(stationService.getMeterRate(meterId));
 
-        } else if (type.equals("add") || type.equals("update")) {
+        } else if (type.equals("add")) {
             /** 添加、更新电表倍率 */
             int meterId = reMeterRate.getMeterId();
             List<MeterRate> meterRates = reMeterRate.getRates();
@@ -102,6 +102,14 @@ public class SettingController {
                 return ResultBeanUtil.makeResp(RespCode.METER_RATE_ERR, conflictRates);
             }
             return ResultBeanUtil.makeOkResp();
+        } else if (type.equals("update")) {
+            List<MeterRate> original = reMeterRate.getRates();
+            List<MeterRate> rates = stationService.updateMeterRate(original);
+            if (rates.size() != 0) {
+                return ResultBeanUtil.makeResp(RespCode.METER_RATE_ERR, rates);
+            }
+            return ResultBeanUtil.makeOkResp(rates);
+
         } else if (type.equals("delete")) {
             /** 删除电表倍率 */
             List<MeterRate> meterRates = reMeterRate.getRates();

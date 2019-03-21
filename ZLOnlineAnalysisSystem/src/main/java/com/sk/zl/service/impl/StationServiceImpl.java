@@ -139,8 +139,15 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRaters) {
-        return checkRateConflictsAndUpdate(meterId, meterRaters);
+    public List<MeterRate> updateMeterRate(List<MeterRate> meterRaters) {
+        if (meterRaters.size() == 0) {
+            return new ArrayList<MeterRate>();
+        }
+
+        int meterId = meterRateDao.findById(meterRaters.get(0).getId()).getMeter().getId();
+        List<MeterRate> conflictRates = checkRateConflictsAndUpdate(meterId, meterRaters);
+
+        return conflictRates;
     }
 
     @Override

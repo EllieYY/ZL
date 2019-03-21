@@ -63,7 +63,7 @@ public class DateSection implements Comparable<DateSection> {
         // 求交集
         DateSection union = aSection.union(bSection);
         if (null == union) {
-            diffSet.add(union);
+            diffSet.add(aSection);
             return diffSet;
         }
 

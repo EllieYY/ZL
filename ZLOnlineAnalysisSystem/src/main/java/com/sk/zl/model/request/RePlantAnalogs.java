@@ -14,6 +14,10 @@ public class RePlantAnalogs {
     @JsonProperty("id")
     private int id;
 
+    /** type = 1 表示只看报警 */
+    @JsonProperty("type")
+    private int warnOn;
+
     /** 当前页数 */
     @JsonProperty("pageNo")
     private int pageNo;

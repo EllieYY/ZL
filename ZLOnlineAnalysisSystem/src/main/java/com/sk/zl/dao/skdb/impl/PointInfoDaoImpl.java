@@ -9,6 +9,7 @@ import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReDataAnalysis;
 import com.sk.zl.model.skRest.PlantFaultStatCpid;
 import com.sk.zl.model.skRest.PlantSnapshotCpid;
+import com.sk.zl.model.skRest.PointDetail;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.skRest.DataAnalysisParam;
 import com.sk.zl.utils.SkRestUtil;
@@ -156,5 +157,11 @@ public class PointInfoDaoImpl implements PointInfoDao {
 //        result.add(new PlantRunningAnalysis("name6", 3, 3000, new Date(), new Date(), 1));
 //
 //        return result;
+    }
+
+
+    @Override
+    public List<PointDetail> getPointDetails(List<String> cpids) {
+        return skRestUtil.getPointDetails(cpids);
     }
 }

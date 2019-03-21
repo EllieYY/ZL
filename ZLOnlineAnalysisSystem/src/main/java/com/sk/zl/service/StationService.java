@@ -31,7 +31,7 @@ public interface StationService {
     List<MeterInfo> getMeterInfo() ;
     List<MeterRate> getMeterRate(int meterId) ;
     List<MeterRate> addMeterRate(int meterId, List<MeterRate> rates) ;
-    List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRates) ;
+    List<MeterRate> updateMeterRate(List<MeterRate> meterRates) ;
     List<MeterRate> deleteMeterRate(List<MeterRate> meterRates) ;
 
     /** 全厂报警条数 */

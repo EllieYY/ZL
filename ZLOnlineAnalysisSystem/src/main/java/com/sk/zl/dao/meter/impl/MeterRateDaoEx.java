@@ -41,7 +41,7 @@ public class MeterRateDaoEx {
         });
 
         if (rateEntities.size() < 1) {
-            return Double.MAX_VALUE;
+            return 0;
         }
 
         return rateEntities.get(0).getRate();
