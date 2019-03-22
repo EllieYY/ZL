@@ -1,5 +1,6 @@
 package com.sk.zl.service.impl;
 
+import com.sk.zl.dao.meter.MeterCodeDao;
 import com.sk.zl.dao.meter.MeterDao;
 import com.sk.zl.dao.meter.impl.MeterCodeDaoEx;
 import com.sk.zl.dao.meter.impl.MeterRateDaoEx;
@@ -51,6 +52,7 @@ public class ReportFormServiceImpl implements ReportFormService {
         List<MeterCodeEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
             list.add(item.toEntity());
         }, ArrayList::addAll);
+
         meterCodeDaoEx.saveAll(entities);
 
         //#2 计算电量——任务线程

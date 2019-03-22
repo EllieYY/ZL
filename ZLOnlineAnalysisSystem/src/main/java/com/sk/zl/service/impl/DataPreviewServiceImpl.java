@@ -6,6 +6,7 @@ import com.sk.zl.dao.preview.impl.PreviewDataDaoEx;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.model.plant.PagePlantAnalogPoints;
 import com.sk.zl.model.plant.PagePlantDataPreview;
+import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
@@ -52,7 +53,7 @@ public class DataPreviewServiceImpl implements DataPreviewService {
 
         return previewDataDaoEx.getPlantData(
                 condition.getIds(),
-                condition.getDataType(),
+                condition.getDataTypes(),
                 condition.getKeyword(),
                 condition.getStartTime(),
                 condition.getEndTime(),
@@ -75,7 +76,8 @@ public class DataPreviewServiceImpl implements DataPreviewService {
         int startPage = (pageNo - 1) * pageRows;
         int endPage = pageNo * pageRows;
 
-        int total = plantsAnalog.getPlants().size();
+        int total = 0;
+
         /** 按分页范围添加内容
          * 将所有内容添加到list中，然后再求子集这种方式比较消耗空间，
          * 在添加集合到结果集的时候进行判断，只添加处在分页范围内的结果 */
@@ -84,20 +86,18 @@ public class DataPreviewServiceImpl implements DataPreviewService {
         int startSize = 0;
         int endSize = 0;
         for (AnalogPoints plant: plantsAnalog.getPlants()) {
-            if (startSize > endPage) {
-                break;
-            }
-
             if (plant.getId() == id || id == 0) {
-//                List<String> cpids = plant.getPoints();
                 List<PointDetail> details = pointInfoDao.getPointDetails(plant.getPoints());
                 if (rePlantAnalogs.getWarnOn() == 1) {
                     details = filterWarnOn(details);
-                    total = details.size();
+                }
+                total += details.size();
+
+                if (startSize > endPage) {
+                    continue;
                 }
 
                 endSize = startSize + details.size();
-
                 /** 求当前集合与分页集合范围的交集 */
                 int startIdx = startPage > startSize ? startPage : startSize;
                 int endIdx = endPage < endSize ? endPage : endSize;
@@ -178,6 +178,16 @@ public class DataPreviewServiceImpl implements DataPreviewService {
 //
 //        return page;
 //    }
+
+
+    @Override
+    public PagePlantDataPreview getNowAlarm(ReDataPreview condition) {
+        List<PlantDataPreview> data = previewDataDaoEx.getNowAlarmByType(condition.getIds(), condition.getDataTypes(), condition.getKeyword());
+        PagePlantDataPreview page = new PagePlantDataPreview();
+        page.setTotalNum(data.size());
+        page.setData(data);
+        return page;
+    }
 
     @Override
     public List<PlantTrend> getPlantTrend(ReDataAnalysis condition) {

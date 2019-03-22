@@ -2,8 +2,10 @@ package com.sk.zl.dao.preview.impl;
 
 
 import com.sk.zl.dao.preview.HisalarmDao;
+import com.sk.zl.dao.preview.NowAlarmDao;
 import com.sk.zl.entity.skalarm.HisalarmEntity;
 import com.sk.zl.entity.skalarm.KindEntity;
+import com.sk.zl.entity.skalarm.NowAlarmEntity;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PagePlantDataPreview;
 import com.sk.zl.model.plant.PlantDataPreview;
@@ -31,7 +33,10 @@ public class PreviewDataDaoEx {
     @Autowired
     HisalarmDao hisalarmDao;
 
-    public PagePlantDataPreview getPlantData(List<Integer> plantIds, int dataType, String keyword,
+    @Autowired
+    NowAlarmDao nowAlarmDao;
+
+    public PagePlantDataPreview getPlantData(List<Integer> plantIds, List<Integer> dataTypes, String keyword,
                                              Date startTime, Date endTime,
                                              Pageable pageable) {
 
@@ -47,9 +52,15 @@ public class PreviewDataDaoEx {
                 }
                 predicates.add(inIds);
 
-                if (dataType != 0) {
-                    predicates.add(criteriaBuilder.equal(root.get("kindid"), dataType));
+                CriteriaBuilder.In<Integer> inTypes = criteriaBuilder.in(root.get("kindid"));
+                for (Integer type : dataTypes) {
+                    inTypes.value(type);
                 }
+                predicates.add(inTypes);
+
+//                if (dataTypes.get(0) != 0) {
+//                    predicates.add(criteriaBuilder.equal(root.get("kindid"), dataTypes.get(0)));
+//                }
 
                 predicates.add(criteriaBuilder.like(root.get("point").get("name").as(String.class), "%" + keyword + "%"));
 
@@ -71,5 +82,41 @@ public class PreviewDataDaoEx {
         result.setData(models);
         result.setTotalNum(page.getTotalElements());
         return result;
+    }
+
+    public List<PlantDataPreview> getNowAlarmByType(List<Integer> plantIds, List<Integer> dataTypes, String keyword) {
+        Specification<NowAlarmEntity> specification = new Specification<NowAlarmEntity>() {
+            @Override
+            public Predicate toPredicate(Root<NowAlarmEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<Predicate>();
+
+                CriteriaBuilder.In<Integer> inIds = criteriaBuilder.in(root.get("devid"));
+                for (Integer id : plantIds) {
+                    inIds.value(id);
+                }
+                predicates.add(inIds);
+
+                CriteriaBuilder.In<Integer> inTypes = criteriaBuilder.in(root.get("kindId"));
+                for (Integer type : dataTypes) {
+                    inTypes.value(type);
+                }
+                predicates.add(inTypes);
+
+
+                predicates.add(criteriaBuilder.like(root.get("point").get("name").as(String.class), "%" + keyword + "%"));
+
+                Predicate[] pred = new Predicate[predicates.size()];
+                criteriaQuery.where(criteriaBuilder.and(predicates.toArray(pred)));
+                return criteriaQuery.getRestriction();
+            }
+        };
+
+        List<NowAlarmEntity> entities = nowAlarmDao.findAll(specification);
+
+        List<PlantDataPreview> models = entities.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(PlantDataPreview.fromEntity(item));
+        }, ArrayList::addAll);
+
+        return models;
     }
 }

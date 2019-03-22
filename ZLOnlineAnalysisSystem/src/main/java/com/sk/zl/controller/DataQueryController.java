@@ -1,11 +1,15 @@
 package com.sk.zl.controller;
 
+import com.sk.zl.dao.meter.MeterCodeDao;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
+import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.plant.PagePlantDataPreview;
 import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.request.ReDataPreview;
 import com.sk.zl.model.result.RespCode;
 import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.service.DataPreviewService;
+import com.sk.zl.service.ReportFormService;
 import com.sk.zl.utils.ResultBeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
 
 /**
  * @Description : 数据查询接口
@@ -26,6 +33,9 @@ import java.util.List;
 public class DataQueryController {
     @Resource
     DataPreviewService dataPreviewService;
+
+    @Resource
+    private ReportFormService reportFormService;
 
     @ApiOperation("一览表查询")
     @RequestMapping(value = "/points/view")
@@ -43,5 +53,29 @@ public class DataQueryController {
             return ResultBeanUtil.makeResp(RespCode.PARAM_ERR.getCode(), "设备id为空。");
         }
         return ResultBeanUtil.makeOkResp(dataPreviewService.getWarningData(reDataPreview));
+    }
+
+    @ApiOperation("实时报警")
+    @RequestMapping(value = "/points/nowalarm")
+    public ResultBean<PagePlantDataPreview> nowAlarmDataPreview(@RequestBody ReDataPreview reDataPreview) {
+        if (reDataPreview.getIds().size() == 0) {
+            return ResultBeanUtil.makeResp(RespCode.PARAM_ERR.getCode(), "设备id为空。");
+        }
+
+        return ResultBeanUtil.makeOkResp(dataPreviewService.getNowAlarm(reDataPreview));
+    }
+
+    @ApiOperation("测试 metercode entity")
+    @RequestMapping(value = "/test")
+    public ResultBean<MeterCodeEntity> test1(@RequestBody MeterCodeEntity entity) {
+        reportFormService.entryMeterCode(Arrays.asList(MeterCode.fromEntity(entity)));
+        return ResultBeanUtil.makeOkResp(entity);
+    }
+
+    @ApiOperation("测试 meter code")
+    @RequestMapping(value = "/test1")
+    public ResultBean<MeterCode> test2(@RequestBody MeterCode entity) {
+        reportFormService.entryMeterCode(Arrays.asList(entity));
+        return ResultBeanUtil.makeOkResp(entity);
     }
 }

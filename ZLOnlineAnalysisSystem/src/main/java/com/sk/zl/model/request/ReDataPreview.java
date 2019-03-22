@@ -20,7 +20,7 @@ public class ReDataPreview {
     /** 数据类型：0-全部 1-事故 2-故障 3-状变 */
     /** 数据类型：0-全部 1-上限 2-下限 */
     @JsonProperty("dataType")
-    private int dataType;
+    private List<Integer> dataTypes;
 
     /** 关键字，用来过滤搜索结果的 */
     @JsonProperty("filter")

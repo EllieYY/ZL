@@ -1,6 +1,7 @@
 package com.sk.zl.service;
 
 import com.sk.zl.entity.zheling.GenPowerEntity;
+import com.sk.zl.entity.zheling.MeterCodeEntity;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterGroupInfo;
 

@@ -2,6 +2,7 @@ package com.sk.zl.service;
 
 import com.sk.zl.model.plant.PagePlantAnalogPoints;
 import com.sk.zl.model.plant.PagePlantDataPreview;
+import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
@@ -20,6 +21,9 @@ import java.util.List;
 public interface DataPreviewService {
     /** 一览表查询和报警查询 */
     PagePlantDataPreview getWarningData(ReDataPreview condition);
+
+    /** 实时报警 */
+    PagePlantDataPreview getNowAlarm(ReDataPreview condition);
 
     /** 测点分析 */
     List<PlantFaultPointsStat> getPlantFaultsStat();

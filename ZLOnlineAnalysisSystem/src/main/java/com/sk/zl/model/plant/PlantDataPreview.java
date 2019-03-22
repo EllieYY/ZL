@@ -2,6 +2,7 @@ package com.sk.zl.model.plant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.skalarm.HisalarmEntity;
+import com.sk.zl.entity.skalarm.NowAlarmEntity;
 import lombok.Data;
 
 import javax.xml.stream.events.EndElement;
@@ -42,6 +43,17 @@ public class PlantDataPreview {
         PlantDataPreview model = new PlantDataPreview();
         model.setDeviceId(entity.getDevid());
         model.setDataType(entity.getKindid());
+        model.setCpid(entity.getPoint().getCpid());
+        model.setPointName(entity.getPoint().getName());
+        model.setTriggerTime(entity.getStime());
+        model.setEndTime(entity.getEtime());
+        return model;
+    }
+
+    public static PlantDataPreview fromEntity(NowAlarmEntity entity) {
+        PlantDataPreview model = new PlantDataPreview();
+        model.setDeviceId(entity.getDevid());
+        model.setDataType(entity.getKindId());
         model.setCpid(entity.getPoint().getCpid());
         model.setPointName(entity.getPoint().getName());
         model.setTriggerTime(entity.getStime());
