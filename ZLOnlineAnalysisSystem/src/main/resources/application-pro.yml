@@ -28,8 +28,8 @@ skdb:
     - ZL.02.AI0004
     - ZL.03.AI0004
     - ZL.04.AI0004
-    - ZL.05.AI0004
-    - ZL.06.AI0004
+    - ZL.05.AI0007
+    - ZL.06.AI0007
   plantsSnapshotPoints:           # 机组状态测点：有功、无功、导叶开度
     - id: 1                           # 机组id
       activePower: ZL.01.AI0004       # 有功

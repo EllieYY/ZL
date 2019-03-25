@@ -1,9 +1,7 @@
 package com.sk.zl.controller;
 
 import com.sk.zl.entity.zheling.GenPowerEntity;
-import com.sk.zl.entity.zheling.MeterCodeEntity;
 import com.sk.zl.model.meter.MeterCode;
-import com.sk.zl.model.meter.MeterData;
 import com.sk.zl.model.meter.MeterGroupInfo;
 import com.sk.zl.model.request.ReMeterCode;
 import com.sk.zl.model.request.ReMeterData;
@@ -13,14 +11,12 @@ import com.sk.zl.utils.DateUtil;
 import com.sk.zl.utils.ResultBeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.util.unit.DataUnit;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

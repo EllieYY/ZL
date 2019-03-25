@@ -138,8 +138,8 @@
 				<configuration>
 					<executable>true</executable>
 				</configuration>
-
 			</plugin>
+
 			<!--<plugin>-->
 				<!--<groupId>org.mybatis.generator</groupId>-->
 				<!--<artifactId>mybatis-generator-maven-plugin</artifactId>-->
@@ -153,7 +153,7 @@
 				<!--</dependencies>-->
 			<!--</plugin>-->
 		</plugins>
-        <!--<resources>-->
+        <resources>
             <!--<resource>-->
                 <!--<directory>src/main/resources</directory>-->
                 <!--<excludes>-->
@@ -161,14 +161,14 @@
                 <!--</excludes>-->
                 <!--<filtering>false</filtering>-->
             <!--</resource>-->
-            <!--<resource>-->
-                <!--<directory>src/main/resources</directory>-->
-                <!--<filtering>true</filtering>-->
-                <!--<excludes>-->
-                    <!--<exclude>application-{profiles.active}.yml</exclude>-->
-                <!--</excludes>-->
-            <!--</resource>-->
-        <!--</resources>-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>application-{profiles.active}.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
 	</build>
 
 </project>

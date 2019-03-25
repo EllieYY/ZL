@@ -1,5 +1,6 @@
 package com.sk.zl.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,15 +16,19 @@ import java.util.Date;
 @NoArgsConstructor
 public class ReTimeSlots {
     @JsonProperty("fTimeFrom")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date sTime1;
 
     @JsonProperty("fTimeTo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date eTime1;
 
     @JsonProperty("sTimeFrom")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date sTime2;
 
     @JsonProperty("sTimeTo")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date eTime2;
 
     @Override

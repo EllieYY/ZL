@@ -1,5 +1,6 @@
 package com.sk.zl.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -16,9 +17,11 @@ public class ReDataAnalysis {
     private int id;
 
     @JsonProperty("startTime")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     @JsonProperty("endTime")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     @Override

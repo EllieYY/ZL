@@ -1,5 +1,6 @@
 package com.sk.zl.model.meter;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.zheling.MeterCodeEntity;
@@ -20,6 +21,7 @@ public class MeterCode {
     private int meterNodeId;
 
     @JsonProperty("time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
 
     @JsonProperty("code24")

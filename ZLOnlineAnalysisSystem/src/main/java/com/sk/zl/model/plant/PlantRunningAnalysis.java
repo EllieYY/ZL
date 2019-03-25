@@ -24,7 +24,7 @@ public class PlantRunningAnalysis {
 
     /** 开机时长 */
     @JsonProperty("duration")
-    private long runningTime;
+    private double runningTime;
 
     /** 开机时间 */
     @JsonProperty("sTime")
@@ -38,7 +38,7 @@ public class PlantRunningAnalysis {
     @JsonProperty("count")
     private int count;
 
-    public PlantRunningAnalysis(String name, int state, long runningTime, Date onTime, Date offTime, int count) {
+    public PlantRunningAnalysis(String name, int state, double runningTime, Date onTime, Date offTime, int count) {
         this.name = name;
         this.state = state;
         this.runningTime = runningTime;

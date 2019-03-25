@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @Configuration
-@PropertySource("classpath:plantAnalogPoints.yml")
+@PropertySource(value = {"classpath:plantAnalogPoints.yml"})
 @ConfigurationProperties(prefix = "analog")
 public class PlantsAnalog {
     @JsonProperty("plants")

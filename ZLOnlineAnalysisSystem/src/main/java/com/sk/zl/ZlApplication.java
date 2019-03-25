@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 
 
 @SpringBootApplication
@@ -19,7 +20,7 @@ public class ZlApplication {
 	public static PropertySourcesPlaceholderConfigurer properties() {
 		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 		YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-		yaml.setResources(new ClassPathResource("plantAnalogPoints.yml"));
+		yaml.setResources(new ClassPathResource("plantAnalogPoints.yml"), new FileSystemResource("config/plantAnalogPoints.yml"));
 		configurer.setProperties(yaml.getObject());
 		return configurer;
 	}

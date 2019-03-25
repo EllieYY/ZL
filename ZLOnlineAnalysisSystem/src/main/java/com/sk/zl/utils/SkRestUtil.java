@@ -111,6 +111,8 @@ public class SkRestUtil {
         //# post
         HttpResult result = packagePost(url, paramStr);
 
+        System.out.println(" return body:" + result.getBody());
+
         //# 解析结果
         try {
             RunningAnalysisResult pts = mapper.readValue(result.getBody(), RunningAnalysisResult.class);
@@ -174,8 +176,6 @@ public class SkRestUtil {
         }
 
         HttpResult result = packagePost(url, ids);
-
-        log.info(result.getBody());
 
         try {
             PointDetailWrap pts = mapper.readValue(result.getBody(), PointDetailWrap.class);

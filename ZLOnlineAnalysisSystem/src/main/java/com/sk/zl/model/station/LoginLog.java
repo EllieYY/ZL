@@ -1,5 +1,6 @@
 package com.sk.zl.model.station;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk.zl.entity.zheling.LoginLogEntity;
 import lombok.Data;
@@ -18,13 +19,19 @@ import java.util.Date;
 public class LoginLog {
     @JsonProperty("type")
     private String type;
+
     @JsonProperty("group")
     private String group;
+
     @JsonProperty("user")
     private String user;
+
     @JsonProperty("loginTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
+
     @JsonProperty("endTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date logoutTime;
 
     public static LoginLog fromEntity(LoginLogEntity entity) {

@@ -1,11 +1,10 @@
 package com.sk.zl.controller;
 
-import com.sk.zl.entity.zheling.GenPowerEntity;
+
 import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.plant.PlantState;
 import com.sk.zl.model.request.ReBasic;
-import com.sk.zl.model.request.ReMeterCode;
 import com.sk.zl.model.request.ReMeterRate;
 import com.sk.zl.model.request.RePlanPower;
 import com.sk.zl.model.request.RePlantMaintaing;
@@ -148,6 +147,4 @@ public class SettingController {
             return ResultBeanUtil.makeParamErrResp();
         }
     }
-
-
 }

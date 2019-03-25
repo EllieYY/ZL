@@ -1,5 +1,6 @@
 package com.sk.zl.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -16,5 +17,6 @@ public class ReMeterData {
     private int groupId;
 
     @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 }

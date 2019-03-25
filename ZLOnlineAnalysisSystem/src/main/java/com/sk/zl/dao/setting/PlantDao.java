@@ -7,9 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface PlantDao extends JpaRepository<PlantEntity, Integer> {
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "update PlantEntity model set model.maintaining=:state where model.id=:id")
     int updateStateById(@Param("id") int id, @Param("state") Byte state);
+
+    List<PlantEntity> findByMaintainingEquals(Byte maintaining);
 }

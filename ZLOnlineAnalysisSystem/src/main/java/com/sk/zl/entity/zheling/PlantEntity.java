@@ -105,4 +105,16 @@ public class PlantEntity {
 
         return Objects.hash(id, name, capacity, maintaining, updateTime);
     }
+
+    @Override
+    public String toString() {
+        return "PlantEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", capacity=" + capacity +
+                ", maintaining=" + maintaining +
+                ", updateTime=" + updateTime +
+                ", meter=" + meter +
+                '}';
+    }
 }

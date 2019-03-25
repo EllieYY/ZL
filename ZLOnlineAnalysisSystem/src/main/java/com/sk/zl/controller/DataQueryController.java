@@ -1,10 +1,8 @@
 package com.sk.zl.controller;
 
-import com.sk.zl.dao.meter.MeterCodeDao;
 import com.sk.zl.entity.zheling.MeterCodeEntity;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.plant.PagePlantDataPreview;
-import com.sk.zl.model.plant.PlantDataPreview;
 import com.sk.zl.model.request.ReDataPreview;
 import com.sk.zl.model.result.RespCode;
 import com.sk.zl.model.result.ResultBean;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 
 /**

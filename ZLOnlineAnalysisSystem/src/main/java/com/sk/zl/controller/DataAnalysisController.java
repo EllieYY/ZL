@@ -5,7 +5,6 @@ import com.sk.zl.model.plant.PlantFaultPointsStat;
 import com.sk.zl.model.plant.PlantRunningAnalysis;
 import com.sk.zl.model.plant.PlantTrend;
 import com.sk.zl.model.request.RePlantAnalogs;
-import com.sk.zl.model.request.RePlantTrend;
 import com.sk.zl.model.request.ReDataAnalysis;
 import com.sk.zl.model.result.ResultBean;
 import com.sk.zl.service.DataPreviewService;
