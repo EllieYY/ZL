@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,21 +94,51 @@ public class SettingController {
             return ResultBeanUtil.makeOkResp(stationService.getMeterRate(meterId));
 
         } else if (type.equals("add")) {
-            /** 添加、更新电表倍率 */
+            /** 添加电表倍率 */
+            /** 电表信息检查 */
             int meterId = reMeterRate.getMeterId();
             List<MeterRate> meterRates = reMeterRate.getRates();
-            List<MeterRate> conflictRates = stationService.addMeterRate(meterId, meterRates);
+            if (!stationService.checkValidMeterId(meterId)) {
+                return ResultBeanUtil.makeResp(-1, "id="+ meterId + "电表不存在。", meterRates);
+            }
+
+            /** 冲突检查 */
+            List<MeterRate> conflictRates = stationService.checkRateConflicts(meterId, meterRates);
             if (conflictRates.size() != 0) {
-                return ResultBeanUtil.makeResp(RespCode.METER_RATE_ERR, conflictRates);
+                return ResultBeanUtil.makeResp(-2, "电表倍率有效期存在冲突。", conflictRates);
             }
-            return ResultBeanUtil.makeOkResp();
+
+            List<MeterRate> newRates = stationService.addMeterRate(meterId, meterRates);
+            return ResultBeanUtil.makeOkResp(newRates);
+
         } else if (type.equals("update")) {
+            /** 更新电表倍率 */
             List<MeterRate> original = reMeterRate.getRates();
-            List<MeterRate> rates = stationService.updateMeterRate(original);
-            if (rates.size() != 0) {
-                return ResultBeanUtil.makeResp(RespCode.METER_RATE_ERR, rates);
+            if (original.size() == 0) {
+                return ResultBeanUtil.makeResp(RespCode.SUCCESS.getCode(),"参数为空，无更新。");
             }
-            return ResultBeanUtil.makeOkResp(rates);
+
+            /** id检查 */
+            List<MeterRate> invalidRates = stationService.checkValidRate(original);
+            if (invalidRates.size() != 0) {
+                return ResultBeanUtil.makeResp(-1, "电表倍率id不存在。", invalidRates);
+            }
+
+            /** 记录更新时间检查 */
+            List<MeterRate> updatedRates = stationService.checkRateUpdateTime(original);
+            if (updatedRates.size() != 0) {
+                return ResultBeanUtil.makeResp(-3, "倍率信息已发生变化，请重新获取最新倍率。", updatedRates);
+            }
+
+            /** 冲突检查 */
+            int meterId = stationService.getMeterIdForRate(original);
+            List<MeterRate> conflictRates = stationService.checkRateConflicts(meterId, original);
+            if (conflictRates.size() != 0) {
+                return ResultBeanUtil.makeResp(-2, "电表倍率有效期存在冲突。", conflictRates);
+            }
+
+            List<MeterRate> newRates = stationService.updateMeterRate(meterId, original);
+            return ResultBeanUtil.makeOkResp(newRates);
 
         } else if (type.equals("delete")) {
             /** 删除电表倍率 */

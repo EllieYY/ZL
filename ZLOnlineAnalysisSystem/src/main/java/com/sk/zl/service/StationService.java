@@ -30,8 +30,13 @@ public interface StationService {
     /** 电表信息和电表倍率设置 */
     List<MeterInfo> getMeterInfo() ;
     List<MeterRate> getMeterRate(int meterId) ;
+    List<MeterRate> checkValidRate(List<MeterRate> rates);
+    List<MeterRate> checkRateUpdateTime(List<MeterRate> rates);
+    List<MeterRate> checkRateConflicts(int meterId, List<MeterRate> rates);
+    boolean checkValidMeterId(int meterId);
+    int getMeterIdForRate(List<MeterRate> rates);
     List<MeterRate> addMeterRate(int meterId, List<MeterRate> rates) ;
-    List<MeterRate> updateMeterRate(List<MeterRate> meterRates) ;
+    List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRates) ;
     List<MeterRate> deleteMeterRate(List<MeterRate> meterRates) ;
 
     /** 全厂报警条数 */

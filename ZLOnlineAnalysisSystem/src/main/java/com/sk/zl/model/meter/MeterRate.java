@@ -30,6 +30,10 @@ public class MeterRate {
     @JsonProperty("value")
     private double rate;
 
+    @JsonProperty("updateTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
+
     @JsonIgnore
     private int deleted;
 
@@ -39,13 +43,14 @@ public class MeterRate {
         model.setStartTime(entity.getStartTime());
         model.setEndTime(entity.getEndTime());
         model.setRate(entity.getRate());
-
+        model.setUpdateTime(entity.getUpdateTime());
         return model;
     }
 
     public MeterRateEntity toEntity(MeterEntity meter) {
         MeterRateEntity entity = new MeterRateEntity();
         entity.setRate(rate);
+        entity.setId(id);
         entity.setStartTime(startTime);
         entity.setEndTime(endTime);
         entity.setMeter(meter);

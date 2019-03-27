@@ -1,5 +1,7 @@
 package com.sk.zl.entity.zheling;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -73,6 +75,7 @@ public class MeterEntity {
     }
 
     @Basic
+    @UpdateTimestamp
     @Column(name = "updateTime", nullable = false)
     public Date getUpdateTime() {
         return updateTime;

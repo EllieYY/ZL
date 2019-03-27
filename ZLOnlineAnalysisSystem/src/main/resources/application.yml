@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: @profiles.active@
+  jackson:
+    time-zone: GMT+8
   jpa:
 #    show-sql: true
     hibernate:

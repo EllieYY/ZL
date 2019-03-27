@@ -12,6 +12,8 @@ import java.util.List;
 public interface PlanPowerDao extends JpaRepository<PlanPowerEntity, Integer> {
     List<PlanPowerEntity> findByYear(int year);
 
+
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "update PlanPowerEntity model set model.planPower=:powerValue where model.id=:id")

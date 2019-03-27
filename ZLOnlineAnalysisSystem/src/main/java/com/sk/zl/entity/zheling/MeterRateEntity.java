@@ -146,18 +146,18 @@ public class MeterRateEntity {
     }
 
 
-    @Override
-    public String toString() {
-        return "MeterRateEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", rate=" + rate +
-                ", comment='" + comment + '\'' +
-                ", updateTime=" + updateTime +
-                ", deleted=" + deleted +
-                ", meter=" + meter +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "MeterRateEntity{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", startTime=" + startTime +
+//                ", endTime=" + endTime +
+//                ", rate=" + rate +
+//                ", comment='" + comment + '\'' +
+//                ", updateTime=" + updateTime +
+//                ", deleted=" + deleted +
+//                ", meter=" + meter +
+//                '}';
+//    }
 }

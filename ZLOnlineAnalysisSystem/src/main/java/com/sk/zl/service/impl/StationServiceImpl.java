@@ -8,6 +8,7 @@ import com.sk.zl.dao.meter.MeterGroupDao;
 import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
 import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
+import com.sk.zl.dao.meter.impl.MeterRateDaoEx;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.zheling.GenPowerEntity;
@@ -16,6 +17,7 @@ import com.sk.zl.entity.zheling.MeterEntity;
 import com.sk.zl.entity.zheling.MeterGroupEntity;
 import com.sk.zl.entity.zheling.MeterRateEntity;
 import com.sk.zl.entity.zheling.PlanPowerEntity;
+import com.sk.zl.model.meter.DateSection;
 import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
 import com.sk.zl.model.skRest.PointInfo;
@@ -30,6 +32,7 @@ import com.sk.zl.service.StationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,6 +60,9 @@ public class StationServiceImpl implements StationService {
     private MeterRateDao meterRateDao;
 
     @Resource
+    MeterRateDaoEx meterRateDaoEx;
+
+    @Resource
     private PlanPowerDao planPowerDao;
 
     @Resource
@@ -73,7 +79,6 @@ public class StationServiceImpl implements StationService {
 
     @Autowired
     private AsyncTaskService taskService;
-
 
 
     @Override
@@ -129,41 +134,58 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<MeterRate> addMeterRate(int meterId, List<MeterRate> models)  {
-        MeterEntity meter = meterDao.getOne(meterId);
-        if (null == meter) {
-            throw new DataDaoException("电表不存在: meterid = " + meterId);
+    public boolean checkValidMeterId(int meterId) {
+        List<MeterEntity> meters = meterDao.findAll();
+        for (MeterEntity meter : meters) {
+            if (meter.getId() == meterId) {
+                return true;
+            }
         }
 
-        return checkRateConflictsAndUpdate(meterId, models);
+        return false;
     }
 
     @Override
-    public List<MeterRate> updateMeterRate(List<MeterRate> meterRaters) {
-        if (meterRaters.size() == 0) {
-            return new ArrayList<MeterRate>();
+    public List<MeterRate> checkValidRate(List<MeterRate> rates) {
+        List<MeterRate> invalidRates = new ArrayList<MeterRate>();
+        for (MeterRate rate : rates) {
+            MeterRateEntity rateEntities = meterRateDao.findById(rate.getId());
+            if (null == rateEntities) {
+                invalidRates.add(rate);
+                continue;
+            }
+
+            MeterEntity meter = meterRateDao.findById(rate.getId()).getMeter();
+            if (null == meter) {
+                invalidRates.add(rate);
+                continue;
+            }
         }
-
-        int meterId = meterRateDao.findById(meterRaters.get(0).getId()).getMeter().getId();
-        List<MeterRate> conflictRates = checkRateConflictsAndUpdate(meterId, meterRaters);
-
-        return conflictRates;
+        return invalidRates;
     }
 
     @Override
-    public List<MeterRate> deleteMeterRate(List<MeterRate> models)  {
-        List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.toEntity());
-        }, ArrayList::addAll);
+    public List<MeterRate> checkRateUpdateTime(List<MeterRate> rates) {
+        List<MeterRate> invalidRates = new ArrayList<MeterRate>();
+        for (MeterRate rate : rates) {
+            MeterRateEntity rateEntities = meterRateDao.findById(rate.getId());
+            if (null == rateEntities) {
+                continue;
+            }
+            Date updateTime = rate.getUpdateTime();
+            if (null == updateTime) {
+                continue;
+            }
 
-        meterRateDao.deleteInBatch(entities);
-        return null;
+            if (rateEntities.getUpdateTime().after(rate.getUpdateTime())) {
+                invalidRates.add(MeterRate.fromEntity(rateEntities));
+            }
+        }
+        return invalidRates;
     }
 
-    /** 返回的是存在冲突的倍率信息 */
-    private List<MeterRate> checkRateConflictsAndUpdate(int meterId, List<MeterRate> originalRates) {
-        log.debug("original rates: " + originalRates);
-
+    @Override
+    public List<MeterRate> checkRateConflicts(int meterId, List<MeterRate> originalRates) {
         List<MeterRate> conflictsRates = new ArrayList<MeterRate>();
         //#1 更新的倍率之间冲突
         originalRates = innerRateConflicts(originalRates, conflictsRates);
@@ -183,15 +205,80 @@ public class StationServiceImpl implements StationService {
                 return conflictsRates;
             }
         }
+        return conflictsRates;
+    }
 
-        log.debug("meter#" + meterId + " has no rates.");
+    @Override
+    public int getMeterIdForRate(List<MeterRate> rates) {
+        if (rates.size() == 0) {
+            throw new DataDaoException("电表倍率无效，rates = " + rates);
+        }
+        return meterRateDao.findById(rates.get(0).getId()).getMeter().getId();
+    }
 
-        //#3 添加到数据库，并更新发电量
-        for (MeterRate newRate: originalRates) {
-            taskService.metreRateUpdate(meterId, newRate);
+    @Override
+    public List<MeterRate> addMeterRate(int meterId, List<MeterRate> models)  {
+        MeterEntity meter = meterDao.getOne(meterId);
+        if (null == meter) {
+            throw new DataDaoException("电表不存在: meterid = " + meterId);
         }
 
-        return conflictsRates;
+        return addRates(meterId, models);
+    }
+
+    @Override
+    public List<MeterRate> updateMeterRate(int meterId, List<MeterRate> meterRaters) {
+        List<MeterRate> conflictRates = addRates(meterId, meterRaters);
+
+        return conflictRates;
+    }
+
+    @Override
+    public List<MeterRate> deleteMeterRate(List<MeterRate> models)  {
+        List<MeterRateEntity> entities = models.stream().collect(ArrayList::new, (list, item) -> {
+            list.add(item.toEntity());
+        }, ArrayList::addAll);
+
+        meterRateDao.deleteInBatch(entities);
+        return null;
+    }
+
+    /** 返回的是存在冲突的倍率信息 */
+    private List<MeterRate> addRates(int meterId, List<MeterRate> originalRates) {
+        //#3 添加到数据库，并更新发电量
+        List<MeterRate> updatedRates = new ArrayList<MeterRate>();
+        for (MeterRate newRate: originalRates) {
+            log.debug("#metreRateUpdate#meter rate to update: meterId#" + meterId + ", rate#" + newRate);
+
+            List<DateSection> updateDate = new ArrayList<DateSection>();
+            DateSection rateSection = new DateSection(newRate.getStartTime(), newRate.getEndTime());
+
+            // 判断更新类型
+            // 2019-03-27 为方便测试，禁用时间过滤的功能。
+            boolean filterTime = false;
+            if (newRate.getId() != 0 && filterTime) {
+                MeterRateEntity oldRate = meterRateDaoEx.findById(newRate.getId());
+                if (oldRate.getRate() == newRate.getRate()) {
+                    updateDate = DateSection.differenceSet(
+                            rateSection,
+                            new DateSection(oldRate.getStartTime(), oldRate.getEndTime()));
+                } else {
+                    updateDate.add(rateSection);
+                }
+            } else {
+                updateDate.add(rateSection);
+            }
+
+            MeterEntity meter = meterDao.getOne(meterId);
+            MeterRateEntity meterRateEntity = newRate.toEntity(meter);
+            meterRateDaoEx.save(meterRateEntity);
+            MeterRate rate = MeterRate.fromEntity(meterRateDao.findById(meterRateEntity.getId()));
+            updatedRates.add(rate);
+
+            taskService.metreRateUpdate(updateDate, meterId, newRate);
+        }
+
+        return updatedRates;
     }
 
     /** 找出互相之间有时间范围冲突的更新倍率 */
@@ -231,8 +318,9 @@ public class StationServiceImpl implements StationService {
         for (MeterRate newRate : newRates) {
             for (MeterRateEntity existRate : existRates) {
                 //# 判断时间区冲突
-                if (newRate.checkDateConflict(MeterRate.fromEntity(existRate))) {
-                    conflictRates.add(newRate);
+                MeterRate rate = MeterRate.fromEntity(existRate);
+                if (newRate.checkDateConflict(rate)) {
+                    conflictRates.add(rate);
                     continue;
                 }
 
@@ -248,7 +336,8 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<PlanPower> getPlanPower()  {
-        List<PlanPowerEntity> entities = planPowerDao.findAll();
+        Sort sort = new Sort(Sort.Direction.DESC, "year");
+        List<PlanPowerEntity> entities = planPowerDao.findAll(sort);
         List<PlanPower> planPowers = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(PlanPower.fromEntity(item));
         }, ArrayList::addAll);

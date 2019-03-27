@@ -100,42 +100,60 @@ public class AsyncTaskService {
     }
 
     @Async
-    public void metreRateUpdate(int meterId, MeterRate rate) {
-        log.debug("#metreRateUpdate#meter rate to update: meterId#" + meterId + ", rate#" + rate);
-
-        List<DateSection> updateDate = new ArrayList<DateSection>();
-        DateSection rateSection = new DateSection(rate.getStartTime(), rate.getEndTime());
-
-        //#1 判断更新类型
-        if (rate.getId() != 0) {
-            MeterRateEntity oldRate = meterRateDaoEx.findById(rate.getId());
-            if (oldRate.getRate() == rate.getRate()) {
-                updateDate = DateSection.differenceSet(
-                        rateSection,
-                        new DateSection(oldRate.getStartTime(), oldRate.getEndTime()));
-            }
-            meterRateDaoEx.updateById(
-                    rate.getId(),
-                    rate.getRate(),
-                    rate.getStartTime(),
-                    rate.getEndTime());
-
-            log.debug("#metreRateUpdate#old rate: " + oldRate);
-
-        } else {
-            updateDate.add(rateSection);
-            MeterEntity meter = meterDao.getOne(meterId);
-            meterRateDaoEx.save(rate.toEntity(meter));
-        }
-
-        log.debug("#metreRateUpdate#date section to update: " + updateDate);
-
+    public void metreRateUpdate(List<DateSection> updateDate, int meterId, MeterRate rate) {
         //#2 电量回算
         int size = updateDate.size();
         for (int i = 0; i < size; i++) {
             calculatePower(updateDate.get(i), meterId, rate.getRate());
         }
     }
+
+//    @Async
+//    public MeterRate metreRateUpdate(int meterId, MeterRate rate) {
+//        log.debug("#metreRateUpdate#meter rate to update: meterId#" + meterId + ", rate#" + rate);
+//
+//        List<DateSection> updateDate = new ArrayList<DateSection>();
+//        DateSection rateSection = new DateSection(rate.getStartTime(), rate.getEndTime());
+//
+//        //#1 判断更新类型
+////        if (rate.getId() != 0) {
+//////            MeterRateEntity oldRate = meterRateDaoEx.findById(rate.getId());
+//////            if (oldRate.getRate() == rate.getRate()) {
+//////                updateDate = DateSection.differenceSet(
+//////                        rateSection,
+//////                        new DateSection(oldRate.getStartTime(), oldRate.getEndTime()));
+//////            } else {
+//////                updateDate.add(rateSection);
+//////            }
+////            updateDate.add(rateSection);
+////            meterRateDaoEx.updateById(
+////                    rate.getId(),
+////                    rate.getRate(),
+////                    rate.getStartTime(),
+////                    rate.getEndTime());
+////
+//////            log.debug("#metreRateUpdate#old rate: " + oldRate);
+////
+////        } else {
+//            updateDate.add(rateSection);
+//            MeterEntity meter = meterDao.getOne(meterId);
+//            MeterRateEntity meterRateEntity = rate.toEntity(meter);
+//            meterRateDaoEx.save(meterRateEntity);
+//            rate = MeterRate.fromEntity(meterRateEntity);
+////        }
+//
+//        log.debug("#metreRateUpdate#date section to update: " + updateDate);
+//
+//        //#2 电量回算
+//        int size = updateDate.size();
+//        for (int i = 0; i < size; i++) {
+//            calculatePower(updateDate.get(i), meterId, rate.getRate());
+//        }
+//
+//        System.out.println("aysn: " + rate);
+//        return rate;
+//    }
+
 
     private void calculatePower(DateSection updateDate, int meterId, double rate) {
         log.debug("#calculatePower# updateSection:" + updateDate);

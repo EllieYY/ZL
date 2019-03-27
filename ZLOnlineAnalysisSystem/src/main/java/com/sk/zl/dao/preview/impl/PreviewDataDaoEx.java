@@ -107,6 +107,7 @@ public class PreviewDataDaoEx {
 
                 Predicate[] pred = new Predicate[predicates.size()];
                 criteriaQuery.where(criteriaBuilder.and(predicates.toArray(pred)));
+                criteriaQuery.orderBy(criteriaBuilder.desc(root.get("stime")));
                 return criteriaQuery.getRestriction();
             }
         };
