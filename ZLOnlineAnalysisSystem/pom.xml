@@ -69,7 +69,8 @@
 			<version>1.1.14</version>
 		</dependency>
 
-		<dependency>
+
+        <dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.6</version>
@@ -154,13 +155,6 @@
 			<!--</plugin>-->
 		</plugins>
         <resources>
-            <!--<resource>-->
-                <!--<directory>src/main/resources</directory>-->
-                <!--<excludes>-->
-                    <!--<exclude>plantAnalogPoints.yml</exclude>-->
-                <!--</excludes>-->
-                <!--<filtering>false</filtering>-->
-            <!--</resource>-->
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>

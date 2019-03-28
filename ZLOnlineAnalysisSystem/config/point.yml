@@ -1,0 +1,12 @@
+#prefix:
+id: 2233
+name: FakeEllie
+cards:
+  - name: NONE
+    code: 00000001
+#    - name: NONE
+#      code: 00000002
+#    - name: NONE
+#      code: 00000003
+#    - name: NONE
+#      code: 00000004

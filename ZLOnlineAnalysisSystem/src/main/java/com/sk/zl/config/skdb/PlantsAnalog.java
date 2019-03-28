@@ -1,6 +1,7 @@
 package com.sk.zl.config.skdb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sk.zl.config.base.YamlPropertyLoaderFactory;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Data
 @Configuration
-@PropertySource(value = {"classpath:plantAnalogPoints.yml"})
+@PropertySource(value = {"classpath:plantAnalogPoints.yml", "file:config/plantAnalogPoints.yml"}, factory = YamlPropertyLoaderFactory.class, ignoreResourceNotFound = true)
 @ConfigurationProperties(prefix = "analog")
 public class PlantsAnalog {
     @JsonProperty("plants")

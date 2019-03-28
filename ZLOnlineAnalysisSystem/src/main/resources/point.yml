@@ -1,0 +1,22 @@
+#prefix:
+id: 2233
+name: Ellie
+cards:
+  - name: XD
+    code: XD02101263
+  - name: ZY
+    code: ZY8965
+  - name: GX
+    code: GX0009
+
+
+#analog:
+#  plants:            # 机组模拟量故障点统计原始点
+#    - id: 1                         # 机组id
+#      points:
+#        - ZL.01.AI0001
+#        - ZL.01.AI0002
+#        - ZL.01.AI0004
+#        - ZL.01.AI0005
+#        - ZL.01.AI0006
+#        - ZL.01.AI0007

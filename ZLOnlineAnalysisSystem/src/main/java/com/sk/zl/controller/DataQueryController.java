@@ -1,5 +1,6 @@
 package com.sk.zl.controller;
 
+import com.sk.zl.test.TestPoint;
 import com.sk.zl.entity.zheling.MeterCodeEntity;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.plant.PagePlantDataPreview;
@@ -32,6 +33,8 @@ public class DataQueryController {
 
     @Resource
     private ReportFormService reportFormService;
+    @Resource
+    TestPoint testPoint;
 
     @ApiOperation("一览表查询")
     @RequestMapping(value = "/points/view")
@@ -73,5 +76,11 @@ public class DataQueryController {
     public ResultBean<MeterCode> test2(@RequestBody MeterCode entity) {
         reportFormService.entryMeterCode(Arrays.asList(entity));
         return ResultBeanUtil.makeOkResp(entity);
+    }
+
+    @ApiOperation("测试 配置文件")
+    @RequestMapping(value = "/config")
+    public ResultBean<String> testConfig() {
+        return ResultBeanUtil.makeOkResp(testPoint.toString());
     }
 }
