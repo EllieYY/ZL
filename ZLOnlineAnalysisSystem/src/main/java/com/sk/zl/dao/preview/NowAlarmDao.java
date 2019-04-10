@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface NowAlarmDao extends JpaRepository<NowAlarmEntity, Integer>, JpaSpecificationExecutor<NowAlarmEntity> {
+    int countNowAlarmEntitiesByKindIdEquals(int kindId);
 }

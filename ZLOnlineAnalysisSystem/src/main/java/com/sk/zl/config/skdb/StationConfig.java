@@ -16,4 +16,6 @@ import org.springframework.context.annotation.PropertySource;
 public class StationConfig {
     private int genCapacityMeterGroup;
     private int onGridMeterGroup;
+    private int accidentKindId;
+    private int faultKindId;
 }

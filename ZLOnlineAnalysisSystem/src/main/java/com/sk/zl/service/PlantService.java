@@ -16,6 +16,10 @@ import java.util.List;
  * @Date : 2019/2/27
  */
 public interface PlantService {
+    public enum PowerType {
+        MONTH, YESTERDAY
+    }
+
     /** 机组检修状态 */
     List<PlantState> getPlantsState() ;
     List<PlantState> updatePlantsState(List<PlantState> models) ;
@@ -24,7 +28,7 @@ public interface PlantService {
     List<PlantPointSnapshot> getPointSnapshot();
 
     /** 机组发电量/月利用小时数排名 */
-    List<PlantGenerateCapacity> getGenCapacityRank() ;
+    List<PlantGenerateCapacity> getGenCapacityRank(PowerType type) ;
     List<PlantEffectiveHours> getEffectiveHoursRank() ;
 
     /** 机组发电量信息对比 */

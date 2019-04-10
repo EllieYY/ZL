@@ -11,6 +11,7 @@ import com.sk.zl.entity.zheling.MeterNodeEntity;
 import com.sk.zl.model.meter.MeterCode;
 import com.sk.zl.model.meter.MeterData;
 import com.sk.zl.model.meter.MeterGroupInfo;
+import com.sk.zl.service.PowerCalculateService;
 import com.sk.zl.service.ReportFormService;
 import com.sk.zl.utils.DateUtil;
 import org.slf4j.Logger;
@@ -46,6 +47,9 @@ public class ReportFormServiceImpl implements ReportFormService {
     @Resource
     private MeterRateDaoEx meterRateDaoEx;
 
+    @Autowired
+    private PowerCalculateService powerCalculateService;
+
     @Override
     public List<GenPowerEntity> entryMeterCode(List<MeterCode> models) {
         //#1 存到数据库
@@ -68,6 +72,8 @@ public class ReportFormServiceImpl implements ReportFormService {
         curDay = DateUtil.dateTimeToDate(curDay);
         Date preDay = DateUtil.dateAddDays(curDay, -1, false);
         Date nextDay = DateUtil.dateAddDays(curDay, 1, false);
+        Date monthStart = DateUtil.getFirstDateOfMonth(curDay);
+        Date yearStart = DateUtil.getFirstDateOfYear(curDay);
 
         //#1 查询当前group下所有电表分组，控制id增序。
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -89,7 +95,7 @@ public class ReportFormServiceImpl implements ReportFormService {
 
                 // 表码信息
                 // 前一天表码
-                double preCode = 0;
+                double preCode = -1;
                 //# 若一天录入多个表码值，取时间最大的
                 List<MeterCodeEntity> codeEntities = meterCodeDaoEx.findByMeterAndTimeDec(
                         nodeId, preDay, curDay);
@@ -98,41 +104,24 @@ public class ReportFormServiceImpl implements ReportFormService {
                 }
 
                 // 当天表码
-                double curCode = 0;
+                double curCode = -1;
                 codeEntities = meterCodeDaoEx.findByMeterAndTimeDec(
                         nodeId, curDay, nextDay);
                 if (codeEntities.size() >= 1) {
                     curCode = codeEntities.get(0).getCode();
                 }
 
-                data.add(new MeterData(nodeId, nodeName, preCode, curCode, rate));
+                // 增加当月电量信息和当年电量信息。
+                List<Integer> id = Arrays.asList(nodeId);
+                double monthPower = powerCalculateService.calculateGenPowerByMeterNode(id, monthStart, curDay);
+                double yearPower = powerCalculateService.calculateGenPowerByMeterNode(id, yearStart, curDay);
+
+                data.add(new MeterData(nodeId, nodeName, preCode, curCode, rate, monthPower, yearPower));
             }
 
             groups.add(new MeterGroupInfo(meterName, data));
         }
 
-//        groups.add(new MeterGroupInfo("一号机组", Arrays.asList(
-//                new MeterData(1001,"峰", 24, 34, 2.0),
-//                new MeterData(1002,"平", 24, 34, 2.0),
-//                new MeterData(1003,"谷", 24, 34, 2.0),
-//                new MeterData(1004,"总", 24, 34, 2.0))));
-//        groups.add(new MeterGroupInfo("二号机组", Arrays.asList(
-//                new MeterData(1005,"峰", 24, 34, 2.0),
-//                new MeterData(1006,"平", 24, 34, 2.0),
-//                new MeterData(1007,"谷", 24, 34, 2.0),
-//                new MeterData(1008,"总", 24, 34, 2.0))));
-//
-//        groups.add(new MeterGroupInfo("柘青1E", Arrays.asList(
-//                new MeterData(2001,"正向有功总（+A）", 24, 34, 2.0),
-//                new MeterData(2002,"反向有功总（+A）", 24, 34, 2.0))));
-//        groups.add(new MeterGroupInfo("柘青2E", Arrays.asList(
-//                new MeterData(2003,"正向有功总（+A）", 24, 34, 2.0),
-//                new MeterData(2004,"反向有功总（+A）", 24, 34, 2.0))));
-//
-//        groups.add(new MeterGroupInfo("一号厂用变", Arrays.asList(
-//                new MeterData(3001,"一号厂用变", 24, 34, 2.0))));
-//        groups.add(new MeterGroupInfo("二号厂用变", Arrays.asList(
-//                new MeterData(3002,"二号厂用变", 24, 34, 2.0))));
         return groups;
     }
 }

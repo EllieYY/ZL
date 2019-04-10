@@ -2,6 +2,7 @@ package com.sk.zl.service;
 
 import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
+import com.sk.zl.model.meter.ReNewName;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
@@ -29,6 +30,8 @@ public interface StationService {
 
     /** 电表信息和电表倍率设置 */
     List<MeterInfo> getMeterInfo() ;
+    ReNewName setMeterName(int id, String newName);
+    ReNewName setMeterGroupName(int id, String newName);
     List<MeterRate> getMeterRate(int meterId) ;
     List<MeterRate> checkValidRate(List<MeterRate> rates);
     List<MeterRate> checkRateUpdateTime(List<MeterRate> rates);

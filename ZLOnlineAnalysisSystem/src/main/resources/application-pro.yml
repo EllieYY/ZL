@@ -79,3 +79,5 @@ skdb:
 station:
   genCapacityMeterGroup: 2        # 用来计算发电量的电表组
   onGridMeterGroup: 1             # 用来计算上网电量的电表组
+  accidentKindId: 1               # 事故类型kindId
+  faultKindId: 2                  # 故障类型kindId

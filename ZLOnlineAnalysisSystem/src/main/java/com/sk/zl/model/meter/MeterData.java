@@ -25,11 +25,19 @@ public class MeterData {
     @JsonProperty("rate")
     private double rate;
 
-    public MeterData(int id, String name, double code0, double code24, double rate) {
+    @JsonProperty("curMonthPower")
+    private double curMonthPower;
+
+    @JsonProperty("curYearPower")
+    private double curYearPower;
+
+    public MeterData(int id, String name, double code0, double code24, double rate, double curMonthPower, double curYearPower) {
         this.id = id;
         this.name = name;
         this.code0 = code0;
         this.code24 = code24;
         this.rate = rate;
+        this.curMonthPower = curMonthPower;
+        this.curYearPower = curYearPower;
     }
 }

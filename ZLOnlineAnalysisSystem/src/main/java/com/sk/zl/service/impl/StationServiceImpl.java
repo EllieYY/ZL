@@ -9,6 +9,7 @@ import com.sk.zl.dao.meter.MeterRateDao;
 import com.sk.zl.dao.meter.PlanPowerDao;
 import com.sk.zl.dao.meter.impl.GenPowerDaoEx;
 import com.sk.zl.dao.meter.impl.MeterRateDaoEx;
+import com.sk.zl.dao.preview.NowAlarmDao;
 import com.sk.zl.dao.setting.LoginLogDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.zheling.GenPowerEntity;
@@ -20,11 +21,13 @@ import com.sk.zl.entity.zheling.PlanPowerEntity;
 import com.sk.zl.model.meter.DateSection;
 import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
+import com.sk.zl.model.meter.ReNewName;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.model.station.AnnualCapacityInfo;
 import com.sk.zl.model.station.HydrologicalInfo;
 import com.sk.zl.model.station.PowerStationSnapshot;
 import com.sk.zl.model.station.StationAlarmNum;
+import com.sk.zl.service.PowerCalculateService;
 import com.sk.zl.utils.DateUtil;
 import com.sk.zl.model.station.LoginLog;
 import com.sk.zl.model.station.PlanPower;
@@ -57,6 +60,9 @@ public class StationServiceImpl implements StationService {
     private MeterDao meterDao;
 
     @Resource
+    private MeterGroupDao meterGroupDao;
+
+    @Resource
     private MeterRateDao meterRateDao;
 
     @Resource
@@ -68,14 +74,14 @@ public class StationServiceImpl implements StationService {
     @Resource
     private PointInfoDao pointInfoDao;
 
-    @Resource
-    private GenPowerDaoEx genPowerDaoEx;
-
-    @Resource
-    private MeterGroupDao meterGroupDao;
+    @Autowired
+    private PowerCalculateService powerCalculateService;
 
     @Resource
     private StationConfig stationConfig;
+
+    @Resource
+    private NowAlarmDao nowAlarmDao;
 
     @Autowired
     private AsyncTaskService taskService;
@@ -121,6 +127,30 @@ public class StationServiceImpl implements StationService {
             list.add(MeterInfo.fromEntity(item));
         }, ArrayList::addAll);
         return models;
+    }
+
+    @Override
+    public ReNewName setMeterName(int id, String newName) {
+        MeterEntity entity = meterDao.findById(id).get();
+        if (null == entity) {
+            return null;
+        }
+
+        entity.setName(newName);
+        meterDao.save(entity);
+        return new ReNewName(entity.getId(), entity.getName());
+    }
+
+    @Override
+    public ReNewName setMeterGroupName(int id, String newName) {
+        MeterGroupEntity entity = meterGroupDao.findById(id);
+        if (null == entity) {
+            return null;
+        }
+
+        entity.setName(newName);
+        meterGroupDao.save(entity);
+        return new ReNewName(entity.getId(), entity.getName());
     }
 
     @Override
@@ -381,17 +411,25 @@ public class StationServiceImpl implements StationService {
         return models;
     }
 
+//    @Override
+//    public StationAlarmNum getStationAlarmNum()  {
+//        List<PointInfo> points = pointInfoDao.findStationAlarmPoints();
+//
+//        if (points.size() != 2) {
+//            throw new RuntimeException("未找到报警点。");
+//        }
+//
+//        StationAlarmNum alarmNum = new StationAlarmNum();
+//        alarmNum.setNumOfAccident(new Double(points.get(0).getValue()).intValue());
+//        alarmNum.setNumOfGlitches(new Double(points.get(1).getValue()).intValue());
+//        return alarmNum;
+//    }
+    // 2019-04-01修改需求，要求从mysql中读取条数
     @Override
     public StationAlarmNum getStationAlarmNum()  {
-        List<PointInfo> points = pointInfoDao.findStationAlarmPoints();
-
-        if (points.size() != 2) {
-            throw new RuntimeException("未找到报警点。");
-        }
-
         StationAlarmNum alarmNum = new StationAlarmNum();
-        alarmNum.setNumOfAccident(new Double(points.get(0).getValue()).intValue());
-        alarmNum.setNumOfGlitches(new Double(points.get(1).getValue()).intValue());
+        alarmNum.setNumOfAccident(nowAlarmDao.countNowAlarmEntitiesByKindIdEquals(stationConfig.getAccidentKindId()));
+        alarmNum.setNumOfGlitches(nowAlarmDao.countNowAlarmEntitiesByKindIdEquals(stationConfig.getFaultKindId()));
         return alarmNum;
     }
 
@@ -429,16 +467,16 @@ public class StationServiceImpl implements StationService {
             Date today = new Date();
             // 昨日发电量
             Date yesterday = DateUtil.dateAddDays(today, -1, false);
-            double preDayGenCapacity = calculateGenPowerByGroup(genGroupId, yesterday, today);
+            double preDayGenCapacity = powerCalculateService.calculateGenPowerByGroup(genGroupId, yesterday, today);
 
             // 年累计发电量
             Date beginYear = DateUtil.getFirstDateOfYear(today);
             beginYear = DateUtil.dateTimeToDate(beginYear);
-            double annualGenCapacity = calculateGenPowerByGroup(genGroupId, beginYear, today);
+            double annualGenCapacity = powerCalculateService.calculateGenPowerByGroup(genGroupId, beginYear, today);
 
             // 年累计上网电量
             int ongridGroupId = stationConfig.getOnGridMeterGroup();
-            double annualOnGridPower = calculateGenPowerByGroup(ongridGroupId, beginYear, today);
+            double annualOnGridPower = powerCalculateService.calculateGenPowerByGroup(ongridGroupId, beginYear, today);
 
             stationSnapshot.setTotalSafetyDays(totalSafetyDays);
             stationSnapshot.setAnnualSafetyDays(annualSafetyDays);
@@ -469,7 +507,7 @@ public class StationServiceImpl implements StationService {
             throw new RuntimeException(e);
         }
 
-        double annualGenCapacity = calculateGenPowerByGroup(genGroupId, beginYear, today);
+        double annualGenCapacity = powerCalculateService.calculateGenPowerByGroup(genGroupId, beginYear, today);
 
         //#3 每月发电量
         List<Double> monthlyCapacity = getMonthCapacity(genGroupId);
@@ -493,26 +531,6 @@ public class StationServiceImpl implements StationService {
         return monthlyCapacity;
     }
 
-    private double calculateGenPowerByGroup(int groupId, Date startTime, Date endTime) {
-        MeterGroupEntity group = meterGroupDao.findById(groupId);
-        List<Integer> nodeIds = new ArrayList<>();
-        for (MeterEntity meter: group.getMeterSet()) {
-            // 获取meter下node的id集合
-            List<Integer> ids = meter.getNodeSet().stream().collect(ArrayList::new, (list, item) -> {
-                list.add(item.getId());
-            }, ArrayList::addAll);
-
-            nodeIds.addAll(ids);
-        }
-
-        List<GenPowerEntity> results = genPowerDaoEx.findByNodeIdsAndTime(nodeIds, startTime, endTime);
-
-        double total = 0;
-        for (GenPowerEntity entity: results) {
-            total += entity.getValue();
-        }
-        return total;
-    }
 
     private List<Double> getMonthCapacity(int groupId)  {
         Date today = new Date();
@@ -538,7 +556,7 @@ public class StationServiceImpl implements StationService {
                 continue;
             }
 
-            double monthCapacity = calculateGenPowerByGroup(groupId, startMonth, endMonth);
+            double monthCapacity = powerCalculateService.calculateGenPowerByGroup(groupId, startMonth, endMonth);
             monthlyCapacity.add(monthCapacity);
         }
 

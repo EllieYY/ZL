@@ -6,16 +6,22 @@ spring:
     zheling:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
-      password: password
+      password: Scada2016!
 #      jdbc-url: jdbc:mysql://192.168.10.48:3306/zheling?useUnicode=true&characterEncoding=utf8
-      url: jdbc:mysql://192.168.10.106:3306/awesome?useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://192.168.10.99:3306/zheling?useUnicode=true&characterEncoding=utf8
     skalarm:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: Scada2016!
 #      jdbc-url: jdbc:mysql://192.168.10.48:3306/skalarm?useUnicode=true&characterEncoding=utf8
-      url: jdbc:mysql://192.168.10.99:3306/skalarm?useUnicode=true
-
+      url: jdbc:mysql://192.168.10.48:3306/skalarm?useUnicode=true&characterEncoding=utf8
+  boot:
+    admin:
+      client:
+        instance:
+          name: ZL
+          service-url: http://localhost:9257
+        url: http://localhost:9201
 
 skdb:
   uri: http://192.168.10.48:80    # 数据库连接信息
@@ -79,3 +85,14 @@ skdb:
 station:
   genCapacityMeterGroup: 2        # 用来计算发电量的电表组
   onGridMeterGroup: 1             # 用来计算上网电量的电表组
+  accidentKindId: 1               # 事故类型kindId
+  faultKindId: 2
+
+management:
+  endpoint:
+    beans:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'

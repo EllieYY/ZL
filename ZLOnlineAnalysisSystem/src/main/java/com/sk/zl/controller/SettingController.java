@@ -3,6 +3,8 @@ package com.sk.zl.controller;
 
 import com.sk.zl.model.meter.MeterInfo;
 import com.sk.zl.model.meter.MeterRate;
+import com.sk.zl.model.meter.NewName;
+import com.sk.zl.model.meter.ReNewName;
 import com.sk.zl.model.plant.PlantState;
 import com.sk.zl.model.request.ReBasic;
 import com.sk.zl.model.request.ReMeterRate;
@@ -82,6 +84,26 @@ public class SettingController {
         } else {
             return ResultBeanUtil.makeParamErrResp();
         }
+    }
+
+    @ApiOperation(value = "电表名称修改")
+    @RequestMapping(value = "/meter/newname",  method = RequestMethod.POST)
+    public ResultBean<ReNewName> meterRename(@RequestBody NewName newName) {
+        ReNewName name = stationService.setMeterName(newName.getId(), newName.getNewName());
+        if (name == null) {
+            return ResultBeanUtil.makeResp(RespCode.FAIL.getCode(), "id不存在。");
+        }
+        return ResultBeanUtil.makeOkResp(name);
+    }
+
+    @ApiOperation(value = "电表分组名称修改")
+    @RequestMapping(value = "/meterGroup/newname",  method = RequestMethod.POST)
+    public ResultBean<ReNewName> meterGroupRename(@RequestBody NewName newName) {
+        ReNewName name = stationService.setMeterGroupName(newName.getId(), newName.getNewName());
+        if (name == null) {
+            return ResultBeanUtil.makeResp(RespCode.FAIL.getCode(), "id不存在。");
+        }
+        return ResultBeanUtil.makeOkResp(name);
     }
 
     @ApiOperation(value = "电表倍率值修改")

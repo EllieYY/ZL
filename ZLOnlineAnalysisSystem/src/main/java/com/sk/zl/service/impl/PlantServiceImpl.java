@@ -17,9 +17,12 @@ import com.sk.zl.model.plant.PlantState;
 import com.sk.zl.model.request.ReTimeSlots;
 import com.sk.zl.model.skRest.PointInfo;
 import com.sk.zl.service.PlantService;
+import com.sk.zl.service.PowerCalculateService;
 import com.sk.zl.utils.DateUtil;
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,10 +46,8 @@ public class PlantServiceImpl implements PlantService {
     private PointInfoDao pointInfoDao;
 
     @Resource
-    private GenPowerDaoEx genPowerDaoEx;
+    private PowerCalculateService powerCalculateService;
 
-    @Resource
-    private MeterDao meterDao;
 
     @Override
     public List<PlantState> getPlantsState()  {
@@ -90,24 +91,30 @@ public class PlantServiceImpl implements PlantService {
 
 
     @Override
-    public List<PlantGenerateCapacity> getGenCapacityRank()  {
+    public List<PlantGenerateCapacity> getGenCapacityRank(PowerType type)  {
         //#1 获取机组信息 - 机组对应的电表
         List<PlantEntity> plants = plantDao.findAll();
         List<PlantGenerateCapacity> plantList = new ArrayList<PlantGenerateCapacity>();
 
         //#2 统计当月电量
         Date today = new Date();
-        Date monthBegin = DateUtil.getFirstDateOfMonth(today);
-
-        monthBegin = DateUtil.dateTimeToDate(monthBegin);
-
+        Date start = today;
+        Date end = today;
+        if (type == PowerType.MONTH) {
+            start = DateUtil.getFirstDateOfMonth(today);
+        } else if (type == PowerType.YESTERDAY) {
+            start = DateUtil.dateAddDays(today, -1, false);
+            end = DateUtil.dateTimeToDate(today);
+        }
+        start = DateUtil.dateTimeToDate(start);
 
         for (PlantEntity plant : plants) {
             int meterId = plant.getMeter().getId();
-            double value = calculateGenPowerByMeter(meterId, monthBegin, today);
+            double value = powerCalculateService.calculateGenPowerByMeter(meterId, start, end);
             plantList.add(new PlantGenerateCapacity(plant.getName(), value));
         }
 
+        log.debug("start="+ start + ", end=" + end + "." + plantList.toString());
         return plantList;
     }
 
@@ -129,7 +136,7 @@ public class PlantServiceImpl implements PlantService {
         Date preMonth = DateUtil.dateAddMonths(monthBegin,-1);
         for (PlantEntity plant : plants) {
             int meterId = plant.getMeter().getId();
-            double power = calculateGenPowerByMeter(meterId, preMonth, monthBegin);
+            double power = powerCalculateService.calculateGenPowerByMeter(meterId, preMonth, monthBegin);
             double capacity = plant.getCapacity();
 
             double value = power / capacity;
@@ -137,26 +144,6 @@ public class PlantServiceImpl implements PlantService {
             plantList.add(new PlantEffectiveHours(plant.getName(), value));
         }
         return plantList;
-    }
-
-
-    private double calculateGenPowerByMeter(int meterId, Date startTime, Date endTime) {
-        // 获取meter下node的id集合
-        MeterEntity meter = meterDao.findById(meterId).get();
-        List<Integer> ids = meter.getNodeSet().stream().collect(ArrayList::new, (list, item) -> {
-            list.add(item.getId());
-        }, ArrayList::addAll);
-
-        List<GenPowerEntity> results = genPowerDaoEx.findByNodeIdsAndTime(ids, startTime, endTime);
-
-        log.info("meterId" + meterId + "     #time: " + startTime + " ~ " + endTime);
-        log.info(results.toString());
-
-        double total = 0;
-        for (GenPowerEntity entity: results) {
-            total += entity.getValue();
-        }
-        return total;
     }
 
 
@@ -170,8 +157,8 @@ public class PlantServiceImpl implements PlantService {
         //#2 统计月利用小时数
         for (PlantEntity plant : plants) {
             int meterId = plant.getMeter().getId();
-            double value1 = calculateGenPowerByMeter(meterId, timeSlots.getSTime1(), timeSlots.getETime1());
-            double value2 = calculateGenPowerByMeter(meterId, timeSlots.getSTime2(), timeSlots.getETime2());
+            double value1 = powerCalculateService.calculateGenPowerByMeter(meterId, timeSlots.getSTime1(), timeSlots.getETime1());
+            double value2 = powerCalculateService.calculateGenPowerByMeter(meterId, timeSlots.getSTime2(), timeSlots.getETime2());
             plantList.add(new PlantGenCapacityComparison(plant.getName(), value1, value2));
         }
         return plantList;

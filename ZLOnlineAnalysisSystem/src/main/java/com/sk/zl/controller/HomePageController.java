@@ -51,7 +51,8 @@ public class HomePageController {
     @ApiOperation(value = "水情信息")
     @RequestMapping(value = "/product/water")
     public ResultBean<HydrologicalInfo> getHydrologicalInfo() {
-        return ResultBeanUtil.makeOkResp(stationService.getHydrologicalInfo());
+//        return ResultBeanUtil.makeOkResp(stationService.getHydrologicalInfo());
+        return ResultBeanUtil.makeOkResp(new HydrologicalInfo());
     }
 
     @ApiOperation(value = "发电量完成情况")
@@ -66,10 +67,16 @@ public class HomePageController {
         return ResultBeanUtil.makeOkResp(stationService.getOngridCapacityInfo());
     }
 
-    @ApiOperation(value = "机组发电量排名")
-    @RequestMapping(value = "/product/rank/power")
-    public ResultBean<List<PlantGenerateCapacity>> getPlantGenerateCapacity() {
-        return ResultBeanUtil.makeOkResp(plantService.getGenCapacityRank());
+    @ApiOperation(value = "机组发电量排名-月")
+    @RequestMapping(value = "/product/rank/power/month")
+    public ResultBean<List<PlantGenerateCapacity>> getPlantGenerateCapacityByMonth() {
+        return ResultBeanUtil.makeOkResp(plantService.getGenCapacityRank(PlantService.PowerType.MONTH));
+    }
+
+    @ApiOperation(value = "机组发电量排名-昨日")
+    @RequestMapping(value = "/product/rank/power/yesterday")
+    public ResultBean<List<PlantGenerateCapacity>> getPlantGenerateCapacityByDay() {
+        return ResultBeanUtil.makeOkResp(plantService.getGenCapacityRank(PlantService.PowerType.YESTERDAY));
     }
 
     @ApiOperation(value = "机组月利用小时数排名")
