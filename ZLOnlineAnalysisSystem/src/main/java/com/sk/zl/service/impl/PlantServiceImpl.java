@@ -7,7 +7,9 @@ import com.sk.zl.dao.setting.PlantDao;
 import com.sk.zl.dao.skdb.PointInfoDao;
 import com.sk.zl.entity.zheling.GenPowerEntity;
 import com.sk.zl.entity.zheling.MeterEntity;
+import com.sk.zl.entity.zheling.PlantDto;
 import com.sk.zl.entity.zheling.PlantEntity;
+import com.sk.zl.entity.zheling.PlantLiteEntity;
 import com.sk.zl.model.plant.Plant;
 import com.sk.zl.model.plant.PlantEffectiveHours;
 import com.sk.zl.model.plant.PlantGenCapacityComparison;
@@ -52,6 +54,16 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public List<PlantState> getPlantsState()  {
         List<PlantEntity> entities = plantDao.findAll();
+
+//        List<PlantDto> plantDtos = plantDao.findAllByCapacity(45000);
+//
+//        for (int i = 0; i < plantDtos.size(); i++) {
+//            System.out.println(plantDtos.get(i).getId() + "    " + plantDtos.get(i).getName());
+//        }
+//        System.out.println(plantDtos);
+//
+//
+//        List<PlantEntity> entities = new ArrayList<>();
         List<PlantState> plants = entities.stream().collect(ArrayList::new, (list, item) -> {
             Plant plant = Plant.fromEntity(item);
             list.add(plant.toPlantState());
@@ -71,6 +83,7 @@ public class PlantServiceImpl implements PlantService {
     public List<PlantPointSnapshot> getPointSnapshot()  {
         //#1 读取机组信息
         List<PlantEntity> entities = plantDao.findAll();
+//        List<PlantEntity> entities = new ArrayList<>();
         List<PlantPointSnapshot> plantPointSnapshots = entities.stream().collect(ArrayList::new, (list, item) -> {
             list.add(PlantPointSnapshot.fromEntity(item));
         }, ArrayList::addAll);
@@ -94,6 +107,7 @@ public class PlantServiceImpl implements PlantService {
     public List<PlantGenerateCapacity> getGenCapacityRank(PowerType type)  {
         //#1 获取机组信息 - 机组对应的电表
         List<PlantEntity> plants = plantDao.findAll();
+//        List<PlantEntity> plants = new ArrayList<>();
         List<PlantGenerateCapacity> plantList = new ArrayList<PlantGenerateCapacity>();
 
         //#2 统计当月电量
@@ -122,6 +136,7 @@ public class PlantServiceImpl implements PlantService {
     public List<PlantEffectiveHours> getEffectiveHoursRank()  {
         //#1 获取机组信息 - 机组对应的电表
         List<PlantEntity> plants = plantDao.findAll();
+//        List<PlantEntity> plants = new ArrayList<>();
         List<PlantEffectiveHours> plantList = new ArrayList<PlantEffectiveHours>();
 
         //#2 统计
@@ -151,7 +166,7 @@ public class PlantServiceImpl implements PlantService {
     public List<PlantGenCapacityComparison> getPlantComparison(ReTimeSlots timeSlots)  {
         //#1 获取机组信息 - 机组对应的电表
         List<PlantEntity> plants = plantDao.findAll();
-
+//        List<PlantEntity> plants = new ArrayList<>();
         List<PlantGenCapacityComparison> plantList = new ArrayList<PlantGenCapacityComparison>();
 
         //#2 统计月利用小时数

@@ -1,6 +1,8 @@
 package com.sk.zl.dao.setting;
 
 import com.sk.zl.entity.zheling.PlantEntity;
+import com.sk.zl.entity.zheling.PlantDto;
+import com.sk.zl.entity.zheling.PlantLiteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,9 @@ public interface PlantDao extends JpaRepository<PlantEntity, Integer> {
     int updateStateById(@Param("id") int id, @Param("state") Byte state);
 
     List<PlantEntity> findByMaintainingEquals(Byte maintaining);
+
+
+    List<PlantDto> findAllByCapacity(double capacity);
+//    List<PlantDto> findDistinctById();
+
 }

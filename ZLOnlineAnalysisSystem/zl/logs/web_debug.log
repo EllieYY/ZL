@@ -1,1 +1,17 @@
-2019-04-01 12:01:13.227 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:11:10.430 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:11:56.084 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:14:38.481 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:15:11.700 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:15:44.159 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:15:52.588 [http-nio-9257-exec-1] DEBUG org.hibernate.SQL - select plantentit0_.id as col_0_0_, plantentit0_.name as col_1_0_ from tbl_plant plantentit0_ where plantentit0_.capacity=?
+2019-06-11 16:16:34.264 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:16:43.786 [http-nio-9257-exec-1] DEBUG org.hibernate.SQL - select plantentit0_.id as col_0_0_, plantentit0_.name as col_1_0_ from tbl_plant plantentit0_ where plantentit0_.capacity=?
+2019-06-11 16:18:22.646 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:18:31.250 [http-nio-9257-exec-1] DEBUG org.hibernate.SQL - select plantentit0_.id as col_0_0_, plantentit0_.name as col_1_0_ from tbl_plant plantentit0_ where plantentit0_.capacity=?
+2019-06-11 16:30:20.109 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:31:32.030 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:31:42.502 [http-nio-9257-exec-2] DEBUG org.hibernate.SQL - select plantlitee0_.id as id1_8_, plantlitee0_.maintaining as maintain2_8_, plantlitee0_.name as name3_8_ from tbl_plant plantlitee0_
+2019-06-11 16:46:33.368 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:48:29.942 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:49:12.411 [main] DEBUG com.sk.zl.ZlApplication - Running with Spring Boot v2.1.2.RELEASE, Spring v5.1.4.RELEASE
+2019-06-11 16:49:26.263 [http-nio-9257-exec-1] DEBUG org.hibernate.SQL - select plantentit0_.id as col_0_0_, plantentit0_.name as col_1_0_ from tbl_plant plantentit0_ where plantentit0_.capacity=?
